@@ -1,7 +1,7 @@
 ﻿<div class="row">
   <div class="col-md-6">
     <nb-card>
-      <nb-card-header>Form without labels</nb-card-header>
+      <nb-card-header>Add new Aquaponic System</nb-card-header>
       <nb-card-body>
         <form>
           <div class="form-group">
@@ -9,7 +9,8 @@
               type="text"
               class="form-control"
               placeholder="Name"
-              [(ngModel)]="newAquaponicSystem.Name" >
+              [(ngModel)]="newAquaponicSystem.name"
+              name="Name">
           </div>
           <button
             type="submit"
@@ -22,5 +23,3 @@
     </nb-card>
   </div>
 </div>
-
-#

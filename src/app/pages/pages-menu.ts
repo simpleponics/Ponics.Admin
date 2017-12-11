@@ -1,4 +1,5 @@
 import { NbMenuItem } from '@nebular/theme';
+import {AquaponicsModule} from './aquaponics/aquaponics.module';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
@@ -11,15 +12,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'FEATURES',
     group: true,
   },
-  {
-    title: 'Aquaponics',
-    icon: 'nb-keypad',
-    link: '/aquaponics',
-    children: [
-      {
-        title: 'Add System',
-        link: '/aquaponics/add',
-      },
-    ],
-  },
+  AquaponicsModule.menu,
 ];

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import {PonicsService} from '../../ponics.service';
 
 @Component({
   selector: 'ngx-aquaponics',
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './aquaponics.component.html',
 })
 export class AquaponicsComponent {
+  constructor(private ponicsService: PonicsService) {
+
+  }
 }

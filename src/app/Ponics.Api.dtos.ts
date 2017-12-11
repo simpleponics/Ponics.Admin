@@ -1,7 +1,5 @@
-/* eslint-disable */
-
 /* Options:
-Date: 2017-12-07 11:57:01
+Date: 2017-12-11 21:26:20
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -16,8 +14,6 @@ BaseUrl: http://localhost:51272
 //ExcludeTypes:
 //DefaultImports:
 */
-
-import IList from "../../node_modules/typescript-dotnet-umd/System/Collections/IList";
 
 
 export interface IReturn<T>
@@ -94,7 +90,7 @@ export class Component
     name: string;
 
     // @ApiMember(ExcludeInSchema=true)
-    organisms: IList<string>;
+    organisms: string[];
 }
 
 export class AnalyseQuery<TLevelAnalysis, TTolerance> extends Query<TLevelAnalysis>
@@ -208,7 +204,7 @@ export class Organism
     id: string;
 
     // @ApiMember(ExcludeInSchema=true)
-    tolerances: IList<Tolerance>;
+    tolerances: Tolerance[];
 }
 
 export class AquaponicSystem
@@ -229,10 +225,10 @@ export class AquaponicSystem
     name: string;
 
     // @ApiMember(ExcludeInSchema=true)
-    components: IList<Component>;
+    components: Component[];
 
     // @ApiMember(ExcludeInSchema=true)
-    componentConnections: IList<ComponentConnection>;
+    componentConnections: ComponentConnection[];
 }
 
 export class SalinityAnalysis extends Analysis<SalinityTolerance>
@@ -267,8 +263,10 @@ export class AmmoniaAnalysis extends Analysis<AmmoniaTolerance>
 */
 // @Route("/organisms", "GET")
 // @Api(Description="Get all organisms")
-export class GetAllOrganisms extends Query<IList<Organism>>
+export class GetAllOrganisms extends Array<Query<Organism>> implements IReturn<Array<Organism>>
 {
+    createResponse() { return new Array<Organism>(); }
+    getTypeName() { return "GetAllOrganisms"; }
 }
 
 /**
@@ -292,13 +290,15 @@ export class GetOrganism extends Query<Organism> implements IReturn<Organism>
 */
 // @Route("/systems/{SystemId}/components/connections", "GET")
 // @Api(Description="Get a list of component connections")
-export class GetConnections extends Query<IList<ComponentConnection>>
+export class GetConnections extends Array<Query<ComponentConnection>> implements IReturn<Array<ComponentConnection>>
 {
     /**
     * The id of a system
     */
     // @ApiMember(DataType="string", Description="The id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
     systemId: string;
+    createResponse() { return new Array<ComponentConnection>(); }
+    getTypeName() { return "GetConnections"; }
 }
 
 /**
@@ -306,8 +306,10 @@ export class GetConnections extends Query<IList<ComponentConnection>>
 */
 // @Route("/systems", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
-export class GetAllSystems extends Query<IList<AquaponicSystem>>
+export class GetAllSystems extends Array<Query<AquaponicSystem>> implements IReturn<Array<AquaponicSystem>>
 {
+    createResponse() { return new Array<AquaponicSystem>(); }
+    getTypeName() { return "GetAllSystems"; }
 }
 
 /**

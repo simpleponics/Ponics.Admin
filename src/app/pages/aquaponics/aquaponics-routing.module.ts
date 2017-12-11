@@ -1,17 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import {AquaponicSystemComponent} from './aquaponicsystem/aquaponicsystem.component';
-import {AddAquaponicSystemComponent} from './addaquaponicsystem/addaquaponicsystem.component';
+import {AquaponicSystemComponent} from './system/aquaponics-system.component';
+
 import {AquaponicsComponent} from './aquaponics.component';
+import {PonicsService} from '../../ponics.service';
+import {AquaponicAddSystemComponent} from './addsystem/aquaponics-addsystem.component';
 
 const routes: Routes = [{
   path: '',
-  component: AquaponicSystemComponent,
+  component: AquaponicsComponent,
   children: [
     {
       path: 'add',
-      component: AddAquaponicSystemComponent,
+      component: AquaponicAddSystemComponent,
+    },
+    {
+      path: 'systems/:id',
+      component: AquaponicSystemComponent,
     },
   ],
 }];
@@ -20,10 +26,13 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AquaponicsRoutingModule { }
+export class AquaponicsRoutingModule {
+  constructor(private ponicsService: PonicsService) {
+  }
+}
 
 export const routedComponents = [
   AquaponicsComponent,
   AquaponicSystemComponent,
-  AddAquaponicSystemComponent,
+  AquaponicAddSystemComponent,
 ];

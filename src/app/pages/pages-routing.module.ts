@@ -8,16 +8,18 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [{
-    path: 'dashboard',
-    component: DashboardComponent,
-  }, {
-    path: 'aquaponics',
-    loadChildren: './aquaponics/aquaponics.module',
-  }, {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  }],
+      path: 'dashboard',
+      component: DashboardComponent,
+    },
+    {
+      path: 'aquaponics',
+      loadChildren: './aquaponics/aquaponics.module#AquaponicsModule',
+    },
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full',
+    }],
 }];
 
 @NgModule({
