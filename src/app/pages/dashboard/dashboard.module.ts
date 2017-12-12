@@ -46,4 +46,8 @@ import { TrafficChartComponent } from './traffic/traffic-chart.component';
     TrafficChartComponent,
   ],
 })
-export class DashboardModule { }
+export class DashboardModule {
+  constructor() {
+    console.log('DashboardModule');
+  }
+}

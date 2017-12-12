@@ -16,7 +16,6 @@ export class AquaponicAddSystemComponent {
   }
 
   onCreateAquaponicSystem() {
-    this.newAquaponicSystem.id = 'test';
     this.ponicsService.addAquaponicSystem(this.newAquaponicSystem);
     this.newAquaponicSystem = new AquaponicSystem();
   }

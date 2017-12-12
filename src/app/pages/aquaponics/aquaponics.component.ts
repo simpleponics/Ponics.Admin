@@ -7,6 +7,6 @@ import {PonicsService} from '../../ponics.service';
 })
 export class AquaponicsComponent {
   constructor(private ponicsService: PonicsService) {
-
+    console.log('AquaponicsComponent');
   }
 }

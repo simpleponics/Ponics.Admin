@@ -263,7 +263,7 @@ export class AmmoniaAnalysis extends Analysis<AmmoniaTolerance>
 */
 // @Route("/organisms", "GET")
 // @Api(Description="Get all organisms")
-export class GetAllOrganisms extends Array<Query<Organism>> implements IReturn<Array<Organism>>
+export class GetAllOrganisms extends Query<Organism> implements IReturn<Array<Organism>>
 {
     createResponse() { return new Array<Organism>(); }
     getTypeName() { return "GetAllOrganisms"; }
@@ -290,7 +290,7 @@ export class GetOrganism extends Query<Organism> implements IReturn<Organism>
 */
 // @Route("/systems/{SystemId}/components/connections", "GET")
 // @Api(Description="Get a list of component connections")
-export class GetConnections extends Array<Query<ComponentConnection>> implements IReturn<Array<ComponentConnection>>
+export class GetConnections extends Query<ComponentConnection> implements IReturn<Array<ComponentConnection>>
 {
     /**
     * The id of a system
@@ -306,7 +306,7 @@ export class GetConnections extends Array<Query<ComponentConnection>> implements
 */
 // @Route("/systems", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
-export class GetAllSystems extends Array<Query<AquaponicSystem>> implements IReturn<Array<AquaponicSystem>>
+export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Array<AquaponicSystem>>
 {
     createResponse() { return new Array<AquaponicSystem>(); }
     getTypeName() { return "GetAllSystems"; }

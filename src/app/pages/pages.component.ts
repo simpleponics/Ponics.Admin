@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { MENU_ITEMS } from './pages-menu';
+import {MenuService} from './menu.service';
+import {NbMenuItem} from '@nebular/theme';
 
 @Component({
   selector: 'ngx-pages',
@@ -12,5 +13,8 @@ import { MENU_ITEMS } from './pages-menu';
   `,
 })
 export class PagesComponent {
-  menu = MENU_ITEMS;
+  menu: NbMenuItem[] = [];
+  constructor(private menuService: MenuService) {
+    this.menu = menuService.menuItems;
+  }
 }

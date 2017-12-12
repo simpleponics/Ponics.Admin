@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import {AquaponicSystemComponent} from './system/aquaponics-system.component';
-
 import {AquaponicsComponent} from './aquaponics.component';
-import {PonicsService} from '../../ponics.service';
 import {AquaponicAddSystemComponent} from './addsystem/aquaponics-addsystem.component';
 
 const routes: Routes = [{
@@ -27,7 +25,8 @@ const routes: Routes = [{
   exports: [RouterModule],
 })
 export class AquaponicsRoutingModule {
-  constructor(private ponicsService: PonicsService) {
+  constructor() {
+    console.log('AquaponicsRoutingModule');
   }
 }
 

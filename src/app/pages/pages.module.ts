@@ -4,6 +4,8 @@ import { PagesComponent } from './pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
+import {MenuService} from './menu.service';
+import {PonicsService} from '../ponics.service';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -13,11 +15,12 @@ const PAGES_COMPONENTS = [
   imports: [
     PagesRoutingModule,
     ThemeModule,
-    DashboardModule,
+    DashboardModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,
   ],
+  providers: [MenuService, PonicsService],
 })
 export class PagesModule {
 }
