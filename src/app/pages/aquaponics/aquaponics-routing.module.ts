@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import {AquaponicSystemComponent} from './system/aquaponics-system.component';
+import {AquaponicsSystemComponent} from './system/aquaponics-system.component';
 import {AquaponicsComponent} from './aquaponics.component';
-import {AquaponicAddSystemComponent} from './addsystem/aquaponics-addsystem.component';
+import {AquaponicsAddSystemComponent} from './add-system/aquaponics-add-system.component';
+import {AquaponicsSystemComponentComponent} from './system/component/aquaponics-system-component.component';
+import {AquaponicsSystemComponentOrganismComponent} from './system/component/organism/aquaponics-system-component-organism.component';
+import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-modal.component';
 
 const routes: Routes = [{
   path: '',
@@ -11,11 +14,15 @@ const routes: Routes = [{
   children: [
     {
       path: 'add',
-      component: AquaponicAddSystemComponent,
+      component: AquaponicsAddSystemComponent,
     },
     {
-      path: 'systems/:id',
-      component: AquaponicSystemComponent,
+      path: 'systems/:systemId',
+      component: AquaponicsSystemComponent,
+    },
+    {
+      path: 'systems/:systemId/components/:componentId',
+      component: AquaponicsSystemComponent,
     },
   ],
 }];
@@ -32,6 +39,9 @@ export class AquaponicsRoutingModule {
 
 export const routedComponents = [
   AquaponicsComponent,
-  AquaponicSystemComponent,
-  AquaponicAddSystemComponent,
+  AquaponicsSystemComponent,
+  AquaponicsAddSystemComponent,
+  AquaponicsSystemComponentComponent,
+  AquaponicsSystemComponentOrganismComponent,
+  AddLevelsModalComponent,
 ];

@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <span>Levels</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="form-group row">
+    <label for="dp" class="col-sm-3 col-form-label">Date</label>
+    <div class="col-sm-9">
+      <div class="input-group">
+        <input id="dp"
+               class="form-control"
+               placeholder="yyyy-mm-dd"
+               name="dp"
+               [(ngModel)]="date"
+               ngbDatepicker
+               #d="ngbDatepicker">
+        <button class="input-group-addon" (click)="d.toggle()" type="button">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="time" class="col-sm-3 col-form-label">Time</label>
+    <div class="col-sm-9">
+      <ngb-timepicker #tp [(ngModel)]="time" id="time" [meridian]="true" [spinners]="false"></ngb-timepicker>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3">Radios</label>
+    <div class="col-sm-9">
+      <div class="dropdown" ngbDropdown>
+        <button class="btn btn-primary" type="button" ngbDropdownToggle>
+          Add level
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" *ngFor="let level of levelTypes">{{level.getTypeName()}}</li>
+        </ul>
+      </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-md btn-primary" (click)="closeModal()">Save changes</button>
+</div>

@@ -1,18 +1,17 @@
 ﻿import { Component } from '@angular/core';
 import { AquaponicSystem } from '../../../Ponics.Api.dtos';
-import {PonicsService} from '../../../ponics.service';
+import { PonicsService } from '../../../ponics.service';
 
 
 @Component({
-    selector: 'ngx-aquaponics-addsystem',
-    templateUrl: './aquaponics-addsystem.component.html',
+    selector: 'ngx-aquaponics-add-system',
+    templateUrl: './aquaponics-add-system.component.html',
 })
 
-export class AquaponicAddSystemComponent {
+export class AquaponicsAddSystemComponent {
   newAquaponicSystem = new AquaponicSystem();
 
   constructor(private ponicsService: PonicsService) {
-
   }
 
   onCreateAquaponicSystem() {

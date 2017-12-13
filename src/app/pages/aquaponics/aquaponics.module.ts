@@ -2,15 +2,21 @@ import {NgModule} from '@angular/core';
 
 import {AquaponicsRoutingModule, routedComponents } from './aquaponics-routing.module';
 import {ThemeModule} from '../../@theme/theme.module';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-modal.component';
 
 @NgModule({
   imports: [
     ThemeModule,
+    Ng2SmartTableModule,
     AquaponicsRoutingModule,
   ],
   declarations: [
     ...routedComponents,
-  ]
+  ],
+  entryComponents: [
+    AddLevelsModalComponent,
+  ],
 })
 export class AquaponicsModule {
   constructor() {
