@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {AquaponicSystem} from '../../../Ponics.Api.dtos';
 import {PonicsService} from '../../../ponics.service';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
-import {AddLevelsModalComponent} from './component/add-levels/add-levels-modal.component';
+import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 

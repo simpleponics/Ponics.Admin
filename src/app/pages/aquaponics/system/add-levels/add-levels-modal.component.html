@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <span>Levels</span>
+  <span>Level Readings</span>
   <button class="close" aria-label="Close" (click)="closeModal()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -33,10 +33,10 @@
   <div class="form-group row">
     <nb-card class="col-sm-12">
       <nb-card-header>
-        Levels
+        <span *ngIf="levelQueriesKeys.length === 0" >Levels</span>
         <div class="dropdown" ngbDropdown *ngIf="levelQueriesKeys.length > 0">
           <button class="btn btn-primary" type="button" ngbDropdownToggle>
-            Add level
+            Select levels
           </button>
           <ul class="dropdown-menu" ngbDropdownMenu>
             <li

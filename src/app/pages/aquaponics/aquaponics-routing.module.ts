@@ -6,8 +6,8 @@ import {AquaponicsComponent} from './aquaponics.component';
 import {AquaponicsAddSystemComponent} from './add-system/aquaponics-add-system.component';
 import {AquaponicsSystemComponentComponent} from './system/component/aquaponics-system-component.component';
 import {AquaponicsSystemComponentOrganismComponent} from './system/component/organism/aquaponics-system-component-organism.component';
-import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-modal.component';
-import {LevelValueComponent} from './system/component/level-value/level-value.component';
+import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.component';
+import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
 
 
 const routes: Routes = [{
