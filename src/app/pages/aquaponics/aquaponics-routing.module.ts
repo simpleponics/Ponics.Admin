@@ -7,6 +7,8 @@ import {AquaponicsAddSystemComponent} from './add-system/aquaponics-add-system.c
 import {AquaponicsSystemComponentComponent} from './system/component/aquaponics-system-component.component';
 import {AquaponicsSystemComponentOrganismComponent} from './system/component/organism/aquaponics-system-component-organism.component';
 import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-modal.component';
+import {LevelValueComponent} from './system/component/level-value/level-value.component';
+
 
 const routes: Routes = [{
   path: '',
@@ -44,4 +46,5 @@ export const routedComponents = [
   AquaponicsSystemComponentComponent,
   AquaponicsSystemComponentOrganismComponent,
   AddLevelsModalComponent,
+  LevelValueComponent
 ];

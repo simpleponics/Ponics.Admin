@@ -4,6 +4,7 @@ import {AquaponicsRoutingModule, routedComponents } from './aquaponics-routing.m
 import {ThemeModule} from '../../@theme/theme.module';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-modal.component';
+import {LevelValueComponent} from "./system/component/level-value/level-value.component";
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {AddLevelsModalComponent} from './system/component/add-levels/add-levels-
   ],
   entryComponents: [
     AddLevelsModalComponent,
+    LevelValueComponent
   ],
 })
 export class AquaponicsModule {

@@ -1,10 +1,24 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {AddSystem, AquaponicSystem, GetAllSystems, GetOrganism, GetSystem} from './Ponics.Api.dtos';
+import {
+  AddSystem, AnalyseAmmonia, AnalyseIron, AnalyseNitrate, AnalyseNitrite, AnalysePh, AnalyseSalinity, AquaponicSystem,
+  GetAllSystems,
+  GetOrganism,
+  GetSystem
+} from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 
 @Injectable()
 export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
+
+  levelQueries: Map<string, any> = new Map([
+    ['Salinity', new AnalyseSalinity()],
+    ['Iron', new AnalyseIron()],
+    ['Nitrate', new AnalyseNitrate()],
+    ['Nitrite', new AnalyseNitrite()],
+    ['Ammonia', new AnalyseAmmonia],
+    ['pH', new AnalysePh()],
+  ]);
 
   client = new JsonServiceClient('http://localhost:51272/');
 

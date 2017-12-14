@@ -29,19 +29,31 @@
       <ngb-timepicker #tp [(ngModel)]="time" id="time" [meridian]="true" [spinners]="false"></ngb-timepicker>
     </div>
   </div>
+
   <div class="form-group row">
-    <label class="col-sm-3">Radios</label>
-    <div class="col-sm-9">
-      <div class="dropdown" ngbDropdown>
-        <button class="btn btn-primary" type="button" ngbDropdownToggle>
-          Add level
-        </button>
-        <ul class="dropdown-menu" ngbDropdownMenu>
-          <li class="dropdown-item" *ngFor="let level of levelTypes">{{level.getTypeName()}}</li>
-        </ul>
-      </div>
+    <nb-card class="col-sm-12">
+      <nb-card-header>
+        Levels
+        <div class="dropdown" ngbDropdown *ngIf="levelQueriesKeys.length > 0">
+          <button class="btn btn-primary" type="button" ngbDropdownToggle>
+            Add level
+          </button>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li
+              class="dropdown-item"
+              *ngFor="let levelName of levelQueriesKeys"
+              (click)="addLevelValueInput(levelName)"
+            >{{levelName}}</li>
+          </ul>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ng-template #dynamicInsert></ng-template>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>
+
 <div class="modal-footer">
   <button class="btn btn-md btn-primary" (click)="closeModal()">Save changes</button>
 </div>
