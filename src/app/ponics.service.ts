@@ -3,13 +3,14 @@ import {
   AddSystem, AnalyseAmmonia, AnalyseIron, AnalyseNitrate, AnalyseNitrite, AnalysePh, AnalyseSalinity, AquaponicSystem,
   GetAllSystems,
   GetOrganism,
-  GetSystem
+  GetSystem, UpdateSystem
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 
 @Injectable()
 export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
+  systemUpdated = new EventEmitter<AquaponicSystem>();
 
   levelQueries: Map<string, any> = new Map([
     ['Salinity', new AnalyseSalinity()],
@@ -40,6 +41,15 @@ export class PonicsService {
       .then(r =>
         this.systemAdded.emit(system),
       );
+  }
+
+  updatedAquaponicSystem(system: AquaponicSystem) {
+    const command = new UpdateSystem();
+    command.id = system.id;
+    command.system = system;
+    this.client.post(command).then(r =>
+      this.systemUpdated.emit(system),
+    );
   }
 
   getOrganism(id: string)  {

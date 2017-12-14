@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ThemeModule } from './@theme/theme.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {OverridesModule} from './overrides/overrides.module';
+import {BusyModule} from "angular2-busy";
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import {OverridesModule} from './overrides/overrides.module';
     BrowserAnimationsModule,
     HttpModule,
     AppRoutingModule,
+    BusyModule,
 
     NgbModule.forRoot(),
     ThemeModule.forRoot(),

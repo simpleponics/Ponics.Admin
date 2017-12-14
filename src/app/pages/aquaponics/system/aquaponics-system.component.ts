@@ -12,6 +12,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'ngx-aquaponics-system',
   templateUrl: './aquaponics-system.component.html',
+  styleUrls: ['./aquaponics-system.component.scss']
 })
 
 export class AquaponicsSystemComponent implements OnInit, OnDestroy {
@@ -23,7 +24,7 @@ export class AquaponicsSystemComponent implements OnInit, OnDestroy {
   }
 
   addLevelsModal() {
-    const activeModal = this.modalService.open(AddLevelsModalComponent, { size: 'lg', container: 'nb-layout' });
+    const activeModal = this.modalService.open(AddLevelsModalComponent, {size: 'lg', container: 'nb-layout'});
 
     activeModal.componentInstance.modalHeader = 'Large Modal';
   }
@@ -37,6 +38,10 @@ export class AquaponicsSystemComponent implements OnInit, OnDestroy {
           );
         },
       );
+  }
+
+  onNameChange() {
+    this.ponicsService.updatedAquaponicSystem(this.aquaponicSystem);
   }
 
   ngOnDestroy(): void {

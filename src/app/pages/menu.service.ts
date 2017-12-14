@@ -44,6 +44,12 @@ export class MenuService {
       system => {
         this.generateSystemMenuItems();
       });
+
+    ponicsService.systemUpdated.subscribe(
+      system => {
+        this.generateSystemMenuItems();
+      }
+    );
   }
 
   generateSystemMenuItems()  {
