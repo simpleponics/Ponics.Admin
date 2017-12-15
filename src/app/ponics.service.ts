@@ -1,6 +1,14 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddSystem, AnalyseAmmonia, AnalyseIron, AnalyseNitrate, AnalyseNitrite, AnalysePh, AnalyseSalinity, AquaponicSystem,
+  AddComponent,
+  AddSystem,
+  AnalyseAmmonia,
+  AnalyseIron,
+  AnalyseNitrate,
+  AnalyseNitrite,
+  AnalysePh,
+  AnalyseSalinity,
+  AquaponicSystem, Component, GetAllOrganisms,
   GetAllSystems,
   GetOrganism,
   GetSystem, UpdateSystem
@@ -10,7 +18,10 @@ import {JsonServiceClient} from 'servicestack-client';
 @Injectable()
 export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
+  componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
+
+  public organismAdded = new EventEmitter<Component>();
 
   levelQueries: Map<string, any> = new Map([
     ['Salinity', new AnalyseSalinity()],
@@ -56,5 +67,21 @@ export class PonicsService {
     const query = new GetOrganism();
     query.id = id;
     return this.client.get(query);
+  }
+
+  getOrganisms() {
+    const query = new GetAllOrganisms();
+    return this.client.get(query);
+  }
+
+  addComponent(systemId: string, component: Component)
+  {
+    const command = new AddComponent();
+    command.systemId = systemId;
+    command.component = component;
+    this.client.post(command)
+      .then(r =>
+        this.componentAdded.emit(component),
+      );
   }
 }

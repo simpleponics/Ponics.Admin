@@ -7,26 +7,43 @@ import {PonicsService} from '../../../ponics.service';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AddComponentModalComponent} from './add-component/add-component-modal.component';
 
 
 @Component({
-  selector: 'ngx-aquaponics-system',
-  templateUrl: './aquaponics-system.component.html',
-  styleUrls: ['./aquaponics-system.component.scss']
+  selector: 'ngx-aquaponic-system',
+  templateUrl: './aquaponic-system.component.html',
+  styleUrls: ['./aquaponic-system.component.scss']
 })
 
-export class AquaponicsSystemComponent implements OnInit, OnDestroy {
+export class AquaponicSystemComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
   @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
 
-  constructor(private ponicsService: PonicsService, private route: ActivatedRoute, private modalService: NgbModal) {
+  constructor(
+    private ponicsService: PonicsService,
+    private route: ActivatedRoute,
+    private modalService: NgbModal) {
+    ponicsService.componentAdded.subscribe(
+      () => {
+        const systemId = this.route.snapshot.params['systemId'];
+        this.ponicsService.getAquaponicSystem(systemId).then(
+          s => this.aquaponicSystem = s,
+        );
+      }
+    );
   }
 
   addLevelsModal() {
-    const activeModal = this.modalService.open(AddLevelsModalComponent, {size: 'lg', container: 'nb-layout'});
+    this.modalService.open(AddLevelsModalComponent, {size: 'lg', container: 'nb-layout'});
+  }
 
-    activeModal.componentInstance.modalHeader = 'Large Modal';
+  addComponentModal()  {
+    const modal = this.modalService.open(AddComponentModalComponent, {size: 'lg', container: 'nb-layout'});
+    const addComponentModal = <AddComponentModalComponent>modal.componentInstance;
+    addComponentModal.system = this.aquaponicSystem;
+
   }
 
   ngOnInit(): void {
@@ -34,7 +51,7 @@ export class AquaponicsSystemComponent implements OnInit, OnDestroy {
       .subscribe(
         (params) => {
           this.ponicsService.getAquaponicSystem(params['systemId']).then(
-            r => this.aquaponicSystem = r,
+            s => this.aquaponicSystem = s,
           );
         },
       );

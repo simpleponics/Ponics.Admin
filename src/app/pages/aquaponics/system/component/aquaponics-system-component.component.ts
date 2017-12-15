@@ -8,18 +8,23 @@ import {PonicsService} from '../../../../ponics.service';
 })
 export class AquaponicsSystemComponentComponent implements OnInit {
   @Input() systemComponent: SystemComponent = new SystemComponent();
-  organisms: Organism[] = [];
+  @Input() organisms: Organism[] = [];
 
   constructor(private ponicsService: PonicsService) {
   }
 
   ngOnInit(): void {
-    for (const organismId of this.systemComponent.organisms)
-    {
-      this.ponicsService.getOrganism(organismId)
-        .then(r => {
-          this.organisms.push(r);
-        });
+    this.fetchOrganisms();
+  }
+
+  fetchOrganisms() {
+    if (this.systemComponent.organisms != null) {
+      for (const organismId of this.systemComponent.organisms) {
+        this.ponicsService.getOrganism(organismId)
+          .then(r => {
+            this.organisms.push(r);
+          });
+      }
     }
   }
 }

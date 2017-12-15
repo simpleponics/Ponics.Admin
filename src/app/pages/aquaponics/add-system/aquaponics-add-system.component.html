@@ -1,24 +1,24 @@
 ﻿<div class="row">
   <div class="col-md-6">
     <nb-card>
-      <nb-card-header>Add new Aquaponic System</nb-card-header>
+      <nb-card-header>
+        Add new Aquaponic System
+      </nb-card-header>
       <nb-card-body>
-        <form>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Name"
-              [(ngModel)]="newAquaponicSystem.name"
-              name="Name">
-          </div>
-          <button
-            type="submit"
-            class="btn btn-success"
-            (click)="onCreateAquaponicSystem()">
-              Add System
-          </button>
-        </form>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Name"
+            [(ngModel)]="newAquaponicSystem.name"
+            name="Name">
+        </div>
+        <button
+          type="submit"
+          class="btn btn-success"
+          (click)="onCreateAquaponicSystem()">
+            Add System
+        </button>
       </nb-card-body>
     </nb-card>
   </div>

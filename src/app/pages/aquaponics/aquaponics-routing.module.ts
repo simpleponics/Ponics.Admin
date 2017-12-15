@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import {AquaponicsSystemComponent} from './system/aquaponics-system.component';
+import {AquaponicSystemComponent} from './system/aquaponic-system.component';
 import {AquaponicsComponent} from './aquaponics.component';
 import {AquaponicsAddSystemComponent} from './add-system/aquaponics-add-system.component';
 import {AquaponicsSystemComponentComponent} from './system/component/aquaponics-system-component.component';
 import {AquaponicsSystemComponentOrganismComponent} from './system/component/organism/aquaponics-system-component-organism.component';
 import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.component';
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
+import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
 
 
 const routes: Routes = [{
@@ -20,11 +21,11 @@ const routes: Routes = [{
     },
     {
       path: 'systems/:systemId',
-      component: AquaponicsSystemComponent,
+      component: AquaponicSystemComponent,
     },
     {
       path: 'systems/:systemId/components/:componentId',
-      component: AquaponicsSystemComponent,
+      component: AquaponicSystemComponent,
     },
   ],
 }];
@@ -41,10 +42,11 @@ export class AquaponicsRoutingModule {
 
 export const routedComponents = [
   AquaponicsComponent,
-  AquaponicsSystemComponent,
+  AquaponicSystemComponent,
   AquaponicsAddSystemComponent,
   AquaponicsSystemComponentComponent,
   AquaponicsSystemComponentOrganismComponent,
   AddLevelsModalComponent,
-  LevelValueComponent
+  LevelValueComponent,
+  AddComponentModalComponent,
 ];

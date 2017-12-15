@@ -47,7 +47,6 @@ export class AddLevelsModalComponent  {
     const componentIndex = this.levelValueComponents.indexOf(levelValueComponent);
 
     if (componentIndex !== -1) {
-      // Remove component from both view and array
       this.dynamicInsert.remove(this.levelValueComponents.indexOf(levelValueComponent));
       this.levelValueComponents.splice(componentIndex, 1);
       this.levelQueriesKeys.push(levelValueComponent.levelName);
