@@ -10,6 +10,7 @@
             <ul class="dropdown-menu" ngbDropdownMenu>
               <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
               <li class="dropdown-item" (click)="addComponentModal()">Add Component</li>
+              <li class="dropdown-item" (click)="deleteSystem()">Delete System</li>
             </ul>
           </div>
           <input
@@ -17,7 +18,7 @@
             type="text"
             class="form-control"
             [(ngModel)]="aquaponicSystem.name"
-            (change)="onNameChange()">
+            (change)="onNameChange()" [ngBusy]="busy">
         </div>
       </nb-card-header>
       <nb-card-body>

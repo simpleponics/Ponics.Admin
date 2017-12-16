@@ -5,4 +5,5 @@
  */
 export const environment = {
   production: true,
+  PonicsApi: 'https://api.simpleponics.io/',
 };

@@ -6,12 +6,14 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.component';
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
 import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
+import {BusyModule} from 'angular2-busy';
 
 @NgModule({
   imports: [
     ThemeModule,
     Ng2SmartTableModule,
-    AquaponicsRoutingModule
+    AquaponicsRoutingModule,
+    BusyModule,
   ],
   declarations: [
     ...routedComponents,

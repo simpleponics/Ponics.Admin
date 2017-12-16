@@ -10,6 +10,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddComponentModalComponent} from './add-component/add-component-modal.component';
 
 
+
 @Component({
   selector: 'ngx-aquaponic-system',
   templateUrl: './aquaponic-system.component.html',
@@ -20,6 +21,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
   @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
+  busy: Promise<any>;
 
   constructor(
     private ponicsService: PonicsService,
@@ -43,7 +45,10 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
     const modal = this.modalService.open(AddComponentModalComponent, {size: 'lg', container: 'nb-layout'});
     const addComponentModal = <AddComponentModalComponent>modal.componentInstance;
     addComponentModal.system = this.aquaponicSystem;
+  }
 
+  deleteSystem()  {
+    this.ponicsService.deleteSystem(this.aquaponicSystem.id);
   }
 
   ngOnInit(): void {
@@ -58,7 +63,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
   }
 
   onNameChange() {
-    this.ponicsService.updatedAquaponicSystem(this.aquaponicSystem);
+    this.busy = this.ponicsService.updatedAquaponicSystem(this.aquaponicSystem);
   }
 
   ngOnDestroy(): void {

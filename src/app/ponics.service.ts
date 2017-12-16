@@ -14,6 +14,7 @@ import {
   GetSystem, UpdateSystem
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
+import {environment} from "../environments/environment";
 
 @Injectable()
 export class PonicsService {
@@ -32,7 +33,7 @@ export class PonicsService {
     ['pH', new AnalysePh()],
   ]);
 
-  client = new JsonServiceClient('http://localhost:51272/');
+  client = new JsonServiceClient(environment.PonicsApi);
 
   getAquaponicSystems() {
     const query = new GetAllSystems();
@@ -58,9 +59,15 @@ export class PonicsService {
     const command = new UpdateSystem();
     command.id = system.id;
     command.system = system;
-    this.client.post(command).then(r =>
+    const promise = this.client.post(command);
+    promise.then(r =>
       this.systemUpdated.emit(system),
     );
+
+    return promise;
+  }
+
+  deleteSystem(systemId: string) {
   }
 
   getOrganism(id: string)  {

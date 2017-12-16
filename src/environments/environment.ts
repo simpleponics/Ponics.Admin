@@ -10,4 +10,5 @@
 
 export const environment = {
   production: false,
+  PonicsApi: 'http://localhost:51272/',
 };
