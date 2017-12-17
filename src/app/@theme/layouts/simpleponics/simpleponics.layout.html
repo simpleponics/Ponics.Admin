@@ -7,8 +7,8 @@
               tag="menu-sidebar"
               responsive>
     <nb-sidebar-header>
-      <a href="#" class="btn btn-hero-success main-btn">
-        <i class="ion ion-social-github"></i> <span>Support Us</span>
+      <a href="/#/pages/dashboard" class="btn btn-hero-success main-btn">
+        <i class="icon-simpleponics"></i> <span>Dashboard</span>
       </a>
     </nb-sidebar-header>
     <ng-content select="nb-menu"></ng-content>
@@ -16,10 +16,6 @@
 
   <nb-layout-column class="main-content">
     <ng-content select="router-outlet"></ng-content>
-  </nb-layout-column>
-
-  <nb-layout-column left class="small" >
-    <nb-menu [items]="subMenu"></nb-menu>
   </nb-layout-column>
 
   <nb-layout-footer fixed>

@@ -25,20 +25,10 @@ export class MenuService {
   };
 
   menuItems: NbMenuItem[] = [
-    {
-      title: 'Dashboard',
-      icon: 'nb-home',
-      link: '/pages/dashboard',
-      home: true,
-    },
-    {
-      title: 'GROW',
-      group: true,
-    },
     this.aquaponics,
     {
       title: 'Organisms',
-      icon: 'nb-keypad',
+      icon: 'icon-bioenergy',
       link: '/organisms',
     },
   ];

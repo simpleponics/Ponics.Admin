@@ -7,13 +7,14 @@ import {
   Component as AquaponicSystemComponent, Organism,
 } from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
+import {ModalComponent} from '../../../../@core/modal/modal.component';
 
 @Component({
   selector: 'ngx-add-component-modal',
   templateUrl: './add-component-modal.component.html',
   styleUrls: ['./add-component-modal.component.scss'],
 })
-export class AddComponentModalComponent  implements OnInit {
+export class AddComponentModalComponent extends ModalComponent  implements OnInit {
   component: AquaponicSystemComponent = new AquaponicSystemComponent();
   system: AquaponicSystem;
   organisms: Organism[] = [];
@@ -37,7 +38,8 @@ export class AddComponentModalComponent  implements OnInit {
 
   constructor(
     private ponicsService: PonicsService,
-    private activeModal: NgbActiveModal) {
+    activeModal: NgbActiveModal) {
+    super(activeModal);
     this.component.organisms = [];
   }
 

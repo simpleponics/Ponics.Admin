@@ -2,7 +2,7 @@
   <nb-card>
     <nb-tabset>
       <nb-tab *ngFor="let o of organisms" id="{{o.id}}" tabTitle="{{o.name}}">
-          <ngx-organism [organism]="o"></ngx-organism>
+          <ngx-organism-detail [organism]="o"></ngx-organism-detail>
       </nb-tab>
     </nb-tabset>
   </nb-card>

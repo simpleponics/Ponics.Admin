@@ -5,12 +5,13 @@ import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import {LevelValueComponent} from './level-value/level-value.component';
 import {PonicsService} from '../../../../@core/data/ponics.service';
+import {ModalComponent} from '../../../../@core/modal/modal.component';
 
 @Component({
   selector: 'ngx-add-levels-modal',
   templateUrl: './add-levels-modal.component.html',
 })
-export class AddLevelsModalComponent  {
+export class AddLevelsModalComponent extends ModalComponent {
   @ViewChild('dynamicInsert', { read: ViewContainerRef }) dynamicInsert: ViewContainerRef;
   time = {hour: 0, minute: 0};
   date: NgbDateStruct;
@@ -19,11 +20,13 @@ export class AddLevelsModalComponent  {
 
   constructor(
     private ponicsService: PonicsService,
-    private activeModal: NgbActiveModal,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+    private componentFactoryResolver: ComponentFactoryResolver,
+    activeModal: NgbActiveModal) {
+    super(activeModal);
     const now = new Date();
     this.time = {hour: now.getHours(), minute: now.getMinutes()};
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+
   }
 
   addLevelValueInput(levelName: string) {
@@ -53,7 +56,5 @@ export class AddLevelsModalComponent  {
     }
   }
 
-  closeModal() {
-    this.activeModal.close();
-  }
+
 }
