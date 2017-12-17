@@ -1,3 +1,5 @@
+import {BUSY_CONFIG_DEFAULTS, BusyConfig} from 'angular2-busy';
+
 /**
  * @license
  * Copyright Akveo. All Rights Reserved.
@@ -8,7 +10,23 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const busyConfig: BusyConfig = {
+  message: 'Processing..',
+  delay: 200,
+  template: `
+         <div class="loader">
+          <div class="loader-title">
+            {{message}}
+          </div>
+          <div class="loader-loading"></div>
+        </div>`,
+  minDuration: BUSY_CONFIG_DEFAULTS.minDuration,
+  backdrop: true,
+  wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass,
+};
+
 export const environment = {
   production: false,
   PonicsApi: 'http://localhost:51272/',
+  BusyConfig: busyConfig,
 };

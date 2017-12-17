@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {PonicsService} from '../../../../ponics.service';
+import {PonicsService} from '../../../../@core/data/ponics.service';
 import {
   AquaponicSystem,
   Component as AquaponicSystemComponent, Organism,
-} from '../../../../Ponics.Api.dtos';
+} from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 
 @Component({

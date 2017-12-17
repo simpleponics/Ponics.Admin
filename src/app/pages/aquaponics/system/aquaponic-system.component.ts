@@ -2,8 +2,8 @@
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
-import {AquaponicSystem} from '../../../Ponics.Api.dtos';
-import {PonicsService} from '../../../ponics.service';
+import {AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
+import {PonicsService} from '../../../@core/data/ponics.service';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +14,7 @@ import {AddComponentModalComponent} from './add-component/add-component-modal.co
 @Component({
   selector: 'ngx-aquaponic-system',
   templateUrl: './aquaponic-system.component.html',
-  styleUrls: ['./aquaponic-system.component.scss']
+  styleUrls: ['./aquaponic-system.component.scss'],
 })
 
 export class AquaponicSystemComponent implements OnInit, OnDestroy {
@@ -33,7 +33,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
         this.ponicsService.getAquaponicSystem(systemId).then(
           s => this.aquaponicSystem = s,
         );
-      }
+      },
     );
   }
 

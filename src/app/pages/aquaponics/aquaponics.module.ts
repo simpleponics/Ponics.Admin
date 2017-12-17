@@ -7,13 +7,14 @@ import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.comp
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
 import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
 import {BusyModule} from 'angular2-busy';
+import {environment} from '../../../environments/environment';
 
 @NgModule({
   imports: [
     ThemeModule,
     Ng2SmartTableModule,
     AquaponicsRoutingModule,
-    BusyModule,
+    BusyModule.forRoot(environment.BusyConfig),
   ],
   declarations: [
     ...routedComponents,
@@ -21,11 +22,7 @@ import {BusyModule} from 'angular2-busy';
   entryComponents: [
     AddLevelsModalComponent,
     LevelValueComponent,
-    AddComponentModalComponent
+    AddComponentModalComponent,
   ],
 })
-export class AquaponicsModule {
-  constructor() {
-    console.log('AquaponicsModule');
-  }
-}
+export class AquaponicsModule {}

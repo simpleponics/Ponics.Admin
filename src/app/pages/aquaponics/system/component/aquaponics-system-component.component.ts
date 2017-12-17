@@ -1,6 +1,6 @@
 ﻿import {Component, Input, OnInit} from '@angular/core';
-import {Component as SystemComponent, Organism} from '../../../../Ponics.Api.dtos';
-import {PonicsService} from '../../../../ponics.service';
+import {Component as SystemComponent, Organism} from '../../../../@core/data/Ponics.Api.dtos';
+import {PonicsService} from '../../../../@core/data/ponics.service';
 
 @Component({
   selector: 'ngx-aquaponics-system-component',

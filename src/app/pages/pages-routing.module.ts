@@ -16,6 +16,10 @@ const routes: Routes = [{
       loadChildren: './aquaponics/aquaponics.module#AquaponicsModule',
     },
     {
+      path: 'organisms',
+      loadChildren: './organisms/organisms.module#OrganismsModule',
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

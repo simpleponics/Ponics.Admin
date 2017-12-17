@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {PonicsService} from '../../ponics.service';
+import {PonicsService} from '../../@core/data/ponics.service';
 
 @Component({
   selector: 'ngx-aquaponics',

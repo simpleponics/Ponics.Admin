@@ -4,7 +4,7 @@ import {Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '
 import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import {LevelValueComponent} from './level-value/level-value.component';
-import {PonicsService} from '../../../../ponics.service';
+import {PonicsService} from '../../../../@core/data/ponics.service';
 
 @Component({
   selector: 'ngx-add-levels-modal',
