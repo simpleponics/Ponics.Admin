@@ -8,6 +8,8 @@
 // loading progress bar theme
 @import './pace.theme';
 
+@import 'validation';
+
 // install the framework and custom global styles
 @include nb-install() {
 
@@ -18,3 +20,8 @@
   // loading progress bar
   @include ngx-pace-theme();
 };
+
+.nb-theme-cosmic .dropdown .dropdown-menu {
+  width: auto;
+}
+

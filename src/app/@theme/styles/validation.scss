@@ -1,0 +1,11 @@
+@import '../../../../node_modules/@nebular/theme/styles/global/bootstrap/default-form-control';
+
+.ng-invalid.ng-touched {
+  &, &:focus {
+    border-color: nb-theme(form-control-danger-border-color) !important;
+  }
+}
+
+.invalid-feedback {
+  display: block;
+}

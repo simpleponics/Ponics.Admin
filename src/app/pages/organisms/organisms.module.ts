@@ -7,9 +7,6 @@ import {OrganismsRoutingModule, routedComponents} from './organisms-routing.modu
 import {environment} from '../../../environments/environment';
 import {OrganismDetailComponent} from './organism-detail/organism-detail.component';
 import {ModalModule} from '../../modal/modal.module';
-import {AddLevelsModalComponent} from "../aquaponics/system/add-levels/add-levels-modal.component";
-import {AddComponentModalComponent} from "../aquaponics/system/add-component/add-component-modal.component";
-import {LevelValueComponent} from "../aquaponics/system/add-levels/level-value/level-value.component";
 import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.component';
 
 @NgModule({

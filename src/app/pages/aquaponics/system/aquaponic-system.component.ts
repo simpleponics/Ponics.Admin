@@ -63,7 +63,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
   }
 
   onNameChange() {
-    this.busy = this.ponicsService.updatedAquaponicSystem(this.aquaponicSystem);
+    this.busy = this.ponicsService.updateAquaponicSystem(this.aquaponicSystem);
   }
 
   ngOnDestroy(): void {

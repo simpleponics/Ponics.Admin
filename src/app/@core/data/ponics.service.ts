@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddComponent,
+  AddComponent, AddOrganism,
   AddSystem,
   AnalyseAmmonia,
   AnalyseIron,
@@ -11,7 +11,7 @@ import {
   AquaponicSystem, Component, GetAllOrganisms,
   GetAllSystems,
   GetOrganism,
-  GetSystem,
+  GetSystem, Organism, UpdateOrganism,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
@@ -22,8 +22,8 @@ export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
-
-  public organismAdded = new EventEmitter<Component>();
+  organismUpdated = new EventEmitter<Organism>();
+  organismAdded = new EventEmitter<Organism>();
 
   levelQueries: Map<string, any> = new Map([
     ['Salinity', new AnalyseSalinity()],
@@ -56,7 +56,30 @@ export class PonicsService {
       );
   }
 
-  updatedAquaponicSystem(system: AquaponicSystem) {
+  addComponent(systemId: string, component: Component) {
+    const command = new AddComponent();
+    command.systemId = systemId;
+    command.component = component;
+    const promise = this.client.post(command);
+    promise.then(r =>
+        this.componentAdded.emit(component),
+      );
+    return promise;
+  }
+
+  addOrganism(organism: Organism)
+  {
+    const command = new AddOrganism();
+    command.organism = organism;
+    const promise = this.client.post(command);
+    promise.then(r =>
+      this.organismAdded.emit(organism)
+    );
+
+    return promise;
+  }
+
+  updateAquaponicSystem(system: AquaponicSystem) {
     const command = new UpdateSystem();
     command.id = system.id;
     command.system = system;
@@ -68,7 +91,21 @@ export class PonicsService {
     return promise;
   }
 
+  upateOrganism(organism: Organism) {
+    const command = new UpdateOrganism();
+    command.id = organism.id;
+    command.organism = organism;
+    const promise = this.client.post(command);
+    promise.then( r =>
+    this.organismUpdated.emit(organism));
+
+    return promise;
+  }
+
   deleteSystem(systemId: string) {
+  }
+
+  deleteOrganism(organism: string) {
   }
 
   getOrganism(id: string)  {
@@ -80,15 +117,5 @@ export class PonicsService {
   getOrganisms() {
     const query = new GetAllOrganisms();
     return this.client.get(query);
-  }
-
-  addComponent(systemId: string, component: Component) {
-    const command = new AddComponent();
-    command.systemId = systemId;
-    command.component = component;
-    this.client.post(command)
-      .then(r =>
-        this.componentAdded.emit(component),
-      );
   }
 }

@@ -31,7 +31,7 @@ export class ConfirmModalComponent extends ModalComponent implements OnInit {
             Validators.required,
             matchStringValidator(this.challengeAnswer),
           ]
-        )
+        ),
     });
   }
 

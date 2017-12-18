@@ -11,6 +11,7 @@ import {LocalDataSource} from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.component';
+import {PonicsService} from "../../../@core/data/ponics.service";
 
 @Component({
   selector: 'ngx-organism-detail',
@@ -74,7 +75,9 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private modalService: NgbModal) {}
+  constructor(
+    private modalService: NgbModal,
+    private ponicsService: PonicsService) {}
 
   ngOnInit(): void {
     this.settings.actions.edit = this.allowEdit;
@@ -84,7 +87,25 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
     this.source.load(this.organism.tolerances);
   }
 
-  onDeleteConfirm(event) {
+  deleteOrganism() {
+    const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
+    const deleteConfirmModalComponent = <ConfirmModalComponent>modal.componentInstance;
+    deleteConfirmModalComponent.confirmModalTitle = 'Delete ' + this.organism.name;
+    deleteConfirmModalComponent.challengeQuestion =
+      'Are you Sure you wish to delete this Organism? If so please enter its name.';
+
+    deleteConfirmModalComponent.challengeAnswer = this.organism.name;
+
+    deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
+    deleteConfirmModalComponent.confirmationSuccessful =
+      () => this.ponicsService.deleteOrganism(this.organism.id);
+  }
+
+  onNameChange() {
+    this.ponicsService.upateOrganism(this.organism);
+  }
+
+  onDeleteToleranceConfirm(event) {
     const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
     const deleteConfirmModalComponent = <ConfirmModalComponent>modal.componentInstance;
 
@@ -98,6 +119,5 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
     deleteConfirmModalComponent.confirmationSuccessful = () => event.confirm.resolve(event.newData);
 
     console.log(event);
-
   }
 }

@@ -12,8 +12,6 @@ export function matchStringValidator (value: string) {
     if (!thisControl) {
       thisControl = control;
     }
-
-
     if (value !== thisControl.value) {
       return {
         matchOther: true

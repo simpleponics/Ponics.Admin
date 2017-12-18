@@ -23,8 +23,7 @@ export class OrganismsComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(
-    private ponicsService: PonicsService) { }
+  constructor(private ponicsService: PonicsService) { }
 
   ngOnInit(): void {
     this.ponicsService.getOrganisms()

@@ -18,8 +18,9 @@
           id="userAnswer"
           type="text"
           title="User Answer"
-          formControlName="userAnswer" />
-        <span class="help-block">
+          formControlName="userAnswer"
+        class="form-control"/>
+        <span class="help-block invalid-feedback" *ngIf="!challengeForm.valid && challengeForm.touched">
           Your input does not match {{challengeAnswer}}
         </span>
       </div>
@@ -31,6 +32,7 @@
     <button
       class="btn btn-md btn-warning"
       type="submit"
+      [disabled]="!challengeForm.valid"
     >{{confirmModalButtonText}}</button>
   </div>
 </form>
