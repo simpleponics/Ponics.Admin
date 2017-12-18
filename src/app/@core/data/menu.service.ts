@@ -24,13 +24,15 @@ export class MenuService {
     ],
   };
 
+  organisms: NbMenuItem = {
+    title: 'Organisms',
+    icon: 'icon-bioenergy',
+    link: '/pages/organisms',
+  };
+
   menuItems: NbMenuItem[] = [
     this.aquaponics,
-    {
-      title: 'Organisms',
-      icon: 'icon-bioenergy',
-      link: '/organisms',
-    },
+    this.organisms,
   ];
 
   constructor(private ponicsService: PonicsService) {

@@ -45,7 +45,6 @@ export const routedComponents = [
   AquaponicSystemComponent,
   AquaponicsAddSystemComponent,
   AquaponicsSystemComponentComponent,
-  OrganismDetailComponent,
   AddLevelsModalComponent,
   LevelValueComponent,
   AddComponentModalComponent,

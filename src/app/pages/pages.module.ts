@@ -6,6 +6,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import {MenuService} from '../@core/data/menu.service';
 import {PonicsService} from '../@core/data/ponics.service';
+import {OrganismsModule} from './organisms/organisms.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -16,6 +17,7 @@ const PAGES_COMPONENTS = [
     PagesRoutingModule,
     ThemeModule,
     DashboardModule,
+    OrganismsModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

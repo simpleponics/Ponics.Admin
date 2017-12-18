@@ -7,7 +7,7 @@ import {
   Component as AquaponicSystemComponent, Organism,
 } from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
-import {ModalComponent} from '../../../../@core/modal/modal.component';
+import {ModalComponent} from '../../../../modal/modal.component';
 
 @Component({
   selector: 'ngx-add-component-modal',

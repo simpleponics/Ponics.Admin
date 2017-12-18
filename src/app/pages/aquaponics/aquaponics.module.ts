@@ -8,6 +8,7 @@ import {LevelValueComponent} from './system/add-levels/level-value/level-value.c
 import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
 import {BusyModule} from 'angular2-busy';
 import {environment} from '../../../environments/environment';
+import {OrganismsModule} from '../organisms/organisms.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import {environment} from '../../../environments/environment';
     Ng2SmartTableModule,
     AquaponicsRoutingModule,
     BusyModule.forRoot(environment.BusyConfig),
+    OrganismsModule,
   ],
   declarations: [
     ...routedComponents,

@@ -2,5 +2,5 @@
   Tolerances
 </h2>
 
-<ng2-smart-table [settings]="settings" [source]="source">
+<ng2-smart-table #tolerances [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
 </ng2-smart-table>

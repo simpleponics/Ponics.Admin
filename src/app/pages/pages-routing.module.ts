@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {OrganismsComponent} from "./organisms/organisms.component";
 
 const routes: Routes = [{
   path: '',
@@ -17,7 +18,7 @@ const routes: Routes = [{
     },
     {
       path: 'organisms',
-      loadChildren: './organisms/organisms.module#OrganismsModule',
+      component: OrganismsComponent,
     },
     {
       path: '',

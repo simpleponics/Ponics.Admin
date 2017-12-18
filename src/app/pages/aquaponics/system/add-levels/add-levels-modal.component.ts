@@ -5,7 +5,7 @@ import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import {LevelValueComponent} from './level-value/level-value.component';
 import {PonicsService} from '../../../../@core/data/ponics.service';
-import {ModalComponent} from '../../../../@core/modal/modal.component';
+import {ModalComponent} from '../../../../modal/modal.component';
 
 @Component({
   selector: 'ngx-add-levels-modal',

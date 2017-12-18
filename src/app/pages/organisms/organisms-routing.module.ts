@@ -19,5 +19,6 @@ export class OrganismsRoutingModule {
 }
 
 export const routedComponents = [
+  OrganismsComponent,
   OrganismDetailComponent,
 ];
