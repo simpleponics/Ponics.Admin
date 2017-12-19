@@ -1,6 +1,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddComponent, AddIronTolerance, AddNitrateTolerance, AddNitriteTolerance, AddOrganism, AddSalinityTolerance,
+  AddAmmoniaTolerance,
+  AddComponent, AddIronTolerance, AddNitrateTolerance, AddNitriteTolerance, AddOrganism, AddPhTolerance,
+  AddSalinityTolerance,
   AddSystem,
   AnalyseAmmonia,
   AnalyseIron,
@@ -16,6 +18,7 @@ import {
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
+import {ToleranceTypes} from './ToleranceTypes';
 
 @Injectable()
 export class PonicsService {
@@ -25,25 +28,24 @@ export class PonicsService {
   organismUpdated = new EventEmitter<Organism>();
   organismAdded = new EventEmitter<Organism>();
 
-
-
-  levelQueries: Map<string, any> = new Map([
-    ['Salinity', new AnalyseSalinity()],
-    ['Iron', new AnalyseIron()],
-    ['Nitrate', new AnalyseNitrate()],
-    ['Nitrite', new AnalyseNitrite()],
-    ['Ammonia', new AnalyseAmmonia],
-    ['pH', new AnalysePh()],
+  levelQueries: Map<ToleranceTypes, any> = new Map([
+    [ToleranceTypes.Salinity, new AnalyseSalinity()],
+    [ToleranceTypes.Iron, new AnalyseIron()],
+    [ToleranceTypes.Nitrate, new AnalyseNitrate()],
+    [ToleranceTypes.Nitrite, new AnalyseNitrite()],
+    [ToleranceTypes.Ammonia, new AnalyseAmmonia],
+    [ToleranceTypes.Ph, new AnalysePh()],
   ]);
 
-  // tolerances: Map<string, any> = new Map([
-  //   ['Salinity', new AddSalinityTolerance()],
-  //   ['Iron', new AddIronTolerance()],
-  //   ['Nitrate', new AddNitrateTolerance()],
-  //   ['Nitrite', new AddNitriteTolerance()],
-  //   ['Ammonia', new AnalyseAmmonia],
-  //   ['pH', new AnalysePh()],
-  // ]);
+  addTolerances: Map<ToleranceTypes, any> = new Map([
+    [ToleranceTypes.Ph, new AddSalinityTolerance()],
+    [ToleranceTypes.Iron, new AddIronTolerance()],
+    [ToleranceTypes.Nitrate, new AddNitrateTolerance()],
+    [ToleranceTypes.Nitrite, new AddNitriteTolerance()],
+    [ToleranceTypes.Ammonia, new AddAmmoniaTolerance()],
+    [ToleranceTypes.Ph, new AddPhTolerance()],
+  ]);
+
 
   client = new JsonServiceClient(environment.PonicsApi);
 
@@ -130,12 +132,3 @@ export class PonicsService {
   }
 }
 
-
-// enum toleranceTypes {
-//   Salinity = 'Salinity',
-//   Iron = 'Iron',
-//   Nitrate = 'Nitrate',
-//   Nitrite = 'Nitrite',
-//   Ammonia = 'Ammonia',
-//   pH = 'Nitrite',
-// }
