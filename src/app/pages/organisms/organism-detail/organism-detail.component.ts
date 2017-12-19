@@ -41,7 +41,7 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
     },
     delete: {
       deleteButtonContent: '<i class="ion-trash-b"></i>',
-      confirmDelete: true
+      confirmDelete: true,
     },
     columns: {
       type: {

@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddComponent, AddOrganism,
+  AddComponent, AddIronTolerance, AddNitrateTolerance, AddNitriteTolerance, AddOrganism, AddSalinityTolerance,
   AddSystem,
   AnalyseAmmonia,
   AnalyseIron,
@@ -25,6 +25,8 @@ export class PonicsService {
   organismUpdated = new EventEmitter<Organism>();
   organismAdded = new EventEmitter<Organism>();
 
+
+
   levelQueries: Map<string, any> = new Map([
     ['Salinity', new AnalyseSalinity()],
     ['Iron', new AnalyseIron()],
@@ -33,6 +35,15 @@ export class PonicsService {
     ['Ammonia', new AnalyseAmmonia],
     ['pH', new AnalysePh()],
   ]);
+
+  // tolerances: Map<string, any> = new Map([
+  //   ['Salinity', new AddSalinityTolerance()],
+  //   ['Iron', new AddIronTolerance()],
+  //   ['Nitrate', new AddNitrateTolerance()],
+  //   ['Nitrite', new AddNitriteTolerance()],
+  //   ['Ammonia', new AnalyseAmmonia],
+  //   ['pH', new AnalysePh()],
+  // ]);
 
   client = new JsonServiceClient(environment.PonicsApi);
 
@@ -67,13 +78,12 @@ export class PonicsService {
     return promise;
   }
 
-  addOrganism(organism: Organism)
-  {
+  addOrganism(organism: Organism) {
     const command = new AddOrganism();
     command.organism = organism;
     const promise = this.client.post(command);
     promise.then(r =>
-      this.organismAdded.emit(organism)
+      this.organismAdded.emit(organism),
     );
 
     return promise;
@@ -119,3 +129,13 @@ export class PonicsService {
     return this.client.get(query);
   }
 }
+
+
+// enum toleranceTypes {
+//   Salinity = 'Salinity',
+//   Iron = 'Iron',
+//   Nitrate = 'Nitrate',
+//   Nitrite = 'Nitrite',
+//   Ammonia = 'Ammonia',
+//   pH = 'Nitrite',
+// }

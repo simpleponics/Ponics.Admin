@@ -1,0 +1,24 @@
+:host /deep/ .ng2-smart-action-multiple-select, :host /deep/ th[ng2-st-checkbox-select-all] {
+  text-align: center;
+  input[type=checkbox] {
+    display: none;
+  }
+  /* to hide the checkbox itself */
+  input[type=checkbox] + label::before {
+    font-family: Ionicons;
+    display: inline-block;
+    font-size: 2rem;
+  }
+  input[type=checkbox] + label::before {
+    content: '\f372';
+  }
+  input[type=checkbox] + label::before {
+    letter-spacing: 5px;
+  }
+  input[type=checkbox]:checked + label::before {
+    content: '\f373';
+  }
+  input[type=checkbox]:checked + label::before {
+    letter-spacing: 5px;
+  }
+}

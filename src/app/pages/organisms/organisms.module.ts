@@ -15,7 +15,7 @@ import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.com
     Ng2SmartTableModule,
     OrganismsRoutingModule,
     BusyModule.forRoot(environment.BusyConfig),
-    ModalModule
+    ModalModule,
   ],
   declarations: [
     ...routedComponents,
@@ -24,7 +24,7 @@ import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.com
     OrganismDetailComponent,
   ],
   entryComponents: [
-    ConfirmModalComponent
+    ConfirmModalComponent,
   ],
 })
 export class OrganismsModule {

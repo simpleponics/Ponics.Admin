@@ -14,12 +14,9 @@ export function matchStringValidator (value: string) {
     }
     if (value !== thisControl.value) {
       return {
-        matchOther: true
+        matchOther: true,
       };
     }
-
     return null;
-
-  }
-
+  };
 }

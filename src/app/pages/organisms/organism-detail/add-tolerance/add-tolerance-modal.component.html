@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <span>Add Tolerance</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="challengeForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Tolerance</label>
+      <select
+        class="form-control"
+        formControlName="toleranceType"
+      >
+      </select>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-md btn-primary" (click)="addComponent()">Add Component</button>
+</div>
