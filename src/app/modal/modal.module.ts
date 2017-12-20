@@ -6,7 +6,7 @@ import {CommonModule} from '@angular/common';
 @NgModule({
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
   ],
   declarations: [
     ConfirmModalComponent,

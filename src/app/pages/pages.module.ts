@@ -7,6 +7,7 @@ import { ThemeModule } from '../@theme/theme.module';
 import {MenuService} from '../@core/data/menu.service';
 import {PonicsService} from '../@core/data/ponics.service';
 import {OrganismsModule} from './organisms/organisms.module';
+import {OrganismService} from '../@core/data/organism.service';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -22,7 +23,7 @@ const PAGES_COMPONENTS = [
   declarations: [
     ...PAGES_COMPONENTS,
   ],
-  providers: [MenuService, PonicsService],
+  providers: [MenuService, PonicsService, OrganismService],
 })
 export class PagesModule {
 }

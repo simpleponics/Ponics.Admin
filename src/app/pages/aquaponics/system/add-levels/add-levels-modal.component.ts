@@ -6,6 +6,7 @@ import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {LevelValueComponent} from './level-value/level-value.component';
 import {PonicsService} from '../../../../@core/data/ponics.service';
 import {ModalComponent} from '../../../../modal/modal.component';
+import {levelQueries} from '../../../../@core/data/PonicsMaps';
 
 @Component({
   selector: 'ngx-add-levels-modal',
@@ -16,7 +17,7 @@ export class AddLevelsModalComponent extends ModalComponent {
   time = {hour: 0, minute: 0};
   date: NgbDateStruct;
   levelValueComponents: LevelValueComponent[] = [];
-  levelQueriesKeys: string[] =  Array.from(this.ponicsService.levelQueries.keys());
+  levelQueriesKeys: string[] =  Array.from(levelQueries.keys());
 
   constructor(
     private ponicsService: PonicsService,
@@ -26,7 +27,6 @@ export class AddLevelsModalComponent extends ModalComponent {
     const now = new Date();
     this.time = {hour: now.getHours(), minute: now.getMinutes()};
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-
   }
 
   addLevelValueInput(levelName: string) {
@@ -40,10 +40,7 @@ export class AddLevelsModalComponent extends ModalComponent {
     });
     this.levelValueComponents.push(levelValueComponent);
 
-    const index = this.levelQueriesKeys.indexOf(levelName, 0);
-    if (index > -1) {
-      this.levelQueriesKeys.splice(index, 1);
-    }
+    this.levelQueriesKeys = this.levelQueriesKeys.filter( item => item !== levelName);
   }
 
   levelValueDeleted(levelValueComponent: LevelValueComponent) {

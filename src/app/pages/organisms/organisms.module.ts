@@ -8,6 +8,8 @@ import {environment} from '../../../environments/environment';
 import {OrganismDetailComponent} from './organism-detail/organism-detail.component';
 import {ModalModule} from '../../modal/modal.module';
 import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.component';
+import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-tolerance-modal.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -16,6 +18,7 @@ import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.com
     OrganismsRoutingModule,
     BusyModule.forRoot(environment.BusyConfig),
     ModalModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     ...routedComponents,
@@ -25,6 +28,7 @@ import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.com
   ],
   entryComponents: [
     ConfirmModalComponent,
+    AddToleranceModalComponent,
   ],
 })
 export class OrganismsModule {

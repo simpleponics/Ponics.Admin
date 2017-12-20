@@ -1,51 +1,26 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddAmmoniaTolerance,
-  AddComponent, AddIronTolerance, AddNitrateTolerance, AddNitriteTolerance, AddOrganism, AddPhTolerance,
-  AddSalinityTolerance,
+  AddComponent,
+  AddOrganism,
   AddSystem,
-  AnalyseAmmonia,
-  AnalyseIron,
-  AnalyseNitrate,
-  AnalyseNitrite,
-  AnalysePh,
-  AnalyseSalinity,
-  AquaponicSystem, Component, GetAllOrganisms,
+  AquaponicSystem,
+  Component,
+  GetAllOrganisms,
   GetAllSystems,
   GetOrganism,
-  GetSystem, Organism, UpdateOrganism,
+  GetSystem,
+  Organism,
+  UpdateOrganism,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
-import {ToleranceTypes} from './ToleranceTypes';
 
 @Injectable()
 export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
-  organismUpdated = new EventEmitter<Organism>();
-  organismAdded = new EventEmitter<Organism>();
-
-  levelQueries: Map<ToleranceTypes, any> = new Map([
-    [ToleranceTypes.Salinity, new AnalyseSalinity()],
-    [ToleranceTypes.Iron, new AnalyseIron()],
-    [ToleranceTypes.Nitrate, new AnalyseNitrate()],
-    [ToleranceTypes.Nitrite, new AnalyseNitrite()],
-    [ToleranceTypes.Ammonia, new AnalyseAmmonia],
-    [ToleranceTypes.Ph, new AnalysePh()],
-  ]);
-
-  addTolerances: Map<ToleranceTypes, any> = new Map([
-    [ToleranceTypes.Ph, new AddSalinityTolerance()],
-    [ToleranceTypes.Iron, new AddIronTolerance()],
-    [ToleranceTypes.Nitrate, new AddNitrateTolerance()],
-    [ToleranceTypes.Nitrite, new AddNitriteTolerance()],
-    [ToleranceTypes.Ammonia, new AddAmmoniaTolerance()],
-    [ToleranceTypes.Ph, new AddPhTolerance()],
-  ]);
-
 
   client = new JsonServiceClient(environment.PonicsApi);
 
@@ -80,17 +55,6 @@ export class PonicsService {
     return promise;
   }
 
-  addOrganism(organism: Organism) {
-    const command = new AddOrganism();
-    command.organism = organism;
-    const promise = this.client.post(command);
-    promise.then(r =>
-      this.organismAdded.emit(organism),
-    );
-
-    return promise;
-  }
-
   updateAquaponicSystem(system: AquaponicSystem) {
     const command = new UpdateSystem();
     command.id = system.id;
@@ -103,16 +67,7 @@ export class PonicsService {
     return promise;
   }
 
-  upateOrganism(organism: Organism) {
-    const command = new UpdateOrganism();
-    command.id = organism.id;
-    command.organism = organism;
-    const promise = this.client.post(command);
-    promise.then( r =>
-    this.organismUpdated.emit(organism));
 
-    return promise;
-  }
 
   deleteSystem(systemId: string) {
   }
@@ -120,15 +75,6 @@ export class PonicsService {
   deleteOrganism(organism: string) {
   }
 
-  getOrganism(id: string)  {
-    const query = new GetOrganism();
-    query.id = id;
-    return this.client.get(query);
-  }
 
-  getOrganisms() {
-    const query = new GetAllOrganisms();
-    return this.client.get(query);
-  }
 }
 

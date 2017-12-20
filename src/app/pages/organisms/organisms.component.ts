@@ -2,6 +2,7 @@
 import {LocalDataSource} from 'ng2-smart-table';
 import {PonicsService} from '../../@core/data/ponics.service';
 import {Organism} from '../../@core/data/Ponics.Api.dtos';
+import {OrganismService} from '../../@core/data/organism.service';
 
 @Component({
   selector: 'ngx-organisms',
@@ -23,10 +24,12 @@ export class OrganismsComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private ponicsService: PonicsService) { }
+  constructor(
+    private ponicsService: PonicsService,
+    private organismService: OrganismService) { }
 
   ngOnInit(): void {
-    this.ponicsService.getOrganisms()
+    this.organismService.getOrganisms()
       .then(
         (allOrganisms) => {
           this.source.load(allOrganisms);

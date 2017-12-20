@@ -8,6 +8,7 @@ import {
 } from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 import {ModalComponent} from '../../../../modal/modal.component';
+import {OrganismService} from '../../../../@core/data/organism.service';
 
 @Component({
   selector: 'ngx-add-component-modal',
@@ -38,13 +39,14 @@ export class AddComponentModalComponent extends ModalComponent  implements OnIni
 
   constructor(
     private ponicsService: PonicsService,
+    private organismService: OrganismService,
     activeModal: NgbActiveModal) {
     super(activeModal);
     this.component.organisms = [];
   }
 
   ngOnInit(): void {
-    this.ponicsService.getOrganisms()
+    this.organismService.getOrganisms()
       .then(
         (allOrganisms) => {
           this.source.load(allOrganisms);

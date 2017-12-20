@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {OrganismDetailComponent} from './organism-detail/organism-detail.component';
 import {OrganismsComponent} from './organisms.component';
+import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-tolerance-modal.component';
 
 
 
@@ -21,4 +22,5 @@ export class OrganismsRoutingModule {
 export const routedComponents = [
   OrganismsComponent,
   OrganismDetailComponent,
+  AddToleranceModalComponent,
 ];

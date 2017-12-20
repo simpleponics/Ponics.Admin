@@ -6,7 +6,11 @@
           Action
         </button>
         <ul class="dropdown-menu" ngbDropdownMenu>
-          <li class="dropdown-item" (click)="addTolerance()">Add Tolerance</li>
+          <li
+            class="dropdown-item"
+            (click)="addTolerance()"
+            *ngIf="addTolerancesCommandsKeys.length > 0"
+          >Add Tolerance</li>
           <li class="dropdown-item" (click)="deleteOrganism()">Delete Organism</li>
         </ul>
       </div>

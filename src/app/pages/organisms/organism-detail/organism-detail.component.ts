@@ -4,24 +4,22 @@
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import {Organism} from '../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.component';
-import {PonicsService} from "../../../@core/data/ponics.service";
+import {PonicsService} from '../../../@core/data/ponics.service';
+import {AddToleranceModalComponent} from './add-tolerance/add-tolerance-modal.component';
+import {OrganismService} from '../../../@core/data/organism.service';
 
 @Component({
   selector: 'ngx-organism-detail',
   templateUrl: './organism-detail.component.html',
 })
 export class OrganismDetailComponent implements OnInit, OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    this.source.load(this.organism.tolerances);
-  }
-
   @Input() organism: Organism = new Organism();
   @Input() allowEdit: boolean = false;
   @ViewChild('tolerances') tolerances: Ng2SmartTableComponent;
@@ -74,18 +72,27 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  addTolerancesCommandsKeys: string[] = [];
 
   constructor(
     private modalService: NgbModal,
-    private ponicsService: PonicsService) {}
+    private ponicsService: PonicsService,
+    private organismService: OrganismService) {
+  }
 
   ngOnInit(): void {
     this.settings.actions.edit = this.allowEdit;
     this.settings.actions.delete = this.allowEdit;
 
     this.tolerances.settings = this.settings;
-    this.source.load(this.organism.tolerances);
+
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.source.load(this.organism.tolerances);
+    this.addTolerancesCommandsKeys = this.organismService.getMissingTolerances(this.organism);
+  }
+
 
   deleteOrganism() {
     const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
@@ -101,8 +108,14 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
       () => this.ponicsService.deleteOrganism(this.organism.id);
   }
 
+  addTolerance() {
+    const modal = this.modalService.open(AddToleranceModalComponent, {size: 'lg', container: 'nb-layout'});
+    const addToleranceModalComponent = <AddToleranceModalComponent>modal.componentInstance;
+    addToleranceModalComponent.organism = this.organism;
+  }
+
   onNameChange() {
-    this.ponicsService.upateOrganism(this.organism);
+    this.organismService.upateOrganism(this.organism);
   }
 
   onDeleteToleranceConfirm(event) {
