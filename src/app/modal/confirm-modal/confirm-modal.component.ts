@@ -1,7 +1,7 @@
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent} from '../modal.component';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, isDevMode, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {matchStringValidator} from '../../@core/validators/matchStringValidator';
 
@@ -24,6 +24,12 @@ export class ConfirmModalComponent extends ModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (isDevMode()) {
+      console.log('the challenge answer is: ' + this.challengeAnswer);
+    }
+    if (typeof this.challengeAnswer  === 'undefined') {
+      this.challengeAnswer = 'undefined';
+    }
     this.challengeForm = new FormGroup({
       'userAnswer': new FormControl(
         null,

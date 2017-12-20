@@ -83,9 +83,10 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.settings.actions.edit = this.allowEdit;
     this.settings.actions.delete = this.allowEdit;
-
     this.tolerances.settings = this.settings;
-
+    this.source.onRemoved().subscribe(
+      (event) => console.log(event),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -129,8 +130,9 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
     deleteConfirmModalComponent.challengeAnswer = event.data.type;
 
     deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
-    deleteConfirmModalComponent.confirmationSuccessful = () => event.confirm.resolve(event.newData);
-
-    console.log(event);
+    deleteConfirmModalComponent.confirmationSuccessful = () => {
+      event.confirm.resolve(event.newData);
+      this.organismService.deleteTolerance(this.organism.id, event.data);
+    };
   }
 }

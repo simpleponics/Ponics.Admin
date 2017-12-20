@@ -11,12 +11,16 @@ import {
   AnalyseToleranceNitrate,
   AnalyseToleranceNitrite,
   AnalyseTolerancePh,
-  AnalyseToleranceSalinity,
+  AnalyseToleranceSalinity, DeleteAmmoniaTolerance, DeleteIronTolerance, DeleteNitrateTolerance, DeleteNitriteTolerance,
+  DeletePhTolerance,
+  DeleteSalinityTolerance,
   IronTolerance,
   NitrateTolerance,
   NitriteTolerance,
   PhTolerance,
-  SalinityTolerance,
+  SalinityTolerance, UpdateAmmoniaTolerance, UpdateIronTolerance, UpdateNitrateTolerance, UpdateNitriteTolerance,
+  UpdatePhTolerance,
+  UpdateSalinityTolerance,
 } from './Ponics.Api.dtos';
 import {ToleranceTypes} from './ToleranceTypes';
 import {pHValidator} from '../validators/phValidator';
@@ -31,13 +35,48 @@ export const levelQueries: Map<ToleranceTypes, any> = new Map([
   [ToleranceTypes.Ph, new AnalyseTolerancePh()],
 ]);
 
-export const addToleranceCommands: Map<ToleranceTypes, any> = new Map([
-  [ToleranceTypes.Salinity, new AddSalinityTolerance()],
-  [ToleranceTypes.Iron, new AddIronTolerance()],
-  [ToleranceTypes.Nitrate, new AddNitrateTolerance()],
-  [ToleranceTypes.Nitrite, new AddNitriteTolerance()],
-  [ToleranceTypes.Ammonia, new AddAmmoniaTolerance()],
-  [ToleranceTypes.Ph, new AddPhTolerance()],
+export const toleranceCommands: Map<ToleranceTypes, {delete: any, update: any, add: any}> = new Map([
+  [ToleranceTypes.Salinity, {
+    add: new AddSalinityTolerance(),
+    update: new UpdateSalinityTolerance(),
+    delete: new DeleteSalinityTolerance(),
+  }],
+
+  [ToleranceTypes.Iron, {
+    add: new AddIronTolerance(),
+    update: new UpdateIronTolerance(),
+    delete: new DeleteIronTolerance(),
+  }],
+
+  [ToleranceTypes.Nitrate, {
+    add: new AddNitrateTolerance(),
+    update: new UpdateNitrateTolerance(),
+    delete: new DeleteNitrateTolerance(),
+  }],
+
+  [ToleranceTypes.Nitrite, {
+    add: new AddNitriteTolerance(),
+    update: new UpdateNitriteTolerance(),
+    delete: new DeleteNitriteTolerance(),
+  }],
+
+  [ToleranceTypes.Nitrite, {
+    add: new AddNitriteTolerance(),
+    update: new UpdateNitriteTolerance(),
+    delete: new DeleteNitriteTolerance(),
+  }],
+
+  [ToleranceTypes.Ammonia, {
+    add: new AddAmmoniaTolerance(),
+    update: new UpdateAmmoniaTolerance(),
+    delete: new DeleteAmmoniaTolerance(),
+  }],
+
+  [ToleranceTypes.Ph, {
+    add: new AddPhTolerance(),
+    update: new UpdatePhTolerance(),
+    delete: new DeletePhTolerance(),
+  }],
 ]);
 
 export const tolerances: Map<ToleranceTypes, any> = new Map([
