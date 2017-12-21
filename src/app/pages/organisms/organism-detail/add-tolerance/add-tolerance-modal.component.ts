@@ -101,8 +101,7 @@ export class AddToleranceModalComponent extends ModalComponent implements OnInit
     tolerance.desiredUpper = this.toleranceForm.get('desiredUpper').value;
     tolerance.desiredLower = this.toleranceForm.get('desiredLower').value;
 
-    console.log(tolerance);
-
     this.organismService.addTolerance(this.organism.id, tolerance, selectedTolerance);
+    this.closeModal();
   }
 }

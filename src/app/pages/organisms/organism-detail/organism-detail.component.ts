@@ -21,9 +21,14 @@ import {CustomEditorComponent} from './custom-editor/custom-editor.component';
   templateUrl: './organism-detail.component.html',
 })
 export class OrganismDetailComponent implements OnInit, OnChanges {
-  @Input() organism: Organism = new Organism();
+  @Input() organismId: string;
   @Input() allowEdit: boolean = false;
   @ViewChild('tolerances') tolerances: Ng2SmartTableComponent;
+  onNameChangeBusy: Promise<any>;
+  editToleranceBusy: Promise<any>;
+  loadingTolerancesBusy: Promise<any>;
+
+  organism: Organism = new Organism();
 
   settings = {
     mode: 'inline',
@@ -95,22 +100,24 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   constructor(private modalService: NgbModal,
               private ponicsService: PonicsService,
               private organismService: OrganismService) {
+    this.organismService.toleranceAdded.subscribe(
+    );
   }
 
   ngOnInit(): void {
     this.settings.actions.edit = this.allowEdit;
     this.settings.actions.delete = this.allowEdit;
     this.tolerances.settings = this.settings;
-    this.source.onRemoved().subscribe(
-      (event) => console.log(event),
-    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.source.load(this.organism.tolerances);
-    this.addTolerancesCommandsKeys = this.organismService.getMissingTolerances(this.organism);
+    this.loadingTolerancesBusy = this.organismService.getOrganism(this.organismId).then(
+      r => {
+        this.organism = r;
+        this.loadingTolerancesBusy = this.source.load(this.organism.tolerances);
+        this.addTolerancesCommandsKeys = this.organismService.getMissingTolerances(this.organism);
+      });
   }
-
 
   deleteOrganism() {
     const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
@@ -133,18 +140,17 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   }
 
   onNameChange() {
-    this.organismService.upateOrganism(this.organism);
+    this.onNameChangeBusy = this.organismService.updateOrganism(this.organism);
   }
 
   onEditToleranceConfirm(event) {
-    console.log(event);
     const validation = event.data.validation;
     if (Object.values(validation).some(v => v === 'INVALID' )) {
       event.confirm.reject();
     } else {
       delete event.data.validation;
       event.confirm.resolve(event.newData);
-      this.organismService.upateTolerance(this.organism.id, event.newData)
+      this.editToleranceBusy = this.organismService.updateTolerance(this.organism.id, event.newData);
     }
   }
 
@@ -161,7 +167,7 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
     deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
     deleteConfirmModalComponent.confirmationSuccessful = () => {
       event.confirm.resolve(event.newData);
-      this.organismService.deleteTolerance(this.organism.id, event.data);
+      this.editToleranceBusy = this.organismService.deleteTolerance(this.organism.id, event.data);
     };
   }
 }

@@ -19,7 +19,7 @@
         type="text"
         class="form-control"
         [(ngModel)]="organism.name"
-        (change)="onNameChange()" [ngBusy]="busy">
+        (change)="onNameChange()" [ngBusy]="[onNameChangeBusy]">
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -32,6 +32,7 @@
       [source]="source"
       (deleteConfirm)="onDeleteToleranceConfirm($event)"
       (editConfirm)="onEditToleranceConfirm($event)"
+      [ngBusy]="[loadingTolerancesBusy, editToleranceBusy]"
     >
     </ng2-smart-table>
 

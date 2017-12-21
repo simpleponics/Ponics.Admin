@@ -21,7 +21,9 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
   @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
-  busy: Promise<any>;
+  updateAquaponicSystemBusy: Promise<any>;
+  loadAquaponicSystemBusy: Promise<any>;
+  loadSystemComponentBusy: Promise<any>;
 
   constructor(
     private ponicsService: PonicsService,
@@ -30,7 +32,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
     ponicsService.componentAdded.subscribe(
       () => {
         const systemId = this.route.snapshot.params['systemId'];
-        this.ponicsService.getAquaponicSystem(systemId).then(
+          this.loadSystemComponentBusy = this.ponicsService.getAquaponicSystem(systemId).then(
           s => this.aquaponicSystem = s,
         );
       },
@@ -55,7 +57,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
     this.paramsSubscription = this.route.params
       .subscribe(
         (params) => {
-          this.ponicsService.getAquaponicSystem(params['systemId']).then(
+          this.loadAquaponicSystemBusy = this.ponicsService.getAquaponicSystem(params['systemId']).then(
             s => this.aquaponicSystem = s,
           );
         },
@@ -63,7 +65,7 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
   }
 
   onNameChange() {
-    this.busy = this.ponicsService.updateAquaponicSystem(this.aquaponicSystem);
+    this.updateAquaponicSystemBusy = this.ponicsService.updateAquaponicSystem(this.aquaponicSystem);
   }
 
   ngOnDestroy(): void {

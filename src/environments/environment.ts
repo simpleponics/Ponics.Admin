@@ -15,9 +15,6 @@ const busyConfig: BusyConfig = {
   delay: 200,
   template: `
          <div class="loader">
-          <div class="loader-title">
-            {{message}}
-          </div>
           <div class="loader-loading"></div>
         </div>`,
   minDuration: BUSY_CONFIG_DEFAULTS.minDuration,

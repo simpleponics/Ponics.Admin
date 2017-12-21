@@ -1,6 +1,6 @@
 ﻿<div class="row">
   <div class="col-md-12">
-    <nb-card>
+    <nb-card [ngBusy]="loadAquaponicSystemBusy">
       <nb-card-header>
         <div class="input-group">
           <div class="dropdown input-group-btn" ngbDropdown>
@@ -18,10 +18,10 @@
             type="text"
             class="form-control"
             [(ngModel)]="aquaponicSystem.name"
-            (change)="onNameChange()" [ngBusy]="busy">
+            (change)="onNameChange()" [ngBusy]="loadSystemComponentBusy">
         </div>
       </nb-card-header>
-      <nb-card-body>
+      <nb-card-body [ngBusy]="loadSystemComponentBusy">
         <nb-tabset #componentTabs>
           <nb-tab *ngFor="let systemComponent of aquaponicSystem.components" tabTitle="{{systemComponent.name}}">
             <ngx-aquaponics-system-component [systemComponent]="systemComponent"></ngx-aquaponics-system-component>

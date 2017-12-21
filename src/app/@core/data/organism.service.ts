@@ -18,6 +18,7 @@ export class OrganismService {
   organismUpdated = new EventEmitter<Organism>();
   toleranceAdded  = new EventEmitter<Tolerance>();
   toleranceUpdated = new EventEmitter<Tolerance>();
+  toleranceDeleted = new EventEmitter<Tolerance>();
   client = new JsonServiceClient(environment.PonicsApi);
 
   getOrganism(id: string)  {
@@ -35,10 +36,7 @@ export class OrganismService {
     const command = new AddOrganism();
     command.organism = organism;
     const promise = this.client.post(command);
-    promise.then(r =>
-      this.organismAdded.emit(organism),
-    );
-
+    promise.then(() => this.organismAdded.emit(organism));
     return promise;
   }
 
@@ -46,12 +44,8 @@ export class OrganismService {
     const command = toleranceCommands.get(toleranceTypes).add;
     command.organismId = organismId;
     command.tolerance = tolerance;
-
     const promise = this.client.post(command);
-    promise.then(r =>
-      this.toleranceAdded.emit(tolerance),
-    );
-
+    promise.then(() => this.toleranceAdded.emit(tolerance));
     return promise;
   }
 
@@ -59,11 +53,13 @@ export class OrganismService {
     const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
     const command = toleranceCommands.get(key).delete;
     command.organismId = organismId;
-    this.client.delete(command);
+    const promise = this.client.delete(command);
+    promise.then( () => this.toleranceDeleted.emit(tolerance));
+    return promise;
   }
 
 
-  upateTolerance(organismId: string, tolerance: any) {
+  updateTolerance(organismId: string, tolerance: any) {
     const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
     const command = toleranceCommands.get(key).update;
     command.organismId = organismId;
@@ -73,7 +69,7 @@ export class OrganismService {
     return promise;
   }
 
-  upateOrganism(organism: Organism) {
+  updateOrganism(organism: Organism) {
     const command = new UpdateOrganism();
     command.id = organism.id;
     command.organism = organism;

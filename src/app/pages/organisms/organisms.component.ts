@@ -10,6 +10,7 @@ import {OrganismService} from '../../@core/data/organism.service';
 })
 export class OrganismsComponent implements OnInit {
   selectedOrganism: Organism = null;
+  loadingOrganismsBusy: Promise<any>;
 
   settings = {
     actions: false,
@@ -29,7 +30,7 @@ export class OrganismsComponent implements OnInit {
     private organismService: OrganismService) { }
 
   ngOnInit(): void {
-    this.organismService.getOrganisms()
+    this.loadingOrganismsBusy = this.organismService.getOrganisms()
       .then(
         (allOrganisms) => {
           this.source.load(allOrganisms);

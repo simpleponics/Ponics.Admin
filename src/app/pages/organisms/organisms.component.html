@@ -3,9 +3,14 @@
     <h2>
       Organism
     </h2>
-    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)"></ng2-smart-table>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (userRowSelect)="onUserRowSelect($event)"
+      [ngBusy]="loadingOrganismsBusy"
+    ></ng2-smart-table>
   </div>
   <div class="col-md-10">
-    <ngx-organism-detail [organism]="selectedOrganism" *ngIf="selectedOrganism" [allowEdit]="true" ></ngx-organism-detail>
+    <ngx-organism-detail [organismId]="selectedOrganism.id" *ngIf="selectedOrganism" [allowEdit]="true" ></ngx-organism-detail>
   </div>
 </div>
