@@ -1,0 +1,15 @@
+<ng-template #popContent>{{validationErrorMessage}}</ng-template>
+<input [ngClass]="inputClass"
+       class="form-control short-input"
+       type="number"
+       [name]="cell.getId()"
+       [(ngModel)]="value"
+       [formControl]="control"
+       [placeholder]="cell.getTitle()"
+       (change)="updateValue()"
+       (keydown.enter)="onEdited.emit($event)"
+       (keydown.esc)="onStopEditing.emit()"
+       #p="ngbPopover"
+       [ngbPopover]="popContent"
+       triggers="manual"
+       placement="bottom">

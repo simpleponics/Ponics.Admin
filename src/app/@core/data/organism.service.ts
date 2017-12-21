@@ -17,6 +17,7 @@ export class OrganismService {
   organismAdded = new EventEmitter<Organism>();
   organismUpdated = new EventEmitter<Organism>();
   toleranceAdded  = new EventEmitter<Tolerance>();
+  toleranceUpdated = new EventEmitter<Tolerance>();
   client = new JsonServiceClient(environment.PonicsApi);
 
   getOrganism(id: string)  {
@@ -55,10 +56,21 @@ export class OrganismService {
   }
 
   deleteTolerance(organismId: string, tolerance: any) {
-    const key = Array.from(tolerances.keys()).find(k => tolerances.get(k).constructor.name === tolerance.type);
+    const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
     const command = toleranceCommands.get(key).delete;
     command.organismId = organismId;
     this.client.delete(command);
+  }
+
+
+  upateTolerance(organismId: string, tolerance: any) {
+    const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
+    const command = toleranceCommands.get(key).update;
+    command.organismId = organismId;
+    command.tolerance = tolerance;
+    const promise = this.client.put(command);
+    promise.then( () => this.toleranceUpdated.emit(tolerance));
+    return promise;
   }
 
   upateOrganism(organism: Organism) {
@@ -70,11 +82,20 @@ export class OrganismService {
     return promise;
   }
 
+
+  findToleranceTypeKeyFromToleranceObject(tolerance: any): ToleranceTypes {
+    return this.findToleranceTypeKeyFromToleranceObjectType(tolerance.type);
+  }
+
+  findToleranceTypeKeyFromToleranceObjectType(tolerance: string): ToleranceTypes {
+    return Array.from(tolerances.keys()).find(k => tolerances.get(k).constructor.name === tolerance);
+  }
+
   getMissingTolerances(organism: Organism) {
     let missingTolerances: string[] = Array.from(toleranceCommands.keys());
     tolerances.forEach(
       (value: any, key: ToleranceTypes) => {
-        if (organism.tolerances.some(t => t.type !== value.constructor.name)) {
+        if (organism.tolerances.some(t => t.type === value.constructor.name)) {
           missingTolerances = missingTolerances.filter( item => item !== key);
         }
       });

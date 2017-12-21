@@ -14,6 +14,7 @@ import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddToleranceModalComponent} from './add-tolerance/add-tolerance-modal.component';
 import {OrganismService} from '../../../@core/data/organism.service';
+import {CustomEditorComponent} from './custom-editor/custom-editor.component';
 
 @Component({
   selector: 'ngx-organism-detail',
@@ -36,6 +37,7 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
       editButtonContent: '<i class="ion-edit"></i>',
       saveButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="ion-trash-b"></i>',
@@ -50,18 +52,34 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
       upper: {
         title: 'Upper',
         type: 'number',
+        editor: {
+          type: 'custom',
+          component: CustomEditorComponent,
+        },
       },
       lower: {
         title: 'Lower',
         type: 'number',
+        editor: {
+          type: 'custom',
+          component: CustomEditorComponent,
+        },
       },
       desiredUpper: {
         title: 'Desired Upper',
         type: 'string',
+        editor: {
+          type: 'custom',
+          component: CustomEditorComponent,
+        },
       },
       desiredLower: {
         title: 'Desired Lower',
         type: 'number',
+        editor: {
+          type: 'custom',
+          component: CustomEditorComponent,
+        },
       },
       scale: {
         title: 'Scale',
@@ -74,10 +92,9 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   source: LocalDataSource = new LocalDataSource();
   addTolerancesCommandsKeys: string[] = [];
 
-  constructor(
-    private modalService: NgbModal,
-    private ponicsService: PonicsService,
-    private organismService: OrganismService) {
+  constructor(private modalService: NgbModal,
+              private ponicsService: PonicsService,
+              private organismService: OrganismService) {
   }
 
   ngOnInit(): void {
@@ -117,6 +134,18 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
 
   onNameChange() {
     this.organismService.upateOrganism(this.organism);
+  }
+
+  onEditToleranceConfirm(event) {
+    console.log(event);
+    const validation = event.data.validation;
+    if (Object.values(validation).some(v => v === 'INVALID' )) {
+      event.confirm.reject();
+    } else {
+      delete event.data.validation;
+      event.confirm.resolve(event.newData);
+      this.organismService.upateTolerance(this.organism.id, event.newData)
+    }
   }
 
   onDeleteToleranceConfirm(event) {

@@ -104,6 +104,5 @@ export class AddToleranceModalComponent extends ModalComponent implements OnInit
     console.log(tolerance);
 
     this.organismService.addTolerance(this.organism.id, tolerance, selectedTolerance);
-
   }
 }

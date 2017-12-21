@@ -10,6 +10,8 @@ import {ModalModule} from '../../modal/modal.module';
 import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.component';
 import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-tolerance-modal.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {CustomEditorComponent} from './organism-detail/custom-editor/custom-editor.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -19,6 +21,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     BusyModule.forRoot(environment.BusyConfig),
     ModalModule,
     ReactiveFormsModule,
+    NgbModule
   ],
   declarations: [
     ...routedComponents,
@@ -29,6 +32,7 @@ import {ReactiveFormsModule} from '@angular/forms';
   entryComponents: [
     ConfirmModalComponent,
     AddToleranceModalComponent,
+    CustomEditorComponent,
   ],
 })
 export class OrganismsModule {

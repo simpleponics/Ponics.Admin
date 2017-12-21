@@ -27,7 +27,12 @@
       Tolerances
     </h2>
 
-    <ng2-smart-table #tolerances [source]="source" (deleteConfirm)="onDeleteToleranceConfirm($event)">
+    <ng2-smart-table
+      #tolerances
+      [source]="source"
+      (deleteConfirm)="onDeleteToleranceConfirm($event)"
+      (editConfirm)="onEditToleranceConfirm($event)"
+    >
     </ng2-smart-table>
 
   </nb-card-body>
