@@ -1,16 +1,11 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
   AddComponent,
-  AddOrganism,
   AddSystem,
   AquaponicSystem,
   Component,
-  GetAllOrganisms,
   GetAllSystems,
-  GetOrganism,
   GetSystem,
-  Organism,
-  UpdateOrganism,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';

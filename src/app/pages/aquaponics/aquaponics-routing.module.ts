@@ -4,8 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import {AquaponicSystemComponent} from './system/aquaponic-system.component';
 import {AquaponicsComponent} from './aquaponics.component';
 import {AquaponicsAddSystemComponent} from './system/add-system/aquaponics-add-system.component';
-import {AquaponicsSystemComponentComponent} from './system/component/aquaponics-system-component.component';
-import {OrganismDetailComponent} from '../organisms/organism-detail/organism-detail.component';
 import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.component';
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
 import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
@@ -44,7 +42,6 @@ export const routedComponents = [
   AquaponicsComponent,
   AquaponicSystemComponent,
   AquaponicsAddSystemComponent,
-  AquaponicsSystemComponentComponent,
   AddLevelsModalComponent,
   LevelValueComponent,
   AddComponentModalComponent,

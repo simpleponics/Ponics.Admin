@@ -1,4 +1,4 @@
-﻿import {Component,  OnInit} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {LocalDataSource} from 'ng2-smart-table';
 import {PonicsService} from '../../@core/data/ponics.service';
 import {Organism} from '../../@core/data/Ponics.Api.dtos';
@@ -7,8 +7,11 @@ import {OrganismService} from '../../@core/data/organism.service';
 @Component({
   selector: 'ngx-organisms',
   templateUrl: './organisms.component.html',
+  styleUrls: ['./organisms.component.scss'],
 })
 export class OrganismsComponent implements OnInit {
+  @Input() allowEdit: boolean = true;
+  @Input() organismIds: string[] = null;
   selectedOrganism: Organism = null;
   loadingOrganismsBusy: Promise<any>;
 
@@ -30,12 +33,20 @@ export class OrganismsComponent implements OnInit {
     private organismService: OrganismService) { }
 
   ngOnInit(): void {
-    this.loadingOrganismsBusy = this.organismService.getOrganisms()
-      .then(
-        (allOrganisms) => {
-          this.source.load(allOrganisms);
-        },
-      );
+    let promise: Promise<Array<Organism>>;
+
+    if (this.organismIds != null) {
+      promise = this.organismService.getOrganisms(this.organismIds);
+    } else {
+      promise = this.organismService.getOrganisms();
+    }
+
+    this.loadingOrganismsBusy = promise
+      .then((allOrganisms) => {
+          this.source.load(allOrganisms).then(() => {
+              this.selectedOrganism = allOrganisms[0];
+            });
+        });
   }
 
   onUserRowSelect(event) {

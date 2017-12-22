@@ -1,13 +1,13 @@
-﻿import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+﻿import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
-import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddComponentModalComponent} from './add-component/add-component-modal.component';
+import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 
 
 
@@ -17,18 +17,21 @@ import {AddComponentModalComponent} from './add-component/add-component-modal.co
   styleUrls: ['./aquaponic-system.component.scss'],
 })
 
-export class AquaponicSystemComponent implements OnInit, OnDestroy {
+export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestroy {
   paramsSubscription: Subscription;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
-  @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
   loadSystemComponentBusy: Promise<any>;
+  @ViewChildren('organism') organismList;
+  @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
+
 
   constructor(
     private ponicsService: PonicsService,
     private route: ActivatedRoute,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private changeDetector: ChangeDetectorRef) {
     ponicsService.componentAdded.subscribe(
       () => {
         const systemId = this.route.snapshot.params['systemId'];
@@ -57,11 +60,19 @@ export class AquaponicSystemComponent implements OnInit, OnDestroy {
     this.paramsSubscription = this.route.params
       .subscribe(
         (params) => {
-          this.loadAquaponicSystemBusy = this.ponicsService.getAquaponicSystem(params['systemId']).then(
-            s => this.aquaponicSystem = s,
-          );
+          this.loadAquaponicSystemBusy =
+            this.ponicsService
+              .getAquaponicSystem(params['systemId']).then(s => this.aquaponicSystem = s);
         },
       );
+  }
+
+  ngAfterViewInit(): void {
+   this.organismList.changes.subscribe(() => {
+       this.componentTabs.selectTab(this.componentTabs.tabs.first);
+       // https://github.com/angular/angular/issues/17572#issuecomment-353357588
+       this.changeDetector.detectChanges();
+     });
   }
 
   onNameChange() {

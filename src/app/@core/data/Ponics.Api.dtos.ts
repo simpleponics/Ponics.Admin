@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-12-20 11:30:13
+Date: 2017-12-22 14:16:23
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -177,7 +177,7 @@ export class AddTolerance<TTolerance> extends ToleranceCommand<TTolerance>
 export class DeleteTolerance<TTolerance> extends ToleranceCommand<TTolerance>
 {
     // @ApiMember(ExcludeInSchema=true)
-    tolerance: TTolerance;
+    toleranceType: string;
 }
 
 export class UpdateTolerance<TTolerance> extends ToleranceCommand<TTolerance>
@@ -253,17 +253,6 @@ export class AmmoniaToleranceAnalysis extends ToleranceAnalysis<AmmoniaTolerance
 }
 
 /**
-* Get all organisms
-*/
-// @Route("/organisms", "GET")
-// @Api(Description="Get all organisms")
-export class GetAllOrganisms extends Query<Array<Organism>> implements IReturn<Array<Organism>>
-{
-    createResponse() { return new Array<Organism>(); }
-    getTypeName() { return "GetAllOrganisms"; }
-}
-
-/**
 * Get an organism by Id
 */
 // @Route("/organisms/{id}", "GET")
@@ -280,11 +269,23 @@ export class GetOrganism extends Query<Organism> implements IReturn<Organism>
 }
 
 /**
+* Get all organisms
+*/
+// @Route("/organisms", "GET")
+// @Api(Description="Get all organisms")
+export class GetOrganisms extends Query<Organism> implements IReturn<Array<Organism>>
+{
+    organismsIds: string[];
+    createResponse() { return new Array<Organism>(); }
+    getTypeName() { return "GetOrganisms"; }
+}
+
+/**
 * Get a list of component connections
 */
 // @Route("/systems/{SystemId}/components/connections", "GET")
 // @Api(Description="Get a list of component connections")
-export class GetConnections extends Query<Array<ComponentConnection>> implements IReturn<Array<ComponentConnection>>
+export class GetConnections extends Query<ComponentConnection> implements IReturn<Array<ComponentConnection>>
 {
     /**
     * The id of a system
@@ -300,7 +301,7 @@ export class GetConnections extends Query<Array<ComponentConnection>> implements
 */
 // @Route("/systems", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
-export class GetAllSystems extends Query<Array<AquaponicSystem>> implements IReturn<Array<AquaponicSystem>>
+export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Array<AquaponicSystem>>
 {
     createResponse() { return new Array<AquaponicSystem>(); }
     getTypeName() { return "GetAllSystems"; }
@@ -535,7 +536,6 @@ export class AddSalinityTolerance extends AddTolerance<SalinityTolerance> implem
 // @Api(Description="Deletes the salinity tolerance off an organism")
 export class DeleteSalinityTolerance extends DeleteTolerance<SalinityTolerance> implements IReturnVoid
 {
-    tolerance: SalinityTolerance;
     createResponse() {}
     getTypeName() { return "DeleteSalinityTolerance"; }
 }
@@ -571,7 +571,6 @@ export class AddPhTolerance extends AddTolerance<PhTolerance> implements IReturn
 // @Api(Description="Deletes the pH tolerance from an organism")
 export class DeletePhTolerance extends DeleteTolerance<PhTolerance> implements IReturnVoid
 {
-    tolerance: PhTolerance;
     createResponse() {}
     getTypeName() { return "DeletePhTolerance"; }
 }
@@ -619,7 +618,6 @@ export class UpdateNitriteTolerance extends UpdateTolerance<NitriteTolerance> im
 // @Api(Description="Deletes the Nitrite tolerance off an organism")
 export class DeleteNitriteTolerance extends DeleteTolerance<NitriteTolerance> implements IReturnVoid
 {
-    tolerance: NitriteTolerance;
     createResponse() {}
     getTypeName() { return "DeleteNitriteTolerance"; }
 }
@@ -643,7 +641,6 @@ export class AddNitrateTolerance extends AddTolerance<NitrateTolerance> implemen
 // @Api(Description="Deletes the Nitrate tolerance off an organism")
 export class DeleteNitrateTolerance extends DeleteTolerance<NitrateTolerance> implements IReturnVoid
 {
-    tolerance: NitrateTolerance;
     createResponse() {}
     getTypeName() { return "DeleteNitrateTolerance"; }
 }
@@ -679,7 +676,6 @@ export class AddIronTolerance extends AddTolerance<IronTolerance> implements IRe
 // @Api(Description="Deletes the Iron tolerance off an organism")
 export class DeleteIronTolerance extends DeleteTolerance<IronTolerance> implements IReturnVoid
 {
-    tolerance: IronTolerance;
     createResponse() {}
     getTypeName() { return "DeleteIronTolerance"; }
 }
@@ -715,7 +711,6 @@ export class AddAmmoniaTolerance extends AddTolerance<AmmoniaTolerance> implemen
 // @Api(Description="Deletes the Ammonia tolerance off an organism")
 export class DeleteAmmoniaTolerance extends DeleteTolerance<AmmoniaTolerance> implements IReturnVoid
 {
-    tolerance: AmmoniaTolerance;
     createResponse() {}
     getTypeName() { return "DeleteAmmoniaTolerance"; }
 }

@@ -12,6 +12,7 @@ import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-to
 import {ReactiveFormsModule} from '@angular/forms';
 import {CustomEditorComponent} from './organism-detail/custom-editor/custom-editor.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {OrganismsComponent} from './organisms.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     BusyModule.forRoot(environment.BusyConfig),
     ModalModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
   ],
   declarations: [
     ...routedComponents,
   ],
   exports: [
     OrganismDetailComponent,
+    OrganismsComponent,
   ],
   entryComponents: [
     ConfirmModalComponent,

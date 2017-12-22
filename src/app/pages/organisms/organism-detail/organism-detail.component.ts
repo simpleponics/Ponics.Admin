@@ -32,7 +32,6 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
 
   settings = {
     mode: 'inline',
-    hideSubHeader: true,
     actions: {
       add: false,
       delete: false,

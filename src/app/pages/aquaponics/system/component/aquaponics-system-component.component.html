@@ -1,9 +1,0 @@
-﻿<div class="col-lg-12">
-  <nb-card>
-    <nb-tabset>
-      <nb-tab *ngFor="let o of organisms" id="{{o.id}}" tabTitle="{{o.name}}">
-          <ngx-organism-detail [organismId]="o.id"></ngx-organism-detail>
-      </nb-tab>
-    </nb-tabset>
-  </nb-card>
-</div>

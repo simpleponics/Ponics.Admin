@@ -1,33 +1,34 @@
 ﻿<div class="row">
-  <div class="col-md-12">
-    <nb-card [ngBusy]="loadAquaponicSystemBusy">
-      <nb-card-header>
-        <div class="input-group">
-          <div class="dropdown input-group-btn" ngbDropdown>
-            <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
-              Action
-            </button>
-            <ul class="dropdown-menu" ngbDropdownMenu>
-              <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
-              <li class="dropdown-item" (click)="addComponentModal()">Add Component</li>
-              <li class="dropdown-item" (click)="deleteSystem()">Delete System</li>
-            </ul>
-          </div>
-          <input
-            #systemName
-            type="text"
-            class="form-control"
-            [(ngModel)]="aquaponicSystem.name"
-            (change)="onNameChange()" [ngBusy]="loadSystemComponentBusy">
-        </div>
-      </nb-card-header>
-      <nb-card-body [ngBusy]="loadSystemComponentBusy">
-        <nb-tabset #componentTabs>
-          <nb-tab *ngFor="let systemComponent of aquaponicSystem.components" tabTitle="{{systemComponent.name}}">
-            <ngx-aquaponics-system-component [systemComponent]="systemComponent"></ngx-aquaponics-system-component>
-          </nb-tab>
-        </nb-tabset>
-      </nb-card-body>
-    </nb-card>
+  <div class="col-md-12" [ngBusy]="loadAquaponicSystemBusy">
+    <div class="input-group">
+      <div class="dropdown input-group-btn" ngbDropdown>
+        <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
+          Action
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
+          <li class="dropdown-item" (click)="addComponentModal()">Add Component</li>
+          <li class="dropdown-item" (click)="deleteSystem()">Delete System</li>
+        </ul>
+      </div>
+      <input
+        #systemName
+        type="text"
+        class="form-control"
+        [(ngModel)]="aquaponicSystem.name"
+        (change)="onNameChange()" [ngBusy]="loadSystemComponentBusy">
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
+    <nb-tabset #componentTabs>
+        <nb-tab
+          *ngFor="let systemComponent of aquaponicSystem.components"
+          tabTitle="{{systemComponent.name}}"
+        >
+          <ngx-organisms #organism [allowEdit]="false" [organismIds]="systemComponent.organisms"></ngx-organisms>
+        </nb-tab>
+      </nb-tabset>
   </div>
 </div>

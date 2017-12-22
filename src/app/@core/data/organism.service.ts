@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
   AddOrganism,
-  GetAllOrganisms,
+  GetOrganisms,
   GetOrganism,
   Organism,
   Tolerance,
@@ -27,57 +27,59 @@ export class OrganismService {
     return this.client.get(query);
   }
 
-  getOrganisms() {
-    const query = new GetAllOrganisms();
+  getOrganisms(ids?: string[]):  Promise<Array<Organism>> {
+    const query = new GetOrganisms();
+    if (ids != null) {
+      query.organismsIds = ids;
+    }
     return this.client.get(query);
   }
 
-  addOrganism(organism: Organism) {
+  addOrganism(organism: Organism): Promise<any> {
     const command = new AddOrganism();
     command.organism = organism;
-    const promise = this.client.post(command);
-    promise.then(() => this.organismAdded.emit(organism));
-    return promise;
+    const p = this.client.post(command);
+    p.then(() => this.organismAdded.emit(organism));
+    return p;
   }
 
-  addTolerance(organismId: string, tolerance: any, toleranceTypes: ToleranceTypes) {
+  addTolerance(organismId: string, tolerance: any, toleranceTypes: ToleranceTypes): Promise<any>  {
     const command = toleranceCommands.get(toleranceTypes).add;
     command.organismId = organismId;
     command.tolerance = tolerance;
-    const promise = this.client.post(command);
-    promise.then(() => this.toleranceAdded.emit(tolerance));
-    return promise;
+    const p = this.client.post(command);
+    p.then(() => this.toleranceAdded.emit(tolerance));
+    return p;
   }
 
-  deleteTolerance(organismId: string, tolerance: any) {
+  deleteTolerance(organismId: string, tolerance: any): Promise<any>  {
     const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
     const command = toleranceCommands.get(key).delete;
     command.organismId = organismId;
-    const promise = this.client.delete(command);
-    promise.then( () => this.toleranceDeleted.emit(tolerance));
-    return promise;
+    const p = this.client.delete(command);
+    p.then( () => this.toleranceDeleted.emit(tolerance));
+    return p;
   }
 
 
-  updateTolerance(organismId: string, tolerance: any) {
+  updateTolerance(organismId: string, tolerance: any): Promise<any> {
     const key = this.findToleranceTypeKeyFromToleranceObject(tolerance);
     const command = toleranceCommands.get(key).update;
     command.organismId = organismId;
     command.tolerance = tolerance;
-    const promise = this.client.put(command);
-    promise.then( () => this.toleranceUpdated.emit(tolerance));
-    return promise;
+    const p = this.client.put(command);
+    p.then( () => this.toleranceUpdated.emit(tolerance));
+    return p;
   }
 
-  updateOrganism(organism: Organism) {
+  updateOrganism(organism: Organism): Promise<any> {
     const command = new UpdateOrganism();
     command.id = organism.id;
     command.organism = organism;
-    const promise = this.client.post(command);
-    promise.then( () => this.organismUpdated.emit(organism));
-    return promise;
+    const p = this.client.post(command);
+    p.then( () => this.organismUpdated.emit(organism));
+    return p;
   }
-
 
   findToleranceTypeKeyFromToleranceObject(tolerance: any): ToleranceTypes {
     return this.findToleranceTypeKeyFromToleranceObjectType(tolerance.type);
@@ -87,7 +89,7 @@ export class OrganismService {
     return Array.from(tolerances.keys()).find(k => tolerances.get(k).constructor.name === tolerance);
   }
 
-  getMissingTolerances(organism: Organism) {
+  getMissingTolerances(organism: Organism): string[] {
     let missingTolerances: string[] = Array.from(toleranceCommands.keys());
     tolerances.forEach(
       (value: any, key: ToleranceTypes) => {
