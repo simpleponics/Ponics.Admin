@@ -1,3 +1,11 @@
 :host /deep/ tr {
   cursor: pointer;
 }
+
+:host /deep/ td {
+ min-width: 80px;
+}
+
+:host /deep/ .ng2-smart-row.selected {
+  background-color: #00d977 !important;
+}
