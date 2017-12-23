@@ -24,7 +24,6 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   @Input() organismId: string;
   @Input() allowEdit: boolean = false;
   @ViewChild('tolerances') tolerances: Ng2SmartTableComponent;
-  onNameChangeBusy: Promise<any>;
   editToleranceBusy: Promise<any>;
   loadingTolerancesBusy: Promise<any>;
 
@@ -95,7 +94,7 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  addTolerancesCommandsKeys: string[] = [];
+
 
   constructor(private modalService: NgbModal,
               private ponicsService: PonicsService,
@@ -115,32 +114,7 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
       r => {
         this.organism = r;
         this.loadingTolerancesBusy = this.source.load(this.organism.tolerances);
-        this.addTolerancesCommandsKeys = this.organismService.getMissingTolerances(this.organism);
       });
-  }
-
-  deleteOrganism() {
-    const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
-    const deleteConfirmModalComponent = <ConfirmModalComponent>modal.componentInstance;
-    deleteConfirmModalComponent.confirmModalTitle = 'Delete ' + this.organism.name;
-    deleteConfirmModalComponent.challengeQuestion =
-      'Are you Sure you wish to delete this Organism? If so please enter its name.';
-
-    deleteConfirmModalComponent.challengeAnswer = this.organism.name;
-
-    deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
-    deleteConfirmModalComponent.confirmationSuccessful =
-      () => this.ponicsService.deleteOrganism(this.organism.id);
-  }
-
-  addTolerance() {
-    const modal = this.modalService.open(AddToleranceModalComponent, {size: 'lg', container: 'nb-layout'});
-    const addToleranceModalComponent = <AddToleranceModalComponent>modal.componentInstance;
-    addToleranceModalComponent.organism = this.organism;
-  }
-
-  onNameChange() {
-    this.onNameChangeBusy = this.organismService.updateOrganism(this.organism);
   }
 
   onEditToleranceConfirm(event) {

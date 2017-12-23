@@ -1,10 +1,32 @@
-﻿<div class="row no-gutters">
+﻿<div class="input-group"  *ngIf="allowEdit">
+  <div class="dropdown input-group-btn" ngbDropdown>
+    <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
+      Action
+    </button>
+    <ul class="dropdown-menu" ngbDropdownMenu>
+      <li
+        class="dropdown-item"
+        (click)="addTolerance()"
+        *ngIf="addTolerancesCommandsKeys.length > 0"
+      >Add Tolerance</li>
+      <li class="dropdown-item" (click)="deleteOrganism()">Delete Organism</li>
+    </ul>
+  </div>
+  <input
+    #organismName
+    type="text"
+    class="form-control"
+    [(ngModel)]="selectedOrganism.name"
+    (change)="onNameChange()" [ngBusy]="[onNameChangeBusy]">
+</div>
+<div class="row no-gutters">
   <div class="col-md-2">
     <ng2-smart-table
       [settings]="settings"
       [source]="source"
       (userRowSelect)="onUserRowSelect($event)"
       [ngBusy]="loadingOrganismsBusy"
+      class="organism-list"
     ></ng2-smart-table>
   </div>
   <div class="col-md-10">
