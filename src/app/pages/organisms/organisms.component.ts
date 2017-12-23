@@ -1,4 +1,4 @@
-﻿import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {LocalDataSource} from 'ng2-smart-table';
 import {PonicsService} from '../../@core/data/ponics.service';
 import {Organism} from '../../@core/data/Ponics.Api.dtos';
@@ -6,13 +6,14 @@ import {OrganismService} from '../../@core/data/organism.service';
 import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-tolerance-modal.component';
+import {AddOrganismModalComponent} from './add-organism/add-organism-modal.component';
 
 @Component({
   selector: 'ngx-organisms',
   templateUrl: './organisms.component.html',
   styleUrls: ['./organisms.component.scss'],
 })
-export class OrganismsComponent implements OnInit, OnChanges {
+export class OrganismsComponent implements OnInit {
   @Input() allowEdit: boolean = true;
   @Input() organismIds: string[] = null;
   selectedOrganism: Organism = null;
@@ -36,7 +37,10 @@ export class OrganismsComponent implements OnInit, OnChanges {
   constructor(
     private modalService: NgbModal,
     private ponicsService: PonicsService,
-    private organismService: OrganismService) { }
+    private organismService: OrganismService) {
+
+
+  }
 
   ngOnInit(): void {
     let promise: Promise<Array<Organism>>;
@@ -55,12 +59,8 @@ export class OrganismsComponent implements OnInit, OnChanges {
         });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
   onUserRowSelect(event) {
     this.selectedOrganism = event.data;
-
     this.addTolerancesCommandsKeys = this.organismService.getMissingTolerances(this.selectedOrganism);
   }
 
@@ -88,4 +88,7 @@ export class OrganismsComponent implements OnInit, OnChanges {
     addToleranceModalComponent.organism = this.selectedOrganism;
   }
 
+  newOrganism() {
+    const modal = this.modalService.open(AddOrganismModalComponent, {size: 'lg', container: 'nb-layout'});
+  }
 }

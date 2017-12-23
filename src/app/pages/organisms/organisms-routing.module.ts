@@ -5,6 +5,7 @@ import {OrganismDetailComponent} from './organism-detail/organism-detail.compone
 import {OrganismsComponent} from './organisms.component';
 import {AddToleranceModalComponent} from './organism-detail/add-tolerance/add-tolerance-modal.component';
 import {CustomEditorComponent} from './organism-detail/custom-editor/custom-editor.component';
+import {AddOrganismModalComponent} from './add-organism/add-organism-modal.component';
 
 
 
@@ -25,4 +26,5 @@ export const routedComponents = [
   OrganismDetailComponent,
   AddToleranceModalComponent,
   CustomEditorComponent,
+  AddOrganismModalComponent,
 ];

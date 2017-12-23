@@ -13,6 +13,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CustomEditorComponent} from './organism-detail/custom-editor/custom-editor.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {OrganismsComponent} from './organisms.component';
+import {AddOrganismModalComponent} from "./add-organism/add-organism-modal.component";
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import {OrganismsComponent} from './organisms.component';
     ConfirmModalComponent,
     AddToleranceModalComponent,
     CustomEditorComponent,
+    AddOrganismModalComponent
   ],
 })
 export class OrganismsModule {

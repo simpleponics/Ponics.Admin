@@ -9,6 +9,7 @@
         (click)="addTolerance()"
         *ngIf="addTolerancesCommandsKeys.length > 0"
       >Add Tolerance</li>
+      <li class="dropdown-item" (click)="newOrganism()">New Organism</li>
       <li class="dropdown-item" (click)="deleteOrganism()">Delete Organism</li>
     </ul>
   </div>
@@ -17,7 +18,10 @@
     type="text"
     class="form-control"
     [(ngModel)]="selectedOrganism.name"
-    (change)="onNameChange()" [ngBusy]="[onNameChangeBusy]">
+    (change)="onNameChange()"
+    [ngBusy]="[onNameChangeBusy]"
+    *ngIf="selectedOrganism != null"
+  >
 </div>
 <div class="row no-gutters">
   <div class="col-md-2">

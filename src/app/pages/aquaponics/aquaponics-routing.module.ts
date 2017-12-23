@@ -33,9 +33,6 @@ const routes: Routes = [{
   exports: [RouterModule],
 })
 export class AquaponicsRoutingModule {
-  constructor() {
-    console.log('AquaponicsRoutingModule');
-  }
 }
 
 export const routedComponents = [

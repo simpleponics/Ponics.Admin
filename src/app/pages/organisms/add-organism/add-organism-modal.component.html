@@ -1,0 +1,29 @@
+<form [formGroup]="addOrganismForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <span>Organism</span>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">Organism Name</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Organism Name"
+          formControlName="organismName"
+        >
+        <span class="help-block invalid-feedback" *ngIf="!addOrganismForm.valid && addOrganismForm.touched">
+          You must enter a name for the Organism;
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-md btn-primary" type="submit">Add Organism</button>
+  </div>
+</form>
