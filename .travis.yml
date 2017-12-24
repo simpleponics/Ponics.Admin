@@ -6,12 +6,12 @@ before_script:
 script:
   - ng build --prod
 before_deploy:
-  - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}.tar.gz ${TRAVIS_BUILD_DIR}/dist
+  - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}.tar.gz -C ${TRAVIS_BUILD_DIR}/dist
 deploy:
   provider: releases
   api_key:
     secure: ZdON8Z70DhXyImEkSn/PCCRGvep8H5eBkcGdyt4m0NKbLjt+JZG8QA/wI5w15PTfeNIf84aB/Xge0os7ceXHMGKKT98fQz4ronZ6Mmzx4Aau5ctB7lvGYaOwBUA/e+BGeiuxVhXRHHAVpIx3HPlFLuCjM42LDAU8co3HRWo9mVuoGI8YBZQMz8hZTi80EG79NGyeZ4/YfCylnyI4QWZEsPJMEk0g2aLVmvsEivbiLRuIBGywvI6Oo1i3fO20fXUuMm12qThXtFFdb2N14xLuyaKwAI3/tWwT/mgI0L/mpnFYzbUmeDryadC3c1z95omu7NF0J32tpjnz9USRAQztj09caOTzYgrorDEJ2fRUw0QgqATbkgnN86NBLHdPQbxi/64opcxCUcxjOFh9OIwMovQm5vsRl7JwKejg7/xWWAT3OQVUW+hXOB6EQ9spqxuIgwzo8wlBodMvfiYqnshqPscBtU2cODWVIqKz6vSsbMS+5Nvmzyn4REC80iuVNqwX49acl50eXbgvnYUv4rN32W51ZsEuKzbinMqdIIgySkr8S8fmJ5HtvQ176IjissWM1OjKTHllY33UAJ1COck6zob2PbLzbfsem2KFG2gDQJoE9MD5tJDlBG15+iisyKULPpzlsPsDjRztGPnv217ZGn4QZBvJZwmMBTiO95LazZE=
-  file: ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}.tar.gz
+  file: ${TRAVIS_BUILD_DIR}${REPO}.tar.gz
   on:
     repo: simpleponics/Ponics.Admin
     tags: true
