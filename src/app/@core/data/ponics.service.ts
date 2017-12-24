@@ -17,7 +17,7 @@ export class PonicsService {
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
 
-  client = new JsonServiceClient(environment.PonicsApi);
+  client = new JsonServiceClient(environment.ponicsApi);
 
   getAquaponicSystems() {
     const query = new GetAllSystems();

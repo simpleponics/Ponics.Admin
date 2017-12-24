@@ -15,7 +15,7 @@ import {OrganismsModule} from '../organisms/organisms.module';
     ThemeModule,
     Ng2SmartTableModule,
     AquaponicsRoutingModule,
-    BusyModule.forRoot(environment.BusyConfig),
+    BusyModule.forRoot(environment.busyConfig),
     OrganismsModule,
   ],
   declarations: [

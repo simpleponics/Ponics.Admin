@@ -19,7 +19,8 @@ export class OrganismService {
   toleranceAdded  = new EventEmitter<Tolerance>();
   toleranceUpdated = new EventEmitter<Tolerance>();
   toleranceDeleted = new EventEmitter<Tolerance>();
-  client = new JsonServiceClient(environment.PonicsApi);
+
+  client = new JsonServiceClient(environment.ponicsApi);
 
   getOrganism(id: string)  {
     const query = new GetOrganism();
