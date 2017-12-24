@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/simpleponics/Ponics.Admin.svg?branch=master)](https://travis-ci.org/simpleponics/Ponics.Admin)
 
 ##Attributions
 
