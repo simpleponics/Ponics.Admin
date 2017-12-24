@@ -6,7 +6,7 @@ before_script:
 script:
   - ng build --prod
 before_deploy:
-  - cd ${TRAVIS_BUILD_DIR}/publish
+  - cd ${TRAVIS_BUILD_DIR}/dist
   - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}.tar.gz *
 deploy:
   provider: releases
