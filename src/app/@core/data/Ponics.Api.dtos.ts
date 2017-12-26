@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-12-22 14:16:23
+Date: 2017-12-26 20:01:43
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -91,6 +91,42 @@ export class Component
 
     // @ApiMember(ExcludeInSchema=true)
     organisms: string[];
+}
+
+export class LevelReading
+{
+    /**
+    * The of a System
+    */
+    // @ApiMember(DataType="string", Description="The of a System", IsRequired=true, Name="DateTime", ParameterType="body")
+    dateTime: string;
+
+    /**
+    * The the type of the reading
+    */
+    // @ApiMember(DataType="string", Description="The the type of the reading", IsRequired=true, Name="Type", ParameterType="body")
+    type: string;
+
+    /**
+    * The value of the reading
+    */
+    // @ApiMember(DataType="number", Description="The value of the reading", Format="double", IsRequired=true, Name="Value", ParameterType="body")
+    value: number;
+}
+
+export class PonicsSystem
+{
+    // @ApiMember(ExcludeInSchema=true)
+    id: string;
+
+    /**
+    * The name of the aquaponic system
+    */
+    // @ApiMember(DataType="string", Description="The name of the aquaponic system", IsRequired=true, Name="Name", ParameterType="body")
+    name: string;
+
+    // @ApiMember(ExcludeInSchema=true)
+    levelReadings: LevelReading[];
 }
 
 export class AnalyseToleranceQuery<TLevelAnalysis, TTolerance> extends Query<TLevelAnalysis>
@@ -201,22 +237,13 @@ export class Organism
     tolerances: Tolerance[];
 }
 
-export class AquaponicSystem
+export class AquaponicSystem extends PonicsSystem
 {
-    // @ApiMember(ExcludeInSchema=true)
-    id: string;
-
     /**
     * Indicates if the system is closed
     */
     // @ApiMember(DataType="boolean", Description="Indicates if the system is closed", Name="Closed", ParameterType="body")
     closed: boolean;
-
-    /**
-    * The name of the aquaponic system
-    */
-    // @ApiMember(DataType="string", Description="The name of the aquaponic system", IsRequired=true, Name="Name", ParameterType="body")
-    name: string;
 
     // @ApiMember(ExcludeInSchema=true)
     components: Component[];
@@ -299,7 +326,7 @@ export class GetConnections extends Query<ComponentConnection> implements IRetur
 /**
 * Returns a list of all Aquaponic Systems
 */
-// @Route("/systems", "GET")
+// @Route("/aquaponic/systems", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
 export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Array<AquaponicSystem>>
 {
@@ -310,7 +337,7 @@ export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Arr
 /**
 * Get an Aquaponic Systems by Id
 */
-// @Route("/systems/{id}", "GET")
+// @Route("/aquaponic/systems/{id}", "GET")
 // @Api(Description="Get an Aquaponic Systems by Id")
 export class GetSystem extends Query<AquaponicSystem> implements IReturn<AquaponicSystem>
 {
@@ -472,13 +499,31 @@ export class ConnectComponents extends Command implements IReturnVoid, IDataComm
 }
 
 /**
+* Adds a level reading for system
+*/
+// @Route("/systems/{SystemId}/reading", "POST")
+// @Api(Description="Adds a level reading for system")
+export class AddLevelReading extends Command implements IReturnVoid, IDataCommand
+{
+    /**
+    * The id of a System
+    */
+    // @ApiMember(DataType="string", Description="The id of a System", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    levelReadings: LevelReading[];
+    createResponse() {}
+    getTypeName() { return "AddLevelReading"; }
+}
+
+/**
 * Add an Aquaponic System
 */
-// @Route("/systems", "POST")
+// @Route("/aquaponic/systems", "POST")
 // @Api(Description="Add an Aquaponic System")
 export class AddSystem extends Command implements IReturnVoid, IDataCommand
 {
-    system: AquaponicSystem;
+    system: PonicsSystem;
     createResponse() {}
     getTypeName() { return "AddSystem"; }
 }
@@ -486,7 +531,7 @@ export class AddSystem extends Command implements IReturnVoid, IDataCommand
 /**
 * Add an Aquaponic System
 */
-// @Route("/systems/{id}", "DELETE")
+// @Route("/aquaponic/systems/{id}", "DELETE")
 // @Api(Description="Add an Aquaponic System")
 export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
 {
@@ -502,7 +547,7 @@ export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
 /**
 * Update an Aquaponic Systems
 */
-// @Route("/systems/{id}", "PUT")
+// @Route("/aquaponic/systems/{id}", "PUT")
 // @Api(Description="Update an Aquaponic Systems")
 export class UpdateSystem extends Command implements IReturnVoid, IDataCommand
 {

@@ -9,8 +9,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddComponentModalComponent} from './add-component/add-component-modal.component';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 
-
-
 @Component({
   selector: 'ngx-aquaponic-system',
   templateUrl: './aquaponic-system.component.html',
@@ -43,7 +41,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   addLevelsModal() {
-    this.modalService.open(AddLevelsModalComponent, {size: 'lg', container: 'nb-layout'});
+    const modal = this.modalService.open(AddLevelsModalComponent, {size: 'lg', container: 'nb-layout'});
+    const addLevelsModalComponent = <AddLevelsModalComponent>modal.componentInstance;
+    addLevelsModalComponent.systemId = this.aquaponicSystem.id;
   }
 
   addComponentModal()  {

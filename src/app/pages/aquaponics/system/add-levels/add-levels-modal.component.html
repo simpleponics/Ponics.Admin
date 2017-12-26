@@ -14,7 +14,7 @@
                  class="form-control"
                  placeholder="yyyy-mm-dd"
                  name="dp"
-                 [(ngModel)]="date"
+                 [(ngModel)]="dateTime"
                  ngbDatepicker
                  formControlName="datePicker"
                  #d="ngbDatepicker">
@@ -34,7 +34,8 @@
       <label for="timePicker" class="col-sm-3 col-form-label">Time</label>
       <div class="col-sm-9">
         <ngb-timepicker
-          #tp [(ngModel)]="time"
+          #tp
+          [(ngModel)]="dateTime"
           id="timePicker"
           [meridian]="true"
           [spinners]="false"

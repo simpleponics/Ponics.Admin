@@ -1,15 +1,16 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddComponent,
+  AddComponent, AddLevelReading,
   AddSystem,
   AquaponicSystem,
   Component,
   GetAllSystems,
-  GetSystem,
+  GetSystem, LevelReading,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
+import {ZonedDateTime} from "./ZonedDateTime";
 
 @Injectable()
 export class PonicsService {
@@ -62,14 +63,17 @@ export class PonicsService {
     return promise;
   }
 
-
+  addLevelReadings(systemId: string, levelReadings: LevelReading[] ) {
+    const command = new AddLevelReading();
+    command.systemId = systemId;
+    command.levelReadings = levelReadings;
+    this.client.post(command);
+  }
 
   deleteSystem(systemId: string) {
   }
 
   deleteOrganism(organism: string) {
   }
-
-
 }
 

@@ -1,13 +1,14 @@
 <div class="form-group row">
-  <label for="levelValue" class="col-sm-3">{{levelName}}</label>
+  <label for="levelValue" class="col-sm-3">{{type}}</label>
   <div class="col-sm-9">
     <div class="input-group">
       <input
         id="levelValue"
         type="number"
-        placeholder="{{levelName}} Value"
+        placeholder="{{type}} Value"
         class="form-control"
         [formControl]="control"
+        [(ngModel)]="levelReading.value"
       />
       <span class="input-group-btn">
         <button class="btn btn-danger" (click)="deleteValue()">
@@ -19,7 +20,7 @@
       class="help-block invalid-feedback"
       *ngIf="!control.valid && control.touched"
     >
-        {{levelName}} {{validationErrorMessage}}
+        {{type}} {{validationErrorMessage}}
       </span>
   </div>
 </div>
