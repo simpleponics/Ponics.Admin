@@ -1,58 +1,83 @@
-<div class="modal-header">
-  <span>Level Readings</span>
-  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <div class="form-group row">
-    <label for="dp" class="col-sm-3 col-form-label">Date</label>
-    <div class="col-sm-9">
-      <div class="input-group">
-        <input id="dp"
-               class="form-control"
-               placeholder="yyyy-mm-dd"
-               name="dp"
-               [(ngModel)]="date"
-               ngbDatepicker
-               #d="ngbDatepicker">
-        <button class="input-group-addon" (click)="d.toggle()" type="button">
-          <i class="fa fa-calendar" aria-hidden="true"></i>
-        </button>
+<form [formGroup]="levelReadingsForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <span>Level Readings</span>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label for="datePicker" class="col-sm-3 col-form-label">Date</label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input id="datePicker"
+                 class="form-control"
+                 placeholder="yyyy-mm-dd"
+                 name="dp"
+                 [(ngModel)]="date"
+                 ngbDatepicker
+                 formControlName="datePicker"
+                 #d="ngbDatepicker">
+          <button class="input-group-addon" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span
+          class="help-block invalid-feedback"
+          *ngIf="!levelReadingsForm.get('datePicker').valid && levelReadingsForm.get('datePicker').touched"
+        >
+          a date is required
+        </span>
       </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="time" class="col-sm-3 col-form-label">Time</label>
-    <div class="col-sm-9">
-      <ngb-timepicker #tp [(ngModel)]="time" id="time" [meridian]="true" [spinners]="false"></ngb-timepicker>
+    <div class="form-group row">
+      <label for="timePicker" class="col-sm-3 col-form-label">Time</label>
+      <div class="col-sm-9">
+        <ngb-timepicker
+          #tp [(ngModel)]="time"
+          id="timePicker"
+          [meridian]="true"
+          [spinners]="false"
+          [formControl]="timePicker"
+        ></ngb-timepicker>
+        <span
+          class="help-block invalid-feedback"
+          *ngIf="!levelReadingsForm.get('timePicker').valid && levelReadingsForm.get('timePicker').touched"
+        >
+          a time is required
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <nb-card class="col-sm-12">
+        <nb-card-header>
+          <span *ngIf="levelQueriesKeys.length === 0" >Levels</span>
+          <div class="dropdown" ngbDropdown *ngIf="levelQueriesKeys.length > 0">
+            <button class="btn btn-primary" type="button" ngbDropdownToggle>
+              Select levels
+            </button>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li
+                class="dropdown-item"
+                *ngFor="let levelName of levelQueriesKeys"
+                (click)="addLevelValueInput(levelName)"
+              >{{levelName}}</li>
+            </ul>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <ng-template #dynamicInsert></ng-template>
+        </nb-card-body>
+      </nb-card>
     </div>
   </div>
 
-  <div class="form-group row">
-    <nb-card class="col-sm-12">
-      <nb-card-header>
-        <span *ngIf="levelQueriesKeys.length === 0" >Levels</span>
-        <div class="dropdown" ngbDropdown *ngIf="levelQueriesKeys.length > 0">
-          <button class="btn btn-primary" type="button" ngbDropdownToggle>
-            Select levels
-          </button>
-          <ul class="dropdown-menu" ngbDropdownMenu>
-            <li
-              class="dropdown-item"
-              *ngFor="let levelName of levelQueriesKeys"
-              (click)="addLevelValueInput(levelName)"
-            >{{levelName}}</li>
-          </ul>
-        </div>
-      </nb-card-header>
-      <nb-card-body>
-        <ng-template #dynamicInsert></ng-template>
-      </nb-card-body>
-    </nb-card>
+  <div class="modal-footer">
+    <button
+      class="btn btn-md btn-primary"
+      type="submit"
+      [disabled]="!levelReadingsForm.valid"
+    >Add Level Readings</button>
   </div>
-</div>
-
-<div class="modal-footer">
-  <button class="btn btn-md btn-primary" (click)="closeModal()">Add Level Readings</button>
-</div>
+</form>

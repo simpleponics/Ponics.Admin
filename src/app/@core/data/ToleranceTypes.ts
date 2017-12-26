@@ -4,5 +4,5 @@ export enum ToleranceTypes {
   Nitrate = 'Nitrate',
   Nitrite = 'Nitrite',
   Ammonia = 'Ammonia',
-  Ph = 'pH',
+  pH = 'pH',
 }

@@ -32,7 +32,7 @@ export const levelQueries: Map<ToleranceTypes, any> = new Map([
   [ToleranceTypes.Nitrate, new AnalyseToleranceNitrate()],
   [ToleranceTypes.Nitrite, new AnalyseToleranceNitrite()],
   [ToleranceTypes.Ammonia, new AnalyseToleranceAmmonia],
-  [ToleranceTypes.Ph, new AnalyseTolerancePh()],
+  [ToleranceTypes.pH, new AnalyseTolerancePh()],
 ]);
 
 export const toleranceCommands: Map<ToleranceTypes, {delete: any, update: any, add: any}> = new Map([
@@ -72,7 +72,7 @@ export const toleranceCommands: Map<ToleranceTypes, {delete: any, update: any, a
     delete: new DeleteAmmoniaTolerance(),
   }],
 
-  [ToleranceTypes.Ph, {
+  [ToleranceTypes.pH, {
     add: new AddPhTolerance(),
     update: new UpdatePhTolerance(),
     delete: new DeletePhTolerance(),
@@ -85,7 +85,7 @@ export const tolerances: Map<ToleranceTypes, any> = new Map([
   [ToleranceTypes.Nitrate, new NitrateTolerance()],
   [ToleranceTypes.Nitrite, new NitriteTolerance()],
   [ToleranceTypes.Ammonia, new AmmoniaTolerance()],
-  [ToleranceTypes.Ph, new PhTolerance()],
+  [ToleranceTypes.pH, new PhTolerance()],
 ]);
 
 export const tolerancesValidators: Map<
@@ -97,7 +97,7 @@ export const tolerancesValidators: Map<
         {} | ValidationErrors
       ),
   }> = new Map([
-  [ToleranceTypes.Ph, {
+  [ToleranceTypes.pH, {
     validationErrorMessage: 'is required to be between 0 and 14.',
     validator: pHValidator,
   }],
