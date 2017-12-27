@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-12-26 20:01:43
+Date: 2017-12-27 15:29:51
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -28,6 +28,27 @@ export interface IReturnVoid
 
 export class Query<TResult>
 {
+}
+
+export class LevelReading
+{
+    /**
+    * The of a System
+    */
+    // @ApiMember(DataType="string", Description="The of a System", IsRequired=true, Name="DateTime", ParameterType="body")
+    dateTime: string;
+
+    /**
+    * The the type of the reading
+    */
+    // @ApiMember(DataType="string", Description="The the type of the reading", IsRequired=true, Name="Type", ParameterType="body")
+    type: string;
+
+    /**
+    * The value of the reading
+    */
+    // @ApiMember(DataType="number", Description="The value of the reading", Format="double", IsRequired=true, Name="Value", ParameterType="body")
+    value: number;
 }
 
 export type Scale = "Ph" | "Ppm" | "None";
@@ -93,27 +114,6 @@ export class Component
     organisms: string[];
 }
 
-export class LevelReading
-{
-    /**
-    * The of a System
-    */
-    // @ApiMember(DataType="string", Description="The of a System", IsRequired=true, Name="DateTime", ParameterType="body")
-    dateTime: string;
-
-    /**
-    * The the type of the reading
-    */
-    // @ApiMember(DataType="string", Description="The the type of the reading", IsRequired=true, Name="Type", ParameterType="body")
-    type: string;
-
-    /**
-    * The value of the reading
-    */
-    // @ApiMember(DataType="number", Description="The value of the reading", Format="double", IsRequired=true, Name="Value", ParameterType="body")
-    value: number;
-}
-
 export class PonicsSystem
 {
     // @ApiMember(ExcludeInSchema=true)
@@ -124,9 +124,6 @@ export class PonicsSystem
     */
     // @ApiMember(DataType="string", Description="The name of the aquaponic system", IsRequired=true, Name="Name", ParameterType="body")
     name: string;
-
-    // @ApiMember(ExcludeInSchema=true)
-    levelReadings: LevelReading[];
 }
 
 export class AnalyseToleranceQuery<TLevelAnalysis, TTolerance> extends Query<TLevelAnalysis>
@@ -277,6 +274,28 @@ export class IronToleranceAnalysis extends ToleranceAnalysis<IronTolerance>
 
 export class AmmoniaToleranceAnalysis extends ToleranceAnalysis<AmmoniaTolerance>
 {
+}
+
+/**
+* Gets level readings for system
+*/
+// @Route("/systems/{SystemId}/reading/{Type}", "GET")
+// @Api(Description="Gets level readings for system")
+export class GetSystemLevels extends Query<LevelReading> implements IReturn<Array<LevelReading>>
+{
+    /**
+    * The Id of a system
+    */
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    /**
+    * The type of level reading to get
+    */
+    // @ApiMember(DataType="string", Description="The type of level reading to get", IsRequired=true, Name="Type", ParameterType="path")
+    type: string;
+    createResponse() { return new Array<LevelReading>(); }
+    getTypeName() { return "GetSystemLevels"; }
 }
 
 /**
@@ -499,10 +518,10 @@ export class ConnectComponents extends Command implements IReturnVoid, IDataComm
 }
 
 /**
-* Adds a level reading for system
+* Adds a level readings for system
 */
 // @Route("/systems/{SystemId}/reading", "POST")
-// @Api(Description="Adds a level reading for system")
+// @Api(Description="Adds a level readings for system")
 export class AddLevelReading extends Command implements IReturnVoid, IDataCommand
 {
     /**

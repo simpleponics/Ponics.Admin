@@ -22,74 +22,74 @@ import {
   UpdatePhTolerance,
   UpdateSalinityTolerance,
 } from './Ponics.Api.dtos';
-import {ToleranceTypes} from './ToleranceTypes';
+import {LevelTypes} from './LevelTypes';
 import {pHValidator} from '../validators/phValidator';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 
-export const levelQueries: Map<ToleranceTypes, any> = new Map([
-  [ToleranceTypes.Salinity, new AnalyseToleranceSalinity()],
-  [ToleranceTypes.Iron, new AnalyseToleranceIron()],
-  [ToleranceTypes.Nitrate, new AnalyseToleranceNitrate()],
-  [ToleranceTypes.Nitrite, new AnalyseToleranceNitrite()],
-  [ToleranceTypes.Ammonia, new AnalyseToleranceAmmonia],
-  [ToleranceTypes.pH, new AnalyseTolerancePh()],
+export const levelQueries: Map<LevelTypes, any> = new Map([
+  [LevelTypes.Salinity, new AnalyseToleranceSalinity()],
+  [LevelTypes.Iron, new AnalyseToleranceIron()],
+  [LevelTypes.Nitrate, new AnalyseToleranceNitrate()],
+  [LevelTypes.Nitrite, new AnalyseToleranceNitrite()],
+  [LevelTypes.Ammonia, new AnalyseToleranceAmmonia],
+  [LevelTypes.pH, new AnalyseTolerancePh()],
 ]);
 
-export const toleranceCommands: Map<ToleranceTypes, {delete: any, update: any, add: any}> = new Map([
-  [ToleranceTypes.Salinity, {
+export const toleranceCommands: Map<LevelTypes, {delete: any, update: any, add: any}> = new Map([
+  [LevelTypes.Salinity, {
     add: new AddSalinityTolerance(),
     update: new UpdateSalinityTolerance(),
     delete: new DeleteSalinityTolerance(),
   }],
 
-  [ToleranceTypes.Iron, {
+  [LevelTypes.Iron, {
     add: new AddIronTolerance(),
     update: new UpdateIronTolerance(),
     delete: new DeleteIronTolerance(),
   }],
 
-  [ToleranceTypes.Nitrate, {
+  [LevelTypes.Nitrate, {
     add: new AddNitrateTolerance(),
     update: new UpdateNitrateTolerance(),
     delete: new DeleteNitrateTolerance(),
   }],
 
-  [ToleranceTypes.Nitrite, {
+  [LevelTypes.Nitrite, {
     add: new AddNitriteTolerance(),
     update: new UpdateNitriteTolerance(),
     delete: new DeleteNitriteTolerance(),
   }],
 
-  [ToleranceTypes.Nitrite, {
+  [LevelTypes.Nitrite, {
     add: new AddNitriteTolerance(),
     update: new UpdateNitriteTolerance(),
     delete: new DeleteNitriteTolerance(),
   }],
 
-  [ToleranceTypes.Ammonia, {
+  [LevelTypes.Ammonia, {
     add: new AddAmmoniaTolerance(),
     update: new UpdateAmmoniaTolerance(),
     delete: new DeleteAmmoniaTolerance(),
   }],
 
-  [ToleranceTypes.pH, {
+  [LevelTypes.pH, {
     add: new AddPhTolerance(),
     update: new UpdatePhTolerance(),
     delete: new DeletePhTolerance(),
   }],
 ]);
 
-export const tolerances: Map<ToleranceTypes, any> = new Map([
-  [ToleranceTypes.Salinity, new SalinityTolerance()],
-  [ToleranceTypes.Iron, new IronTolerance()],
-  [ToleranceTypes.Nitrate, new NitrateTolerance()],
-  [ToleranceTypes.Nitrite, new NitriteTolerance()],
-  [ToleranceTypes.Ammonia, new AmmoniaTolerance()],
-  [ToleranceTypes.pH, new PhTolerance()],
+export const tolerances: Map<LevelTypes, any> = new Map([
+  [LevelTypes.Salinity, new SalinityTolerance()],
+  [LevelTypes.Iron, new IronTolerance()],
+  [LevelTypes.Nitrate, new NitrateTolerance()],
+  [LevelTypes.Nitrite, new NitriteTolerance()],
+  [LevelTypes.Ammonia, new AmmoniaTolerance()],
+  [LevelTypes.pH, new PhTolerance()],
 ]);
 
 export const tolerancesValidators: Map<
-  ToleranceTypes,
+  LevelTypes,
   {
     validationErrorMessage: string,
     validator: (formControlName: string) => (
@@ -97,7 +97,7 @@ export const tolerancesValidators: Map<
         {} | ValidationErrors
       ),
   }> = new Map([
-  [ToleranceTypes.pH, {
+  [LevelTypes.pH, {
     validationErrorMessage: 'is required to be between 0 and 14.',
     validator: pHValidator,
   }],

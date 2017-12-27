@@ -1,4 +1,4 @@
-export enum ToleranceTypes {
+export enum LevelTypes {
   Salinity = 'Salinity',
   Iron = 'Iron',
   Nitrate = 'Nitrate',

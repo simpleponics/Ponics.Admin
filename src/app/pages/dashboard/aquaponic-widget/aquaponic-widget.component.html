@@ -1,0 +1,33 @@
+<nb-card>
+  <nb-card-header>
+    <div class="input-group">
+      <div class="dropdown input-group-btn" ngbDropdown>
+        <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
+          Action
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
+          <li class="dropdown-item" (click)="addComponentModal()">Edit Component</li>
+        </ul>
+      </div>
+      <span class="form-control">{{system.name}}</span>
+    </div>
+
+
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-charts-line-chart
+      [scheme]="colorScheme"
+      [results]="multi"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel">
+    </ngx-charts-line-chart>
+  </nb-card-body>
+</nb-card>
+
+

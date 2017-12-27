@@ -5,7 +5,7 @@ import {
   AquaponicSystem,
   Component,
   GetAllSystems,
-  GetSystem, LevelReading,
+  GetSystem, GetSystemLevels, LevelReading,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
@@ -17,6 +17,7 @@ export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
+  levelReadingsAdded= new EventEmitter<void>();
 
   client = new JsonServiceClient(environment.ponicsApi);
 
@@ -67,7 +68,19 @@ export class PonicsService {
     const command = new AddLevelReading();
     command.systemId = systemId;
     command.levelReadings = levelReadings;
-    this.client.post(command);
+    const promise = this.client.post(command);
+    promise.then(r =>
+      this.levelReadingsAdded.emit(),
+    );
+
+    return promise;
+  }
+
+  getLevelReadings(systemId: string, levelType: string  ) {
+    const query = new GetSystemLevels();
+    query.systemId = systemId;
+    query.type = levelType;
+    return this.client.get(query);
   }
 
   deleteSystem(systemId: string) {

@@ -8,7 +8,7 @@ import {ModalComponent} from '../../../../modal/modal.component';
 import {levelQueries, tolerancesValidators} from '../../../../@core/data/PonicsMaps';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrganismService} from '../../../../@core/data/organism.service';
-import {ToleranceTypes} from '../../../../@core/data/ToleranceTypes';
+import {LevelTypes} from '../../../../@core/data/LevelTypes';
 import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
 import {LevelReading} from '../../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../../@core/data/ponics.service';
@@ -67,7 +67,7 @@ export class AddLevelsModalComponent extends ModalComponent {
 
     levelValueComponent.control = levelValueControl;
 
-    const tolerance: ToleranceTypes = (ToleranceTypes)[levelName];
+    const tolerance: LevelTypes = (LevelTypes)[levelName];
     levelValueComponent.validationErrorMessage = 'is required';
     if (tolerancesValidators.has(tolerance)) {
       const tolerancesValidator = tolerancesValidators.get(tolerance);

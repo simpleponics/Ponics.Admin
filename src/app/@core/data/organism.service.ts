@@ -7,7 +7,7 @@ import {
   Tolerance,
   UpdateOrganism,
 } from './Ponics.Api.dtos';
-import {ToleranceTypes} from './ToleranceTypes';
+import {LevelTypes} from './LevelTypes';
 import {toleranceCommands, tolerances} from './PonicsMaps';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
@@ -44,7 +44,7 @@ export class OrganismService {
     return p;
   }
 
-  addTolerance(organismId: string, tolerance: any, toleranceTypes: ToleranceTypes): Promise<any>  {
+  addTolerance(organismId: string, tolerance: any, toleranceTypes: LevelTypes): Promise<any>  {
     const command = toleranceCommands.get(toleranceTypes).add;
     command.organismId = organismId;
     command.tolerance = tolerance;
@@ -82,18 +82,18 @@ export class OrganismService {
     return p;
   }
 
-  findToleranceTypeKeyFromToleranceObject(tolerance: any): ToleranceTypes {
+  findToleranceTypeKeyFromToleranceObject(tolerance: any): LevelTypes {
     return this.findToleranceTypeKeyFromToleranceObjectType(tolerance.type);
   }
 
-  findToleranceTypeKeyFromToleranceObjectType(tolerance: string): ToleranceTypes {
+  findToleranceTypeKeyFromToleranceObjectType(tolerance: string): LevelTypes {
     return Array.from(tolerances.keys()).find(k => tolerances.get(k).constructor.name === tolerance);
   }
 
   getMissingTolerances(organism: Organism): string[] {
     let missingTolerances: string[] = Array.from(toleranceCommands.keys());
     tolerances.forEach(
-      (value: any, key: ToleranceTypes) => {
+      (value: any, key: LevelTypes) => {
         if (organism.tolerances.some(t => t.type === value.constructor.name)) {
           missingTolerances = missingTolerances.filter( item => item !== key);
         }
