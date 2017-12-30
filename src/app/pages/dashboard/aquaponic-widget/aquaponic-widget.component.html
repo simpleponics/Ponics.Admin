@@ -12,6 +12,14 @@
       </div>
       <span class="form-control">{{system.name}}</span>
     </div>
+    <div class="input-group">
+    <select class="form-control">
+      <option *ngFor="let o of systemOrganisms">{{o.name}}</option>
+    </select>
+      <select class="form-control">
+        <option *ngFor="let lt of levelTypeKeys()">{{lt}}</option>
+      </select>
+    </div>
 
 
   </nb-card-header>
@@ -21,11 +29,11 @@
       [results]="multi"
       [xAxis]="showXAxis"
       [yAxis]="showYAxis"
-      [legend]="showLegend"
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel">
+      [yAxisLabel]="yAxisLabel"
+      [xAxisTickFormatting]="xAxisTickFormatting">
     </ngx-charts-line-chart>
   </nb-card-body>
 </nb-card>

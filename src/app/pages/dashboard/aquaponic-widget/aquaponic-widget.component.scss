@@ -4,16 +4,10 @@
   nb-card-body {
     display: block;
     width: 100%;
-    height: nb-theme(card-height-medium);
+    overflow: auto;
 
     /deep/ {
-      .pie-label {
-        fill: nb-theme(color-fg-heading);
-      }
 
-      .grid-line-path {
-        stroke: nb-theme(separator);
-      }
 
       text {
         fill: nb-theme(color-fg-heading);

@@ -5,7 +5,7 @@ import {
   AquaponicSystem,
   Component,
   GetAllSystems,
-  GetSystem, GetSystemLevels, LevelReading,
+  GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
@@ -28,6 +28,12 @@ export class PonicsService {
 
   getAquaponicSystem(id: string) {
     const query = new GetSystem();
+    query.id = id;
+    return this.client.get(query);
+  }
+
+  getAquaponicSystemOrganisms(id: string) {
+    const query = new GetSystemOrganisms();
     query.id = id;
     return this.client.get(query);
   }

@@ -37,7 +37,7 @@ export class AddLevelsModalComponent extends ModalComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     activeModal: NgbActiveModal) {
     super(activeModal);
-    this.dateTime = new ZonedDateTime(new Date());
+    this.dateTime = ZonedDateTime.fromDate(new Date());
 
     this.levelReadingsForm  = new FormGroup({
       'datePicker': new FormControl(

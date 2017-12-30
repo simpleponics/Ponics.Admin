@@ -26,16 +26,18 @@ import {LevelTypes} from './LevelTypes';
 import {pHValidator} from '../validators/phValidator';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 
-export const levelQueries: Map<LevelTypes, any> = new Map([
+export const levelQueries: Map<LevelTypes, any> =
+  new Map([
   [LevelTypes.Salinity, new AnalyseToleranceSalinity()],
   [LevelTypes.Iron, new AnalyseToleranceIron()],
   [LevelTypes.Nitrate, new AnalyseToleranceNitrate()],
   [LevelTypes.Nitrite, new AnalyseToleranceNitrite()],
-  [LevelTypes.Ammonia, new AnalyseToleranceAmmonia],
+  [LevelTypes.Ammonia, new AnalyseToleranceAmmonia()],
   [LevelTypes.pH, new AnalyseTolerancePh()],
 ]);
 
-export const toleranceCommands: Map<LevelTypes, {delete: any, update: any, add: any}> = new Map([
+export const toleranceCommands: Map<LevelTypes, {delete: any, update: any, add: any}> =
+  new Map([
   [LevelTypes.Salinity, {
     add: new AddSalinityTolerance(),
     update: new UpdateSalinityTolerance(),
@@ -79,7 +81,8 @@ export const toleranceCommands: Map<LevelTypes, {delete: any, update: any, add: 
   }],
 ]);
 
-export const tolerances: Map<LevelTypes, any> = new Map([
+export const tolerances: Map<LevelTypes, any> =
+  new Map([
   [LevelTypes.Salinity, new SalinityTolerance()],
   [LevelTypes.Iron, new IronTolerance()],
   [LevelTypes.Nitrate, new NitrateTolerance()],
@@ -88,21 +91,25 @@ export const tolerances: Map<LevelTypes, any> = new Map([
   [LevelTypes.pH, new PhTolerance()],
 ]);
 
-export const tolerancesValidators: Map<
-  LevelTypes,
-  {
+export const tolerancesValidators: Map<LevelTypes, {
     validationErrorMessage: string,
     validator: (formControlName: string) => (
       control: AbstractControl) => (
         {} | ValidationErrors
       ),
-  }> = new Map([
+  }> =
+  new Map([
   [LevelTypes.pH, {
     validationErrorMessage: 'is required to be between 0 and 14.',
     validator: pHValidator,
   }],
 ]);
 
-
-
-
+export const scale = new Map([
+  [LevelTypes.Salinity, 'ppm'],
+  [LevelTypes.Iron, 'ppm'],
+  [LevelTypes.Nitrate, 'ppm'],
+  [LevelTypes.Nitrite, 'ppm'],
+  [LevelTypes.Ammonia, 'ppm'],
+  [LevelTypes.pH, 'pH'],
+]);

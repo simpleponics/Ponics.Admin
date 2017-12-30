@@ -1,11 +1,13 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
+import {AquaponicSystem, Organism} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {NbThemeService} from '@nebular/theme';
 import {AddLevelsModalComponent} from '../../aquaponics/system/add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
+import {scale} from '../../../@core/data/PonicsMaps';
+import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
 
 @Component({
   selector: 'ngx-aquaponic-widget',
@@ -15,19 +17,22 @@ import {LevelTypes} from '../../../@core/data/LevelTypes';
 export class AquaponicWidgetComponent  implements OnDestroy  {
   system: AquaponicSystem = new AquaponicSystem();
   @Input() systemId: string = '47236a2e40f047a2923034c610c5e444';
-  options: any = {};
+  @Input() levelType: LevelTypes = LevelTypes.pH;
+  systemOrganisms: Organism[] = [];
+
+  levelTypeKeys(): Array<string> {
+    const keys = Object.keys(LevelTypes);
+    return keys.slice(keys.length / 2);
+  }
 
   multi = [];
-  // options
-  showLegend = true;
   showXAxis = true;
   showYAxis = true;
   showXAxisLabel = true;
   xAxisLabel = 'Date';
   showYAxisLabel = true;
-  yAxisLabel = 'ppm';
+  yAxisLabel: string;
   colorScheme: any;
-
   themeSubscription: any;
 
   constructor(
@@ -36,13 +41,18 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
     private modalService: NgbModal,
     private router: Router) {
 
+    this.yAxisLabel = scale.get(this.levelType);
 
     this.ponicsService.getAquaponicSystem(this.systemId).then(
       s => {
         this.system = s;
         this.configureSeries();
-      },
-    );
+      });
+
+    this.ponicsService.getAquaponicSystemOrganisms(this.systemId).then(
+      organisms => {
+        this.systemOrganisms = organisms;
+      });
 
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
       const colors: any = config.variables;
@@ -53,29 +63,22 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   }
 
   configureSeries() {
-    for (const levelType in LevelTypes) {
-      if (isNaN(Number(levelType))) {
-        const series = [];
-        this.ponicsService.getLevelReadings(this.systemId, levelType).then(
-          levels => {
-            if (levels.length > 0) {
-              for (const level of levels) {
-                series.push({
-                  name: level.dateTime,
-                  value: level.value,
-                });
-              }
-              this.multi.push({
-                name: levelType,
-                series: series
-              });
-            }
-          });
-      }
-    }
-    this.multi = [...this.multi];
-    console.log(this.multi);
-
+    const series = [];
+    this.ponicsService.getLevelReadings(this.systemId, this.levelType).then(
+      levels => {
+        if (levels.length > 0) {
+          for (const level of levels) {
+            series.push({
+              name: level.dateTime,
+              value: level.value,
+            });
+          }
+          this.multi = [{
+            name: this.levelType,
+            series: series,
+          }];
+        }
+      });
   }
 
   addLevelsModal() {
@@ -88,11 +91,14 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
     this.router.navigate(['/pages/aquaponics/systems/' + this.systemId]);
   }
 
-  onSelect(event) {
-    console.log(event);
-  }
-
   ngOnDestroy(): void {
     this.themeSubscription.unsubscribe();
+  }
+
+  xAxisTickFormatting(val) {
+    const date = ZonedDateTime.fromString(val);
+    return date.day + '/' +
+      date.month + '/' +
+      date.year;
   }
 }

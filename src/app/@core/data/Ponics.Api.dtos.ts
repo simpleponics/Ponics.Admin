@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-12-27 15:29:51
+Date: 2017-12-30 17:50:15
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -367,6 +367,22 @@ export class GetSystem extends Query<AquaponicSystem> implements IReturn<Aquapon
     id: string;
     createResponse() { return new AquaponicSystem(); }
     getTypeName() { return "GetSystem"; }
+}
+
+/**
+* Get all Organisms in an Aquaponic System
+*/
+// @Route("/aquaponic/systems/{id}/organisms", "GET")
+// @Api(Description="Get all Organisms in an Aquaponic System")
+export class GetSystemOrganisms extends Query<Organism> implements IReturn<Array<Organism>>
+{
+    /**
+    * The Id of a system
+    */
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="Id", ParameterType="path")
+    id: string;
+    createResponse() { return new Array<Organism>(); }
+    getTypeName() { return "GetSystemOrganisms"; }
 }
 
 /**
