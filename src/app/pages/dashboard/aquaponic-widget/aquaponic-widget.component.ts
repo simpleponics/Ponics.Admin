@@ -44,7 +44,7 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   colors: any;
   view: any[] = [450, 400];
   autoScale = true;
-  curve = shape.curveBasis;
+  curve = shape.curveMonotoneX;
 
   constructor(
     private theme: NbThemeService,

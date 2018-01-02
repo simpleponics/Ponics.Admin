@@ -61,6 +61,9 @@ export class ZonedDateTime {
 
     zonedDateTime.date = new Date();
     zonedDateTime.date.setFullYear(zonedDateTime.year, zonedDateTime.month, zonedDateTime.day);
+    zonedDateTime.date.setSeconds(zonedDateTime.second);
+    zonedDateTime.date.setMinutes(zonedDateTime.minute);
+    zonedDateTime.date.setHours(zonedDateTime.hour);
     return zonedDateTime;
   }
 
