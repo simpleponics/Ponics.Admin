@@ -26,7 +26,7 @@ import { CapitalizePipe, PluralPipe, RoundPipe, TimingPipe } from './pipes';
 import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import {SimpleponicsLayoutComponent} from './layouts';
-import {ThemeSettingsComponent} from "./components/theme-settings/theme-settings.component";
+import {ThemeSettingsComponent} from './components/theme-settings/theme-settings.component';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 

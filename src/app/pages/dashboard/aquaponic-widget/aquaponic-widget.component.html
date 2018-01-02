@@ -1,40 +1,64 @@
 <nb-card>
   <nb-card-header>
-    <div class="input-group">
+    <div class="input-group" *ngIf="!editing">
       <div class="dropdown input-group-btn" ngbDropdown>
         <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
           Action
         </button>
         <ul class="dropdown-menu" ngbDropdownMenu>
           <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
-          <li class="dropdown-item" (click)="addComponentModal()">Edit Component</li>
+          <li class="dropdown-item" (click)="addComponentModal()">Edit System</li>
+          <li class="dropdown-item" (click)="changeChartDetails()">Change chart details</li>
         </ul>
       </div>
       <span class="form-control">{{system.name}}</span>
     </div>
-    <div class="input-group">
-    <select class="form-control">
-      <option *ngFor="let o of systemOrganisms">{{o.name}}</option>
-    </select>
-      <select class="form-control">
-        <option *ngFor="let lt of levelTypeKeys()">{{lt}}</option>
+    <div class="input-group" *ngIf="editing">
+      <span class="input-group-btn">
+        <button class="btn btn-success" (click)="changeChartDetails()">
+          Save
+        </button>
+      </span>
+      <select class="form-control" (change)="organismChange($event.target.value)">
+        <option
+          *ngFor="let o of systemOrganisms"
+          [selected]="o.id == selectedOrganism.id"
+        >
+          {{o.name}}
+        </option>
+      </select>
+      <select class="form-control" (change)="levelTypeChange($event.target.value)">
+        <option
+          *ngFor="let lt of levelTypeKeys()"
+          [selected]="lt == selectedLevelType"
+        >
+          {{lt}}
+        </option>
       </select>
     </div>
-
-
   </nb-card-header>
-  <nb-card-body>
-    <ngx-charts-line-chart
+  <nb-card-body [ngBusy]="loadChartBusy">
+    <toaster-container  [toasterconfig]="toasterConfig"></toaster-container>
+    <ngx-charts-line-chart *ngIf="data.length > 0"
       [scheme]="colorScheme"
-      [results]="multi"
+      [results]="data"
       [xAxis]="showXAxis"
       [yAxis]="showYAxis"
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxisLabel]="xAxisLabel"
       [yAxisLabel]="yAxisLabel"
-      [xAxisTickFormatting]="xAxisTickFormatting">
+      [customColors]="customColors"
+      [autoScale]="autoScale"
+      [view]="view"
+      [timeline] ="true"
+      [curve]="curve"
+
+    >
     </ngx-charts-line-chart>
+    <div class="alert alert-warning" role="alert" *ngIf="data.length === 0">
+    <strong>Warning!</strong> there have been no level readings logged for {{selectedLevelType}}.
+    </div>
   </nb-card-body>
 </nb-card>
 

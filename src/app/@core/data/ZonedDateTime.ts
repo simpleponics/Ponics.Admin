@@ -35,7 +35,7 @@ export class ZonedDateTime {
    */
   offset: number;
 
-  private date: Date;
+  date: Date;
 
   toString(): string  {
     // 2017-12-26T19:41:21 Australia/Sydney (+11)
@@ -59,6 +59,8 @@ export class ZonedDateTime {
     zonedDateTime.timezone = m[7];
     zonedDateTime.offset = Number(m[8]);
 
+    zonedDateTime.date = new Date();
+    zonedDateTime.date.setFullYear(zonedDateTime.year, zonedDateTime.month, zonedDateTime.day);
     return zonedDateTime;
   }
 

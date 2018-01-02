@@ -1,18 +1,13 @@
 @import '../../../@theme/styles/themes';
-
+button {
+  width: 108px;
+}
 @include nb-install-component() {
   nb-card-body {
-    display: block;
-    width: 100%;
-    overflow: auto;
-
     /deep/ {
-
-
       text {
         fill: nb-theme(color-fg-heading);
       }
-
       .chart-legend {
         .legend-labels {
           background: nb-theme(color-bg);

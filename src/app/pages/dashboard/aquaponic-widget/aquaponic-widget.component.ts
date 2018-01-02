@@ -1,13 +1,16 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {AquaponicSystem, Organism} from '../../../@core/data/Ponics.Api.dtos';
+import {AquaponicSystem, Organism, Tolerance} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {NbThemeService} from '@nebular/theme';
 import {AddLevelsModalComponent} from '../../aquaponics/system/add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
-import {scale} from '../../../@core/data/PonicsMaps';
+import {scale, tolerances} from '../../../@core/data/PonicsMaps';
 import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
+import {BodyOutputType, Toast, ToasterConfig, ToasterService} from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
+import * as shape from 'd3-shape';
 
 @Component({
   selector: 'ngx-aquaponic-widget',
@@ -15,17 +18,20 @@ import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
   styleUrls: ['./aquaponic-widget.component.scss'],
 })
 export class AquaponicWidgetComponent  implements OnDestroy  {
-  system: AquaponicSystem = new AquaponicSystem();
   @Input() systemId: string = '47236a2e40f047a2923034c610c5e444';
-  @Input() levelType: LevelTypes = LevelTypes.pH;
+  @Input() selectedLevelType: LevelTypes = LevelTypes.pH;
+  @Input() selectedOrganism: Organism;
+  system: AquaponicSystem = new AquaponicSystem();
   systemOrganisms: Organism[] = [];
+  editing: boolean = false;
+  toasterConfig: ToasterConfig;
+  loadChartBusy: Promise<any>;
 
   levelTypeKeys(): Array<string> {
-    const keys = Object.keys(LevelTypes);
-    return keys.slice(keys.length / 2);
+    return Object.keys(LevelTypes);
   }
 
-  multi = [];
+  data = [];
   showXAxis = true;
   showYAxis = true;
   showXAxisLabel = true;
@@ -34,50 +40,176 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   yAxisLabel: string;
   colorScheme: any;
   themeSubscription: any;
+  customColors: any[];
+  colors: any;
+  view: any[] = [450, 400];
+  autoScale = true;
+  curve = shape.curveBasis;
 
   constructor(
     private theme: NbThemeService,
     private ponicsService: PonicsService,
     private modalService: NgbModal,
-    private router: Router) {
+    private router: Router,
+    private toasterService: ToasterService) {
 
-    this.yAxisLabel = scale.get(this.levelType);
+    this.yAxisLabel = scale.get(this.selectedLevelType);
 
     this.ponicsService.getAquaponicSystem(this.systemId).then(
-      s => {
-        this.system = s;
-        this.configureSeries();
+      system => {
+        this.system = system;
+        this.configureData();
       });
 
     this.ponicsService.getAquaponicSystemOrganisms(this.systemId).then(
       organisms => {
         this.systemOrganisms = organisms;
+        this.selectedOrganism = organisms[0];
       });
 
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
-      const colors: any = config.variables;
+      this.colors = config.variables;
       this.colorScheme = {
-        domain: [colors.primaryLight, colors.infoLight, colors.successLight, colors.warningLight, colors.dangerLight],
+        domain: [
+          this.colors.primaryLight,
+          this.colors.infoLight,
+          this.colors.successLight,
+          this.colors.warningLight,
+          this.colors.dangerLight,
+        ],
       };
     });
+
+    this.toasterConfig = new ToasterConfig({
+      positionClass: 'toast-top-right',
+      newestOnTop: true,
+      tapToDismiss: true,
+      preventDuplicates: false,
+      animation: 'fade',
+      limit: 5,
+    });
+
   }
 
-  configureSeries() {
-    const series = [];
-    this.ponicsService.getLevelReadings(this.systemId, this.levelType).then(
-      levels => {
-        if (levels.length > 0) {
-          for (const level of levels) {
-            series.push({
-              name: level.dateTime,
-              value: level.value,
-            });
-          }
-          this.multi = [{
-            name: this.levelType,
-            series: series,
-          }];
+  configureData() {
+    this.loadChartBusy = this.ponicsService
+      .getLevelReadings(this.systemId, this.selectedLevelType)
+      .then(levels => {
+        const readings = [];
+        const upper = [];
+        const lower = [];
+        const desiredUpper = [];
+        const desiredLower = [];
+        this.data = [];
+        this.yAxisLabel = scale.get(this.selectedLevelType);
+
+        const tolerance = tolerances.get(this.selectedLevelType);
+        const organismTolerance: Tolerance = this.selectedOrganism.tolerances
+          .find(t => t.type === tolerance.constructor.name);
+
+        if (organismTolerance == null) {
+          const toast: Toast = {
+            type: 'warning',
+            title: 'Organism Warning',
+            body: this.selectedOrganism.name + ' does not have a ' + this.selectedLevelType + ' tolerance defined!',
+            bodyOutputType: BodyOutputType.TrustedHtml,
+          };
+          this.toasterService.popAsync(toast);
         }
+
+        if (levels.length === 0) {
+          const toast: Toast = {
+            type: 'warning',
+            title: 'System Warning',
+            body: this.system.name + ' does not have any ' + this.selectedLevelType + ' level readings logged!',
+            bodyOutputType: BodyOutputType.TrustedHtml,
+          };
+          this.toasterService.popAsync(toast);
+          return;
+        }
+
+        for (const level of levels) {
+          const readingDate = ZonedDateTime.fromString(level.dateTime);
+          readings.push({
+            name: readingDate.date,
+            value: level.value,
+          });
+
+              if (organismTolerance != null) {
+              upper.push({
+                name: readingDate.date,
+                value: organismTolerance.upper,
+                min: organismTolerance.lower,
+                max: organismTolerance.upper,
+              });
+
+              lower.push({
+                name: readingDate.date,
+                value: organismTolerance.lower,
+                min: organismTolerance.lower,
+                max: organismTolerance.upper,
+              });
+
+              desiredUpper.push({
+                name: readingDate.date,
+                value: organismTolerance.desiredUpper,
+                min: organismTolerance.desiredLower,
+                max: organismTolerance.desiredUpper,
+              });
+
+              desiredLower.push({
+                name: readingDate.date,
+                value: organismTolerance.desiredLower,
+                min: organismTolerance.desiredLower,
+                max: organismTolerance.desiredUpper,
+              });
+            }
+
+            this.customColors = [
+              {
+                name: 'Upper ' + this.selectedLevelType + ' tolerance',
+                value: this.colors.aquaponicWidget.limit,
+              },
+              {
+                name: 'Lower ' + this.selectedLevelType + ' tolerance',
+                value: this.colors.aquaponicWidget.limit,
+              },
+              {
+                name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
+                value: this.colors.aquaponicWidget.desired,
+              },
+              {
+                name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
+                value: this.colors.aquaponicWidget.desired,
+              },
+            ];
+        }
+
+
+        this.data = [
+          {
+            name: 'Upper ' + this.selectedLevelType + ' tolerance',
+            series: upper,
+          },
+          {
+            name: 'Lower ' + this.selectedLevelType + ' tolerance',
+            series: lower,
+          },
+          {
+            name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
+            series: desiredUpper,
+          },
+          {
+            name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
+            series: desiredLower,
+          },
+          {
+            name: this.selectedLevelType + ' level',
+            series: readings,
+          },
+        ];
+
+        this.data = [...this.data];
       });
   }
 
@@ -95,10 +227,17 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
     this.themeSubscription.unsubscribe();
   }
 
-  xAxisTickFormatting(val) {
-    const date = ZonedDateTime.fromString(val);
-    return date.day + '/' +
-      date.month + '/' +
-      date.year;
+  changeChartDetails() {
+    this.editing = !this.editing;
+  }
+
+  organismChange(organism) {
+    this.selectedOrganism = this.systemOrganisms.find(o => o.name === organism);
+    this.configureData();
+  }
+
+  levelTypeChange(levelType) {
+    this.selectedLevelType = levelType;
+    this.configureData();
   }
 }
