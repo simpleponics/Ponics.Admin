@@ -1805,7 +1805,7 @@
       "integrity": "sha1-/m51Gok3afVucr7lrZEgfhxZKVc=",
       "requires": {
         "chartjs-color": "2.2.0",
-        "moment": "2.19.4"
+        "moment": "2.20.1"
       }
     },
     "chartjs-color": {
@@ -7731,9 +7731,17 @@
       "dev": true
     },
     "moment": {
-      "version": "2.19.4",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.19.4.tgz",
-      "integrity": "sha512-1xFTAknSLfc47DIxHDUbnJWC+UwgWxATmymaxIPQpmMh7LBm7ZbwVEsuushqwL2GYZU0jie4xO+TK44hJPjNSQ=="
+      "version": "2.20.1",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz",
+      "integrity": "sha512-Yh9y73JRljxW5QxN08Fner68eFLxM5ynNOAw2LbIB1YAGeQzZT8QFSUvkAz609Zf+IHhhaUxqZK8dG3W/+HEvg=="
+    },
+    "moment-timezone": {
+      "version": "0.5.14",
+      "resolved": "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.14.tgz",
+      "integrity": "sha1-TrOP+VOLgBCLpGekWPPtQmjM/LE=",
+      "requires": {
+        "moment": "2.20.1"
+      }
     },
     "morgan": {
       "version": "1.9.0",

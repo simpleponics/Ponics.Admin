@@ -7,10 +7,11 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
 import {scale, tolerances} from '../../../@core/data/PonicsMaps';
-import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
 import {BodyOutputType, Toast, ToasterConfig, ToasterService} from 'angular2-toaster';
 import 'style-loader!angular2-toaster/toaster.css';
 import * as shape from 'd3-shape';
+import * as moment from 'moment';
+import {ZonedDateTime} from "../../../@core/data/ZonedDateTime";
 
 @Component({
   selector: 'ngx-aquaponic-widget',
@@ -129,36 +130,36 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
         }
 
         for (const level of levels) {
-          const readingDate = ZonedDateTime.fromString(level.dateTime);
+          const readingDate = ZonedDateTime.fromString(level.dateTime).toDate();
           readings.push({
-            name: readingDate.date,
+            name: readingDate,
             value: level.value,
           });
 
               if (organismTolerance != null) {
               upper.push({
-                name: readingDate.date,
+                name: readingDate,
                 value: organismTolerance.upper,
                 min: organismTolerance.lower,
                 max: organismTolerance.upper,
               });
 
               lower.push({
-                name: readingDate.date,
+                name: readingDate,
                 value: organismTolerance.lower,
                 min: organismTolerance.lower,
                 max: organismTolerance.upper,
               });
 
               desiredUpper.push({
-                name: readingDate.date,
+                name: readingDate,
                 value: organismTolerance.desiredUpper,
                 min: organismTolerance.desiredLower,
                 max: organismTolerance.desiredUpper,
               });
 
               desiredLower.push({
-                name: readingDate.date,
+                name: readingDate,
                 value: organismTolerance.desiredLower,
                 min: organismTolerance.desiredLower,
                 max: organismTolerance.desiredUpper,

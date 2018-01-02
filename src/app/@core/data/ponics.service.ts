@@ -10,7 +10,6 @@ import {
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
-import {ZonedDateTime} from "./ZonedDateTime";
 
 @Injectable()
 export class PonicsService {

@@ -9,9 +9,11 @@ import {levelQueries, tolerancesValidators} from '../../../../@core/data/PonicsM
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrganismService} from '../../../../@core/data/organism.service';
 import {LevelTypes} from '../../../../@core/data/LevelTypes';
-import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
 import {LevelReading} from '../../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../../@core/data/ponics.service';
+import * as moment from 'moment';
+import {Moment} from 'moment';
+import {ZonedDateTime} from "../../../../@core/data/ZonedDateTime";
 
 @Component({
   selector: 'ngx-add-levels-modal',
@@ -20,7 +22,7 @@ import {PonicsService} from '../../../../@core/data/ponics.service';
 export class AddLevelsModalComponent extends ModalComponent {
   @Input() systemId: string;
   @ViewChild('dynamicInsert', { read: ViewContainerRef }) dynamicInsert: ViewContainerRef;
-  dateTime: ZonedDateTime;
+  dateTime: Date;
   levelValueComponents: LevelValueComponent[] = [];
   levelQueriesKeys: string[] =  Array.from(levelQueries.keys());
   levelReadingsForm: FormGroup;
@@ -37,7 +39,7 @@ export class AddLevelsModalComponent extends ModalComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     activeModal: NgbActiveModal) {
     super(activeModal);
-    this.dateTime = ZonedDateTime.fromDate(new Date());
+    this.dateTime = new Date();
 
     this.levelReadingsForm  = new FormGroup({
       'datePicker': new FormControl(
@@ -95,7 +97,7 @@ export class AddLevelsModalComponent extends ModalComponent {
   onSubmit() {
     const levelReadings: LevelReading[] = [];
     for (const levelValueComponent of this.levelValueComponents) {
-      levelValueComponent.levelReading.dateTime = this.dateTime.toString();
+      levelValueComponent.levelReading.dateTime = ZonedDateTime.fromDate(this.dateTime).toISOString();
       levelReadings.push(levelValueComponent.levelReading);
     }
     this.ponicsService.addLevelReadings(this.systemId, levelReadings);
