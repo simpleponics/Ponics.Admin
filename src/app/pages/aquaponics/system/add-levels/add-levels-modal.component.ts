@@ -11,9 +11,7 @@ import {OrganismService} from '../../../../@core/data/organism.service';
 import {LevelTypes} from '../../../../@core/data/LevelTypes';
 import {LevelReading} from '../../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../../@core/data/ponics.service';
-import * as moment from 'moment';
-import {Moment} from 'moment';
-import {ZonedDateTime} from "../../../../@core/data/ZonedDateTime";
+import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
 
 @Component({
   selector: 'ngx-add-levels-modal',

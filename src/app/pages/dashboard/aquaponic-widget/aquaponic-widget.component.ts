@@ -8,10 +8,11 @@ import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
 import {scale, tolerances} from '../../../@core/data/PonicsMaps';
 import {BodyOutputType, Toast, ToasterConfig, ToasterService} from 'angular2-toaster';
+import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
+
 import 'style-loader!angular2-toaster/toaster.css';
+
 import * as shape from 'd3-shape';
-import * as moment from 'moment';
-import {ZonedDateTime} from "../../../@core/data/ZonedDateTime";
 
 @Component({
   selector: 'ngx-aquaponic-widget',
