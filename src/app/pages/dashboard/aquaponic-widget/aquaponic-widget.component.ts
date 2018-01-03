@@ -22,7 +22,7 @@ import * as shape from 'd3-shape';
 export class AquaponicWidgetComponent  implements OnDestroy  {
   @Input() systemId: string = '47236a2e40f047a2923034c610c5e444';
   @Input() selectedLevelType: LevelTypes = LevelTypes.pH;
-  @Input() selectedOrganism: Organism;
+  @Input() selectedOrganism: Organism = new Organism();
   system: AquaponicSystem = new AquaponicSystem();
   systemOrganisms: Organism[] = [];
   editing: boolean = false;
@@ -44,9 +44,9 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   themeSubscription: any;
   customColors: any[];
   colors: any;
-  view: any[] = [450, 400];
   autoScale = true;
   curve = shape.curveMonotoneX;
+  timeline: boolean = true;
 
   constructor(
     private theme: NbThemeService,
@@ -55,7 +55,9 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
     private router: Router,
     private toasterService: ToasterService) {
 
-    this.yAxisLabel = scale.get(this.selectedLevelType);
+    this.configureColorScheme();
+
+    ponicsService.levelReadingsAdded.subscribe(() => this.configureData());
 
     this.ponicsService.getAquaponicSystem(this.systemId).then(
       system => {
@@ -69,6 +71,18 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
         this.selectedOrganism = organisms[0];
       });
 
+    this.toasterConfig = new ToasterConfig({
+      positionClass: 'toast-top-right',
+      newestOnTop: true,
+      tapToDismiss: true,
+      preventDuplicates: false,
+      animation: 'fade',
+      limit: 5,
+    });
+
+  }
+
+  private configureColorScheme() {
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
       this.colors = config.variables;
       this.colorScheme = {
@@ -81,19 +95,9 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
         ],
       };
     });
-
-    this.toasterConfig = new ToasterConfig({
-      positionClass: 'toast-top-right',
-      newestOnTop: true,
-      tapToDismiss: true,
-      preventDuplicates: false,
-      animation: 'fade',
-      limit: 5,
-    });
-
   }
 
-  configureData() {
+  private configureData() {
     this.loadChartBusy = this.ponicsService
       .getLevelReadings(this.systemId, this.selectedLevelType)
       .then(levels => {
@@ -136,55 +140,54 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
             name: readingDate,
             value: level.value,
           });
+          if (organismTolerance != null) {
+            upper.push({
+              name: readingDate,
+              value: organismTolerance.upper,
+              min: organismTolerance.lower,
+              max: organismTolerance.upper,
+            });
 
-              if (organismTolerance != null) {
-              upper.push({
-                name: readingDate,
-                value: organismTolerance.upper,
-                min: organismTolerance.lower,
-                max: organismTolerance.upper,
-              });
+            lower.push({
+              name: readingDate,
+              value: organismTolerance.lower,
+              min: organismTolerance.lower,
+              max: organismTolerance.upper,
+            });
 
-              lower.push({
-                name: readingDate,
-                value: organismTolerance.lower,
-                min: organismTolerance.lower,
-                max: organismTolerance.upper,
-              });
+            desiredUpper.push({
+              name: readingDate,
+              value: organismTolerance.desiredUpper,
+              min: organismTolerance.desiredLower,
+              max: organismTolerance.desiredUpper,
+            });
 
-              desiredUpper.push({
-                name: readingDate,
-                value: organismTolerance.desiredUpper,
-                min: organismTolerance.desiredLower,
-                max: organismTolerance.desiredUpper,
-              });
+            desiredLower.push({
+              name: readingDate,
+              value: organismTolerance.desiredLower,
+              min: organismTolerance.desiredLower,
+              max: organismTolerance.desiredUpper,
+            });
+          }
 
-              desiredLower.push({
-                name: readingDate,
-                value: organismTolerance.desiredLower,
-                min: organismTolerance.desiredLower,
-                max: organismTolerance.desiredUpper,
-              });
-            }
-
-            this.customColors = [
-              {
-                name: 'Upper ' + this.selectedLevelType + ' tolerance',
-                value: this.colors.aquaponicWidget.limit,
-              },
-              {
-                name: 'Lower ' + this.selectedLevelType + ' tolerance',
-                value: this.colors.aquaponicWidget.limit,
-              },
-              {
-                name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
-                value: this.colors.aquaponicWidget.desired,
-              },
-              {
-                name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
-                value: this.colors.aquaponicWidget.desired,
-              },
-            ];
+          this.customColors = [
+            {
+              name: 'Upper ' + this.selectedLevelType + ' tolerance',
+              value: this.colors.aquaponicWidget.limit,
+            },
+            {
+              name: 'Lower ' + this.selectedLevelType + ' tolerance',
+              value: this.colors.aquaponicWidget.limit,
+            },
+            {
+              name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
+              value: this.colors.aquaponicWidget.desired,
+            },
+            {
+              name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
+              value: this.colors.aquaponicWidget.desired,
+            },
+          ];
         }
 
 

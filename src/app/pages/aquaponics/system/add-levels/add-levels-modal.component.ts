@@ -1,7 +1,7 @@
 // https://blog.dmbcllc.com/dynamically-add-components-in-angular/
 
 import {Component, ComponentFactoryResolver, Input, ViewChild, ViewContainerRef} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import {LevelValueComponent} from './level-value/level-value.component';
 import {ModalComponent} from '../../../../modal/modal.component';
@@ -13,18 +13,23 @@ import {LevelReading} from '../../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../../@core/data/ponics.service';
 import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
 
+
 @Component({
   selector: 'ngx-add-levels-modal',
   templateUrl: './add-levels-modal.component.html',
 })
 export class AddLevelsModalComponent extends ModalComponent {
+  private now: Date = new Date();
+
   @Input() systemId: string;
   @ViewChild('dynamicInsert', { read: ViewContainerRef }) dynamicInsert: ViewContainerRef;
-  dateTime: Date;
+  date: NgbDateStruct = {day: this.now.getDate(), month: this.now.getMonth() + 1, year: this.now.getFullYear()};
+  time: NgbTimeStruct  = {hour : this.now.getHours(), minute: this.now.getMinutes(), second: 0};
   levelValueComponents: LevelValueComponent[] = [];
   levelQueriesKeys: string[] =  Array.from(levelQueries.keys());
   levelReadingsForm: FormGroup;
-  timePicker: FormControl =  new FormControl(
+
+  private _levelsFormControl = new FormControl(
     null,
     [
       Validators.required,
@@ -37,16 +42,21 @@ export class AddLevelsModalComponent extends ModalComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     activeModal: NgbActiveModal) {
     super(activeModal);
-    this.dateTime = new Date();
 
-    this.levelReadingsForm  = new FormGroup({
+    this.levelReadingsForm = new FormGroup({
       'datePicker': new FormControl(
         null,
         [
           Validators.required,
         ],
       ),
-      'timePicker': this.timePicker,
+      'timePicker': new FormControl(
+        null,
+        [
+          Validators.required,
+        ],
+      ),
+      'levels': this._levelsFormControl,
     });
   }
 
@@ -79,6 +89,8 @@ export class AddLevelsModalComponent extends ModalComponent {
 
     this.levelQueriesKeys = this.levelQueriesKeys.filter( item => item !== levelName);
     this.levelReadingsForm.addControl(levelName, levelValueControl);
+
+    this.levelReadingsForm.removeControl('levels');
   }
 
   levelValueDeleted(levelValueComponent: LevelValueComponent) {
@@ -90,12 +102,16 @@ export class AddLevelsModalComponent extends ModalComponent {
       this.levelQueriesKeys.push(levelValueComponent.type);
       this.levelReadingsForm.removeControl(levelValueComponent.type);
     }
+
+    if (this.levelValueComponents.length === 0) {
+      this.levelReadingsForm.addControl('levels', this._levelsFormControl);
+    }
   }
 
   onSubmit() {
     const levelReadings: LevelReading[] = [];
     for (const levelValueComponent of this.levelValueComponents) {
-      levelValueComponent.levelReading.dateTime = ZonedDateTime.fromDate(this.dateTime).toISOString();
+      levelValueComponent.levelReading.dateTime = ZonedDateTime.fromDateAndTime(this.date, this.time).toString();
       levelReadings.push(levelValueComponent.levelReading);
     }
     this.ponicsService.addLevelReadings(this.systemId, levelReadings);

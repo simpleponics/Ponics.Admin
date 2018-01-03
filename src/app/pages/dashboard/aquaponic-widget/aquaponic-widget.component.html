@@ -39,25 +39,27 @@
   </nb-card-header>
   <nb-card-body [ngBusy]="loadChartBusy">
     <toaster-container  [toasterconfig]="toasterConfig"></toaster-container>
-    <ngx-charts-line-chart *ngIf="data.length > 0"
-      [scheme]="colorScheme"
-      [results]="data"
-      [xAxis]="showXAxis"
-      [yAxis]="showYAxis"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [customColors]="customColors"
-      [autoScale]="autoScale"
-      [view]="view"
-      [timeline] ="true"
-      [curve]="curve"
-
-    >
-    </ngx-charts-line-chart>
+    <p class="text-center">{{selectedOrganism.name}} vs {{selectedLevelType}}</p>
+    <div class="ngx-charts-line-chart">
+      <ngx-charts-line-chart
+        *ngIf="data.length > 0"
+        [scheme]="colorScheme"
+        [results]="data"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [customColors]="customColors"
+        [autoScale]="autoScale"
+        [timeline] ="timeline"
+        [curve]="curve"
+      >
+      </ngx-charts-line-chart>
+    </div>
     <div class="alert alert-warning" role="alert" *ngIf="data.length === 0">
-    <strong>Warning!</strong> there have been no readings logged for {{selectedLevelType}} levels.
+      <strong>Warning!</strong> there have been no readings logged for {{selectedLevelType}} levels.
     </div>
   </nb-card-body>
 </nb-card>

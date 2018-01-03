@@ -2,8 +2,13 @@
 button {
   width: 108px;
 }
+
 @include nb-install-component() {
   nb-card-body {
+    padding: 0;
+    .ngx-charts-line-chart {
+      height: 400px;
+    }
     /deep/ {
       text {
         fill: nb-theme(color-fg-heading);
