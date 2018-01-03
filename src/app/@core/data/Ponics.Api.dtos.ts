@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-12-30 17:50:15
+Date: 2018-01-03 16:41:31
 Version: 5.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -147,10 +147,14 @@ export class SalinityTolerance extends Tolerance
     scale: Scale;
 }
 
-export class ToleranceAnalysis<TTolerance>
+export class ToleranceAnalysis
 {
-    sutablalForOrganism: boolean;
+    suitableForOrganism: boolean;
     idealForOrganism: boolean;
+}
+
+export class ToleranceAnalysis_1<TTolerance> extends ToleranceAnalysis
+{
     tolerance: TTolerance;
 }
 
@@ -249,30 +253,30 @@ export class AquaponicSystem extends PonicsSystem
     componentConnections: ComponentConnection[];
 }
 
-export class SalinityToleranceAnalysis extends ToleranceAnalysis<SalinityTolerance>
+export class SalinityToleranceAnalysis extends ToleranceAnalysis_1<SalinityTolerance>
 {
 }
 
-export class PhToleranceAnalysis extends ToleranceAnalysis<PhTolerance>
+export class PhToleranceAnalysis extends ToleranceAnalysis_1<PhTolerance>
 {
     hydrogenIonConcentration: number;
     hydroxideIonsConcentration: number;
     warnings: string[];
 }
 
-export class NitriteToleranceAnalysis extends ToleranceAnalysis<NitriteTolerance>
+export class NitriteToleranceAnalysis extends ToleranceAnalysis_1<NitriteTolerance>
 {
 }
 
-export class NitrateToleranceAnalysis extends ToleranceAnalysis<NitrateTolerance>
+export class NitrateToleranceAnalysis extends ToleranceAnalysis_1<NitrateTolerance>
 {
 }
 
-export class IronToleranceAnalysis extends ToleranceAnalysis<IronTolerance>
+export class IronToleranceAnalysis extends ToleranceAnalysis_1<IronTolerance>
 {
 }
 
-export class AmmoniaToleranceAnalysis extends ToleranceAnalysis<AmmoniaTolerance>
+export class AmmoniaToleranceAnalysis extends ToleranceAnalysis_1<AmmoniaTolerance>
 {
 }
 

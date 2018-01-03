@@ -9,6 +9,8 @@ import {AddComponentModalComponent} from './system/add-component/add-component-m
 import {BusyModule} from 'angular2-busy';
 import {environment} from '../../../environments/environment';
 import {OrganismsModule} from '../organisms/organisms.module';
+import {PonicsService} from '../../@core/data/ponics.service';
+import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
 
 @NgModule({
   imports: [
@@ -27,4 +29,10 @@ import {OrganismsModule} from '../organisms/organisms.module';
     AddComponentModalComponent,
   ],
 })
-export class AquaponicsModule {}
+export class AquaponicsModule {
+
+  constructor(
+    private ponicsService: PonicsService,
+    private toasterService: ToasterService) {
+  }
+}

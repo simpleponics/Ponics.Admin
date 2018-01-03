@@ -6,7 +6,6 @@ import {AddLevelsModalComponent} from '../aquaponics/system/add-levels/add-level
 import {LevelValueComponent} from '../aquaponics/system/add-levels/level-value/level-value.component';
 import {AquaponicsModule} from '../aquaponics/aquaponics.module';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {ToasterModule} from 'angular2-toaster';
 import {environment} from '../../../environments/environment';
 import {BusyModule} from 'angular2-busy';
 
@@ -16,7 +15,6 @@ import {BusyModule} from 'angular2-busy';
     ThemeModule,
     AquaponicsModule,
     NgxChartsModule,
-    ToasterModule,
     BusyModule.forRoot(environment.busyConfig),
   ],
   declarations: [

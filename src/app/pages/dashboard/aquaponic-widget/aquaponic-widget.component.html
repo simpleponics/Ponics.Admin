@@ -36,9 +36,12 @@
         </option>
       </select>
     </div>
+
   </nb-card-header>
   <nb-card-body [ngBusy]="loadChartBusy">
-    <toaster-container  [toasterconfig]="toasterConfig"></toaster-container>
+    <p class="alert alert-danger text-center" role="alert" *ngIf="!sutablalForOrganism">
+      A {{selectedLevelType}} level of {{latestReading.value}} is not suitable for {{selectedOrganism.name}}
+    </p>
     <p class="text-center">{{selectedOrganism.name}} vs {{selectedLevelType}}</p>
     <div class="ngx-charts-line-chart">
       <ngx-charts-line-chart

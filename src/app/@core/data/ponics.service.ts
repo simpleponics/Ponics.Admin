@@ -16,7 +16,8 @@ export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
-  levelReadingsAdded= new EventEmitter<void>();
+  levelReadingsAdded = new EventEmitter<string>();
+  addingLevelReadings = new EventEmitter<Promise<void>>();
 
   client = new JsonServiceClient(environment.ponicsApi);
 
@@ -75,9 +76,10 @@ export class PonicsService {
     command.levelReadings = levelReadings;
     const promise = this.client.post(command);
     promise.then(r =>
-      this.levelReadingsAdded.emit(),
+      this.levelReadingsAdded.emit(systemId),
     );
 
+    this.addingLevelReadings.emit(promise);
     return promise;
   }
 

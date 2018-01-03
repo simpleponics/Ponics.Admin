@@ -11,6 +11,8 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/delay';
+import {ToasterConfig} from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   selector: 'ngx-simpleponics-layout',
@@ -19,6 +21,7 @@ import 'rxjs/add/operator/delay';
 })
 export class SimpleponicsLayoutComponent  implements OnDestroy {
 
+  toasterConfig: ToasterConfig;
   subMenu: NbMenuItem[] = [];
   protected menuClick$: Subscription;
 
@@ -37,6 +40,15 @@ export class SimpleponicsLayoutComponent  implements OnDestroy {
           this.sidebarService.collapse('menu-sidebar');
         }
       });
+
+    this.toasterConfig = new ToasterConfig({
+      positionClass: 'toast-top-right',
+      newestOnTop: true,
+      tapToDismiss: true,
+      preventDuplicates: false,
+      animation: 'fade',
+      limit: 5,
+    });
   }
 
   ngOnDestroy() {

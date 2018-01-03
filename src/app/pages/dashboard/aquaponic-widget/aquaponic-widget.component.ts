@@ -1,5 +1,8 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {AquaponicSystem, Organism, Tolerance} from '../../../@core/data/Ponics.Api.dtos';
+import {
+  AquaponicSystem, LevelReading, Organism, Tolerance,
+  ToleranceAnalysis
+} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {NbThemeService} from '@nebular/theme';
 import {AddLevelsModalComponent} from '../../aquaponics/system/add-levels/add-levels-modal.component';
@@ -7,12 +10,13 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
 import {scale, tolerances} from '../../../@core/data/PonicsMaps';
-import {BodyOutputType, Toast, ToasterConfig, ToasterService} from 'angular2-toaster';
+import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
 import {ZonedDateTime} from '../../../@core/data/ZonedDateTime';
 
-import 'style-loader!angular2-toaster/toaster.css';
+
 
 import * as shape from 'd3-shape';
+import {ToleranceAnalysisService} from '../../../@core/data/toleranceAnalysis.service';
 
 @Component({
   selector: 'ngx-aquaponic-widget',
@@ -26,8 +30,9 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   system: AquaponicSystem = new AquaponicSystem();
   systemOrganisms: Organism[] = [];
   editing: boolean = false;
-  toasterConfig: ToasterConfig;
   loadChartBusy: Promise<any>;
+  sutablalForOrganism: boolean = true;
+  latestReading: LevelReading = new LevelReading();
 
   levelTypeKeys(): Array<string> {
     return Object.keys(LevelTypes);
@@ -51,6 +56,7 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
   constructor(
     private theme: NbThemeService,
     private ponicsService: PonicsService,
+    private toleranceAnalysisService:ToleranceAnalysisService,
     private modalService: NgbModal,
     private router: Router,
     private toasterService: ToasterService) {
@@ -58,28 +64,18 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
     this.configureColorScheme();
 
     ponicsService.levelReadingsAdded.subscribe(() => this.configureData());
+    ponicsService.addingLevelReadings.subscribe( p => this.loadChartBusy = p);
 
-    this.ponicsService.getAquaponicSystem(this.systemId).then(
-      system => {
-        this.system = system;
-        this.configureData();
-      });
-
-    this.ponicsService.getAquaponicSystemOrganisms(this.systemId).then(
-      organisms => {
-        this.systemOrganisms = organisms;
-        this.selectedOrganism = organisms[0];
-      });
-
-    this.toasterConfig = new ToasterConfig({
-      positionClass: 'toast-top-right',
-      newestOnTop: true,
-      tapToDismiss: true,
-      preventDuplicates: false,
-      animation: 'fade',
-      limit: 5,
+    ponicsService.getAquaponicSystem(this.systemId).then(
+    system => {
+      this.system = system;
+      ponicsService.getAquaponicSystemOrganisms(this.systemId).then(
+        organisms => {
+          this.systemOrganisms = organisms;
+          this.selectedOrganism = organisms[0];
+          this.configureData();
+        });
     });
-
   }
 
   private configureColorScheme() {
@@ -215,6 +211,30 @@ export class AquaponicWidgetComponent  implements OnDestroy  {
         ];
 
         this.data = [...this.data];
+
+        this.latestReading = levels[levels.length - 1];
+
+        this.toleranceAnalysisService
+          .analyseLevelReading(this.latestReading.value, LevelTypes[this.latestReading.type], this.selectedOrganism.id)
+          .then((analysis: ToleranceAnalysis) => {
+            this.sutablalForOrganism = analysis.suitableForOrganism;
+
+            if (!analysis.suitableForOrganism) {
+              const toast: Toast = {
+                type: 'error',
+                title: 'Organism Error',
+                body: 'a reading of ' +
+                this.latestReading.value +
+                ' for ' + this.latestReading.type +
+                ' is not autablal for ' +
+                this.selectedOrganism.name,
+                bodyOutputType: BodyOutputType.TrustedHtml,
+              };
+              this.toasterService.popAsync(toast);
+            }
+
+          }
+        );
       });
   }
 
