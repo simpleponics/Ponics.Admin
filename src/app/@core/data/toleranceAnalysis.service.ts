@@ -12,8 +12,6 @@ export class ToleranceAnalysisService {
     const query = levelQueries.get(levelType);
     query.organismId = organismId;
     query.value = reading;
-    console.log(query);
     return this.client.get(query);
   }
-
 }
