@@ -1,5 +1,16 @@
-<nb-card>
+<nb-card [size]="breakpoint.width >= breakpoints.sm ? 'large' : 'medium'">
   <nb-card-header>
+    <div *ngIf="analysis != null">
+      <p class="text-center text-danger" *ngIf="!analysis.suitableForOrganism">
+        A {{levelType}} level of {{latestReading.value}} is not suitable for {{organism.name}}.
+      </p>
+      <p class="text-center text-warning" *ngIf="analysis.suitableForOrganism && !analysis.idealForOrganism">
+        A {{levelType}} level of {{latestReading.value}} is not ideal for {{organism.name}} but is suitable.
+      </p>
+      <p class="text-center text-success" *ngIf="analysis.idealForOrganism">
+        A {{levelType}} level of {{latestReading.value}} is ideal for {{organism.name}}.
+      </p>
+    </div>
     <div class="input-group" *ngIf="!editing">
       <div class="dropdown input-group-btn" ngbDropdown>
         <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
@@ -22,7 +33,7 @@
       <select class="form-control" (change)="organismChange($event.target.value)">
         <option
           *ngFor="let o of systemOrganisms"
-          [selected]="o.id == selectedOrganism.id"
+          [selected]="o.id == organismId"
         >
           {{o.name}}
         </option>
@@ -30,28 +41,20 @@
       <select class="form-control" (change)="levelTypeChange($event.target.value)">
         <option
           *ngFor="let lt of levelTypeKeys()"
-          [selected]="lt == selectedLevelType"
+          [selected]="lt == levelType"
         >
           {{lt}}
         </option>
       </select>
     </div>
-
   </nb-card-header>
   <nb-card-body [ngBusy]="loadChartBusy">
-    <p class="alert alert-danger text-center" role="alert" *ngIf="!suitableForOrganism">
-      A {{selectedLevelType}} level of {{latestReading.value}} is not suitable for {{selectedOrganism.name}}
-    </p>
-    <p class="text-center">{{selectedOrganism.name}} vs {{selectedLevelType}}</p>
-
-    <ngx-levels-chart
-      [selectedLevelType]="selectedLevelType"
-      [selectedOrganism]="selectedOrganism"
-      [loadChartBusy]="loadChartBusy"
-      [system]="system"
-      [latestReading]="latestReading"
-      [suitableForOrganism]="suitableForOrganism"></ngx-levels-chart>
+        <ngx-levels-chart
+      [levelType]="levelType"
+      [levelReadings]="levelReadings"
+      [tolerance]="tolerance"></ngx-levels-chart>
   </nb-card-body>
 </nb-card>
+
 
 

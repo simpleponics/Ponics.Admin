@@ -75,6 +75,7 @@ export class PonicsService {
     command.systemId = systemId;
     command.levelReadings = levelReadings;
     const promise = this.client.post(command);
+
     promise.then(r =>
       this.levelReadingsAdded.emit(systemId),
     );

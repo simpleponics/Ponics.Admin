@@ -1,31 +1,24 @@
 ﻿import {Component, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import { PonicsService } from '../../../../@core/data/ponics.service';
 import * as shape from 'd3-shape';
-import {scale, tolerances} from '../../../../@core/data/PonicsMaps';
+import {scale} from '../../../../@core/data/PonicsMaps';
 import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
-import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
-import {
-  AquaponicSystem, LevelReading, Organism, Tolerance,
-  ToleranceAnalysis
-} from '../../../../@core/data/Ponics.Api.dtos';
+import {LevelReading, Tolerance} from '../../../../@core/data/Ponics.Api.dtos';
 import {LevelTypes} from '../../../../@core/data/LevelTypes';
 import {ToleranceAnalysisService} from '../../../../@core/data/toleranceAnalysis.service';
 import {NbThemeService} from '@nebular/theme';
 
-
 @Component({
     selector: 'ngx-levels-chart',
     templateUrl: './levels-chart.component.html',
+    styleUrls: ['./levels-chart.component.scss'],
 })
 
 export class LevelsChartComponent implements OnDestroy, OnChanges   {
 
-  @Input() system: AquaponicSystem;
-  @Input() selectedLevelType: LevelTypes = LevelTypes.pH;
-  @Input() selectedOrganism: Organism = new Organism();
-  @Input() loadChartBusy: Promise<any>;
-  @Input() latestReading: LevelReading;
-  @Input() suitableForOrganism: boolean;
+  @Input() levelReadings: LevelReading[];
+  @Input() levelType: LevelTypes;
+  @Input() tolerance: Tolerance;
 
   data = [];
   showXAxis = true;
@@ -44,7 +37,6 @@ export class LevelsChartComponent implements OnDestroy, OnChanges   {
 
   constructor(
     private ponicsService: PonicsService,
-    private toasterService: ToasterService,
     private toleranceAnalysisService: ToleranceAnalysisService,
     private theme: NbThemeService) {
     this.configureColorScheme();
@@ -67,147 +59,96 @@ export class LevelsChartComponent implements OnDestroy, OnChanges   {
   }
 
   configureData() {
-    this.loadChartBusy = this.ponicsService
-      .getLevelReadings(this.system.id, this.selectedLevelType)
-      .then(levels => {
-        const readings = [];
-        const upper = [];
-        const lower = [];
-        const desiredUpper = [];
-        const desiredLower = [];
-        this.data = [];
-        this.yAxisLabel = scale.get(this.selectedLevelType);
+    const readings = [];
+    const upper = [];
+    const lower = [];
+    const desiredUpper = [];
+    const desiredLower = [];
+    this.data = [];
+    this.yAxisLabel = scale.get(this.levelType);
 
-        const tolerance = tolerances.get(this.selectedLevelType);
-        const organismTolerance: Tolerance = this.selectedOrganism.tolerances
-          .find(t => t.type === tolerance.constructor.name);
-
-        if (organismTolerance == null) {
-          const toast: Toast = {
-            type: 'warning',
-            title: 'Organism Warning',
-            body: this.selectedOrganism.name + ' does not have a ' + this.selectedLevelType + ' tolerance defined!',
-            bodyOutputType: BodyOutputType.TrustedHtml,
-          };
-          this.toasterService.popAsync(toast);
-        }
-
-        if (levels.length === 0) {
-          const toast: Toast = {
-            type: 'warning',
-            title: 'System Warning',
-            body: this.system.name + ' does not have any ' + this.selectedLevelType + ' level readings logged!',
-            bodyOutputType: BodyOutputType.TrustedHtml,
-          };
-          this.toasterService.popAsync(toast);
-          return;
-        }
-
-        for (const level of levels) {
-          const readingDate = ZonedDateTime.fromString(level.dateTime).toDate();
-          readings.push({
-            name: readingDate,
-            value: level.value,
-          });
-          if (organismTolerance != null) {
-            upper.push({
-              name: readingDate,
-              value: organismTolerance.upper,
-              min: organismTolerance.lower,
-              max: organismTolerance.upper,
-            });
-
-            lower.push({
-              name: readingDate,
-              value: organismTolerance.lower,
-              min: organismTolerance.lower,
-              max: organismTolerance.upper,
-            });
-
-            desiredUpper.push({
-              name: readingDate,
-              value: organismTolerance.desiredUpper,
-              min: organismTolerance.desiredLower,
-              max: organismTolerance.desiredUpper,
-            });
-
-            desiredLower.push({
-              name: readingDate,
-              value: organismTolerance.desiredLower,
-              min: organismTolerance.desiredLower,
-              max: organismTolerance.desiredUpper,
-            });
-          }
-
-          this.customColors = [
-            {
-              name: 'Upper ' + this.selectedLevelType + ' tolerance',
-              value: this.colors.aquaponicWidget.limit,
-            },
-            {
-              name: 'Lower ' + this.selectedLevelType + ' tolerance',
-              value: this.colors.aquaponicWidget.limit,
-            },
-            {
-              name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
-              value: this.colors.aquaponicWidget.desired,
-            },
-            {
-              name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
-              value: this.colors.aquaponicWidget.desired,
-            },
-          ];
-        }
-
-
-        this.data = [
-          {
-            name: 'Upper ' + this.selectedLevelType + ' tolerance',
-            series: upper,
-          },
-          {
-            name: 'Lower ' + this.selectedLevelType + ' tolerance',
-            series: lower,
-          },
-          {
-            name: 'Desired Upper ' + this.selectedLevelType + ' tolerance',
-            series: desiredUpper,
-          },
-          {
-            name: 'Desired Lower ' + this.selectedLevelType + ' tolerance',
-            series: desiredLower,
-          },
-          {
-            name: this.selectedLevelType + ' level',
-            series: readings,
-          },
-        ];
-
-        this.data = [...this.data];
-
-        this.latestReading = levels[levels.length - 1];
-
-        this.toleranceAnalysisService
-          .analyseLevelReading(this.latestReading.value, LevelTypes[this.latestReading.type], this.selectedOrganism.id)
-          .then((analysis: ToleranceAnalysis) => {
-              this.suitableForOrganism = analysis.suitableForOrganism;
-
-              if (!analysis.suitableForOrganism) {
-                const toast: Toast = {
-                  type: 'error',
-                  title: 'Organism Error',
-                  body: 'a reading of ' +
-                  this.latestReading.value +
-                  ' for ' + this.latestReading.type +
-                  ' is not autablal for ' +
-                  this.selectedOrganism.name,
-                  bodyOutputType: BodyOutputType.TrustedHtml,
-                };
-                this.toasterService.popAsync(toast);
-              }
-            },
-          );
+    for (const level of this.levelReadings) {
+      const readingDate = ZonedDateTime.fromString(level.dateTime).toDate();
+      readings.push({
+        name: readingDate,
+        value: level.value,
       });
+
+      if (this.tolerance != null) {
+        upper.push({
+          name: readingDate,
+          value: this.tolerance.upper,
+          min: this.tolerance.lower,
+          max: this.tolerance.upper,
+        });
+
+        lower.push({
+          name: readingDate,
+          value: this.tolerance.lower,
+          min: this.tolerance.lower,
+          max: this.tolerance.upper,
+        });
+
+        desiredUpper.push({
+          name: readingDate,
+          value: this.tolerance.desiredUpper,
+          min: this.tolerance.desiredLower,
+          max: this.tolerance.desiredUpper,
+        });
+
+        desiredLower.push({
+          name: readingDate,
+          value: this.tolerance.desiredLower,
+          min: this.tolerance.desiredLower,
+          max: this.tolerance.desiredUpper,
+        });
+      }
+
+      this.customColors = [
+        {
+          name: 'Upper ' + this.levelType + ' tolerance',
+          value: this.colors.aquaponicWidget.limit,
+        },
+        {
+          name: 'Lower ' + this.levelType + ' tolerance',
+          value: this.colors.aquaponicWidget.limit,
+        },
+        {
+          name: 'Desired Upper ' + this.levelType + ' tolerance',
+          value: this.colors.aquaponicWidget.desired,
+        },
+        {
+          name: 'Desired Lower ' + this.levelType + ' tolerance',
+          value: this.colors.aquaponicWidget.desired,
+        },
+      ];
+    }
+
+
+    this.data = [
+      {
+        name: 'Upper ' + this.levelType + ' tolerance',
+        series: upper,
+      },
+      {
+        name: 'Lower ' + this.levelType + ' tolerance',
+        series: lower,
+      },
+      {
+        name: 'Desired Upper ' + this.levelType + ' tolerance',
+        series: desiredUpper,
+      },
+      {
+        name: 'Desired Lower ' + this.levelType + ' tolerance',
+        series: desiredLower,
+      },
+      {
+        name: this.levelType + ' level',
+        series: readings,
+      },
+    ];
+
+    this.data = [...this.data];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
