@@ -28,13 +28,13 @@ export class PonicsService {
 
   getAquaponicSystem(id: string) {
     const query = new GetSystem();
-    query.id = id;
+    query.systemId = id;
     return this.client.get(query);
   }
 
   getAquaponicSystemOrganisms(id: string) {
     const query = new GetSystemOrganisms();
-    query.id = id;
+    query.systemId = id;
     return this.client.get(query);
   }
 
@@ -60,7 +60,7 @@ export class PonicsService {
 
   updateAquaponicSystem(system: AquaponicSystem) {
     const command = new UpdateSystem();
-    command.id = system.id;
+    command.systemId = system.id;
     command.system = system;
     const promise = this.client.post(command);
     promise.then(r =>

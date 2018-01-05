@@ -24,7 +24,7 @@ export class OrganismService {
 
   getOrganism(id: string)  {
     const query = new GetOrganism();
-    query.id = id;
+    query.organismId = id;
     return this.client.get(query);
   }
 
@@ -75,7 +75,7 @@ export class OrganismService {
 
   updateOrganism(organism: Organism): Promise<any> {
     const command = new UpdateOrganism();
-    command.id = organism.id;
+    command.organismId = organism.id;
     command.organism = organism;
     const p = this.client.post(command);
     p.then( () => this.organismUpdated.emit(organism));

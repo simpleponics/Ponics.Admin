@@ -4,7 +4,7 @@ import {
   LevelReading,
   Organism,
   Tolerance,
-  ToleranceAnalysis,
+  LevelAnalysis,
 } from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from '../../aquaponics/system/add-levels/add-levels-modal.component';
@@ -32,7 +32,7 @@ export class AquaponicWidgetComponent implements OnDestroy {
   systemOrganisms: Organism[] = [];
   editing: boolean = false;
   loadChartBusy: Promise<any>;
-  analysis: ToleranceAnalysis;
+  analysis: LevelAnalysis;
   latestReading: LevelReading = new LevelReading();
   tolerance: Tolerance = new Tolerance();
   levelReadings: LevelReading[] = [];
@@ -103,7 +103,7 @@ export class AquaponicWidgetComponent implements OnDestroy {
 
     this.toleranceAnalysisService
       .analyseLevelReading(this.latestReading.value, LevelTypes[this.latestReading.type], this.organism.id)
-      .then((analysis: ToleranceAnalysis) => {
+      .then((analysis: LevelAnalysis) => {
           this.analysis = analysis;
 
           if (!analysis.suitableForOrganism) {

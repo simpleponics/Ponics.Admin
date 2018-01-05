@@ -1,6 +1,6 @@
 /* Options:
-Date: 2018-01-03 16:41:31
-Version: 5.00
+Date: 2018-01-05 13:52:42
+Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
 
@@ -24,10 +24,6 @@ export interface IReturn<T>
 export interface IReturnVoid
 {
     createResponse() : void;
-}
-
-export class Query<TResult>
-{
 }
 
 export class LevelReading
@@ -124,9 +120,22 @@ export class PonicsSystem
     */
     // @ApiMember(DataType="string", Description="The name of the aquaponic system", IsRequired=true, Name="Name", ParameterType="body")
     name: string;
+
+    // @ApiMember(ExcludeInSchema=true)
+    components: Component[];
 }
 
-export class AnalyseToleranceQuery<TLevelAnalysis, TTolerance> extends Query<TLevelAnalysis>
+export type PonicsSystemAnalysisType = "Error" | "Warning" | "Info";
+
+export class PonicsSystemAnalysis
+{
+    ponicsSystemAnalysisType: PonicsSystemAnalysisType;
+    message: string;
+    category: string;
+    identifier: string;
+}
+
+export class AnalyseToleranceQuery
 {
     /**
     * The id of an organism
@@ -141,19 +150,23 @@ export class AnalyseToleranceQuery<TLevelAnalysis, TTolerance> extends Query<TLe
     value: number;
 }
 
+export class AnalyseToleranceQuery_2<TLevelAnalysis, TTolerance> extends AnalyseToleranceQuery
+{
+}
+
 export class SalinityTolerance extends Tolerance
 {
     // @ApiMember(ExcludeInSchema=true)
     scale: Scale;
 }
 
-export class ToleranceAnalysis
+export class LevelAnalysis
 {
     suitableForOrganism: boolean;
     idealForOrganism: boolean;
 }
 
-export class ToleranceAnalysis_1<TTolerance> extends ToleranceAnalysis
+export class LevelAnalysis_1<TTolerance> extends LevelAnalysis
 {
     tolerance: TTolerance;
 }
@@ -247,36 +260,37 @@ export class AquaponicSystem extends PonicsSystem
     closed: boolean;
 
     // @ApiMember(ExcludeInSchema=true)
-    components: Component[];
-
-    // @ApiMember(ExcludeInSchema=true)
     componentConnections: ComponentConnection[];
 }
 
-export class SalinityToleranceAnalysis extends ToleranceAnalysis_1<SalinityTolerance>
+export class PonicsSystemAnalysisResult extends Array<PonicsSystemAnalysis>
 {
 }
 
-export class PhToleranceAnalysis extends ToleranceAnalysis_1<PhTolerance>
+export class SalinityLevelAnalysis extends LevelAnalysis_1<SalinityTolerance>
+{
+}
+
+export class PhLevelAnalysis extends LevelAnalysis_1<PhTolerance>
 {
     hydrogenIonConcentration: number;
     hydroxideIonsConcentration: number;
     warnings: string[];
 }
 
-export class NitriteToleranceAnalysis extends ToleranceAnalysis_1<NitriteTolerance>
+export class NitriteLevelAnalysis extends LevelAnalysis_1<NitriteTolerance>
 {
 }
 
-export class NitrateToleranceAnalysis extends ToleranceAnalysis_1<NitrateTolerance>
+export class NitrateLevelAnalysis extends LevelAnalysis_1<NitrateTolerance>
 {
 }
 
-export class IronToleranceAnalysis extends ToleranceAnalysis_1<IronTolerance>
+export class IronLevelAnalysis extends LevelAnalysis_1<IronTolerance>
 {
 }
 
-export class AmmoniaToleranceAnalysis extends ToleranceAnalysis_1<AmmoniaTolerance>
+export class AmmoniaLevelAnalysis extends LevelAnalysis_1<AmmoniaTolerance>
 {
 }
 
@@ -285,7 +299,7 @@ export class AmmoniaToleranceAnalysis extends ToleranceAnalysis_1<AmmoniaToleran
 */
 // @Route("/systems/{SystemId}/reading/{Type}", "GET")
 // @Api(Description="Gets level readings for system")
-export class GetSystemLevels extends Query<LevelReading> implements IReturn<Array<LevelReading>>
+export class GetSystemLevels implements IReturn<Array<LevelReading>>
 {
     /**
     * The Id of a system
@@ -303,17 +317,33 @@ export class GetSystemLevels extends Query<LevelReading> implements IReturn<Arra
 }
 
 /**
+* Get all Organisms in an Aquaponic System
+*/
+// @Route("/systems/{SystemId}/organisms", "GET")
+// @Api(Description="Get all Organisms in an Aquaponic System")
+export class GetSystemOrganisms implements IReturn<Array<Organism>>
+{
+    /**
+    * The Id of a system
+    */
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+    createResponse() { return new Array<Organism>(); }
+    getTypeName() { return "GetSystemOrganisms"; }
+}
+
+/**
 * Get an organism by Id
 */
-// @Route("/organisms/{id}", "GET")
+// @Route("/organisms/{OrganismId}", "GET")
 // @Api(Description="Get an organism by Id")
-export class GetOrganism extends Query<Organism> implements IReturn<Organism>
+export class GetOrganism implements IReturn<Organism>
 {
     /**
     * The Id of an Organism
     */
-    // @ApiMember(DataType="string", Description="The Id of an Organism", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of an Organism", IsRequired=true, Name="OrganismId", ParameterType="path")
+    organismId: string;
     createResponse() { return new Organism(); }
     getTypeName() { return "GetOrganism"; }
 }
@@ -323,7 +353,7 @@ export class GetOrganism extends Query<Organism> implements IReturn<Organism>
 */
 // @Route("/organisms", "GET")
 // @Api(Description="Get all organisms")
-export class GetOrganisms extends Query<Organism> implements IReturn<Array<Organism>>
+export class GetOrganisms implements IReturn<Array<Organism>>
 {
     organismsIds: string[];
     createResponse() { return new Array<Organism>(); }
@@ -335,7 +365,7 @@ export class GetOrganisms extends Query<Organism> implements IReturn<Array<Organ
 */
 // @Route("/systems/{SystemId}/components/connections", "GET")
 // @Api(Description="Get a list of component connections")
-export class GetConnections extends Query<ComponentConnection> implements IReturn<Array<ComponentConnection>>
+export class GetConnections implements IReturn<Array<ComponentConnection>>
 {
     /**
     * The id of a system
@@ -349,9 +379,9 @@ export class GetConnections extends Query<ComponentConnection> implements IRetur
 /**
 * Returns a list of all Aquaponic Systems
 */
-// @Route("/aquaponic/systems", "GET")
+// @Route("/systems/aquaponic", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
-export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Array<AquaponicSystem>>
+export class GetAllSystems implements IReturn<Array<AquaponicSystem>>
 {
     createResponse() { return new Array<AquaponicSystem>(); }
     getTypeName() { return "GetAllSystems"; }
@@ -360,33 +390,33 @@ export class GetAllSystems extends Query<AquaponicSystem> implements IReturn<Arr
 /**
 * Get an Aquaponic Systems by Id
 */
-// @Route("/aquaponic/systems/{id}", "GET")
+// @Route("/systems/aquaponic/{SystemId}", "GET")
 // @Api(Description="Get an Aquaponic Systems by Id")
-export class GetSystem extends Query<AquaponicSystem> implements IReturn<AquaponicSystem>
+export class GetSystem implements IReturn<AquaponicSystem>
 {
     /**
     * The Id of a system
     */
-    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
     createResponse() { return new AquaponicSystem(); }
     getTypeName() { return "GetSystem"; }
 }
 
 /**
-* Get all Organisms in an Aquaponic System
+* Runs analysis on a system using the latest level readings
 */
-// @Route("/aquaponic/systems/{id}/organisms", "GET")
-// @Api(Description="Get all Organisms in an Aquaponic System")
-export class GetSystemOrganisms extends Query<Organism> implements IReturn<Array<Organism>>
+// @Route("/systems/{SystemId}/analysis", "GET")
+// @Api(Description="Runs analysis on a system using the latest level readings")
+export class AnalysePonicsSystem implements IReturn<PonicsSystemAnalysisResult>
 {
     /**
     * The Id of a system
     */
-    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
-    createResponse() { return new Array<Organism>(); }
-    getTypeName() { return "GetSystemOrganisms"; }
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+    createResponse() { return new PonicsSystemAnalysisResult(); }
+    getTypeName() { return "AnalysePonicsSystem"; }
 }
 
 /**
@@ -394,9 +424,9 @@ export class GetSystemOrganisms extends Query<Organism> implements IReturn<Array
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Salinity/{Value}", "GET")
 // @Api(Description="Returns ToleranceAnalysis of Salinity level for an Organism")
-export class AnalyseToleranceSalinity extends AnalyseToleranceQuery<SalinityToleranceAnalysis, SalinityTolerance> implements IReturn<SalinityToleranceAnalysis>
+export class AnalyseToleranceSalinity extends AnalyseToleranceQuery_2<SalinityLevelAnalysis, SalinityTolerance> implements IReturn<SalinityLevelAnalysis>
 {
-    createResponse() { return new SalinityToleranceAnalysis(); }
+    createResponse() { return new SalinityLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceSalinity"; }
 }
 
@@ -405,9 +435,9 @@ export class AnalyseToleranceSalinity extends AnalyseToleranceQuery<SalinityTole
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Ph/{Value}", "GET")
 // @Api(Description="Returns ToleranceAnalysis of pH level for an Organism")
-export class AnalyseTolerancePh extends AnalyseToleranceQuery<PhToleranceAnalysis, PhTolerance> implements IReturn<PhToleranceAnalysis>
+export class AnalyseTolerancePh extends AnalyseToleranceQuery_2<PhLevelAnalysis, PhTolerance> implements IReturn<PhLevelAnalysis>
 {
-    createResponse() { return new PhToleranceAnalysis(); }
+    createResponse() { return new PhLevelAnalysis(); }
     getTypeName() { return "AnalyseTolerancePh"; }
 }
 
@@ -416,9 +446,9 @@ export class AnalyseTolerancePh extends AnalyseToleranceQuery<PhToleranceAnalysi
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Nitrite/{Value}", "GET")
 // @Api(Description="Returns ToleranceAnalysis of Nitrite levels for an Organism")
-export class AnalyseToleranceNitrite extends AnalyseToleranceQuery<NitriteToleranceAnalysis, NitriteTolerance> implements IReturn<NitriteToleranceAnalysis>
+export class AnalyseToleranceNitrite extends AnalyseToleranceQuery_2<NitriteLevelAnalysis, NitriteTolerance> implements IReturn<NitriteLevelAnalysis>
 {
-    createResponse() { return new NitriteToleranceAnalysis(); }
+    createResponse() { return new NitriteLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceNitrite"; }
 }
 
@@ -427,9 +457,9 @@ export class AnalyseToleranceNitrite extends AnalyseToleranceQuery<NitriteTolera
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Nitrite/{Value}", "GET")
 // @Api(Description="Returns Analysis of Nitrate levels for an Organism")
-export class AnalyseToleranceNitrate extends AnalyseToleranceQuery<NitrateToleranceAnalysis, NitrateTolerance> implements IReturn<NitrateToleranceAnalysis>
+export class AnalyseToleranceNitrate extends AnalyseToleranceQuery_2<NitrateLevelAnalysis, NitrateTolerance> implements IReturn<NitrateLevelAnalysis>
 {
-    createResponse() { return new NitrateToleranceAnalysis(); }
+    createResponse() { return new NitrateLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceNitrate"; }
 }
 
@@ -438,9 +468,9 @@ export class AnalyseToleranceNitrate extends AnalyseToleranceQuery<NitrateTolera
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Iron/{Value}", "GET")
 // @Api(Description="Returns ToleranceAnalysis of Iron  levels for an Organism")
-export class AnalyseToleranceIron extends AnalyseToleranceQuery<IronToleranceAnalysis, IronTolerance> implements IReturn<IronToleranceAnalysis>
+export class AnalyseToleranceIron extends AnalyseToleranceQuery_2<IronLevelAnalysis, IronTolerance> implements IReturn<IronLevelAnalysis>
 {
-    createResponse() { return new IronToleranceAnalysis(); }
+    createResponse() { return new IronLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceIron"; }
 }
 
@@ -449,9 +479,9 @@ export class AnalyseToleranceIron extends AnalyseToleranceQuery<IronToleranceAna
 */
 // @Route("/organisms/{OrganismId}/Tolerances/Ammonia/{Value}", "GET")
 // @Api(Description="Returns Analysis of Ammonia levels for an Organism")
-export class AnalyseToleranceAmmonia extends AnalyseToleranceQuery<AmmoniaToleranceAnalysis, AmmoniaTolerance> implements IReturn<AmmoniaToleranceAnalysis>
+export class AnalyseToleranceAmmonia extends AnalyseToleranceQuery_2<AmmoniaLevelAnalysis, AmmoniaTolerance> implements IReturn<AmmoniaLevelAnalysis>
 {
-    createResponse() { return new AmmoniaToleranceAnalysis(); }
+    createResponse() { return new AmmoniaLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceAmmonia"; }
 }
 
@@ -470,15 +500,15 @@ export class AddOrganism extends Command implements IReturnVoid, IDataCommand
 /**
 * Deletes an Organism
 */
-// @Route("/organisms/{id}", "DELETE")
+// @Route("/organisms/{OrganismId}", "DELETE")
 // @Api(Description="Deletes an Organism")
 export class DeleteOrganism extends Command implements IReturnVoid, IDataCommand
 {
     /**
     * The Id of an organism
     */
-    // @ApiMember(DataType="string", Description="The Id of an organism", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of an organism", IsRequired=true, Name="OrganismId", ParameterType="path")
+    organismId: string;
     createResponse() {}
     getTypeName() { return "DeleteOrganism"; }
 }
@@ -486,15 +516,15 @@ export class DeleteOrganism extends Command implements IReturnVoid, IDataCommand
 /**
 * Updates an Organism
 */
-// @Route("/organisms/{id}", "PUT")
+// @Route("/organisms/{OrganismId}", "PUT")
 // @Api(Description="Updates an Organism")
 export class UpdateOrganism extends Command implements IReturnVoid, IDataCommand
 {
     /**
     * The Id of an organism
     */
-    // @ApiMember(DataType="string", Description="The Id of an organism", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of an organism", IsRequired=true, Name="OrganismId", ParameterType="path")
+    organismId: string;
 
     organism: Organism;
     createResponse() {}
@@ -558,7 +588,7 @@ export class AddLevelReading extends Command implements IReturnVoid, IDataComman
 /**
 * Add an Aquaponic System
 */
-// @Route("/aquaponic/systems", "POST")
+// @Route("/systems/aquaponic", "POST")
 // @Api(Description="Add an Aquaponic System")
 export class AddSystem extends Command implements IReturnVoid, IDataCommand
 {
@@ -570,15 +600,15 @@ export class AddSystem extends Command implements IReturnVoid, IDataCommand
 /**
 * Add an Aquaponic System
 */
-// @Route("/aquaponic/systems/{id}", "DELETE")
+// @Route("/systems/aquaponic/{SystemId}", "DELETE")
 // @Api(Description="Add an Aquaponic System")
 export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
 {
     /**
     * The Id of an aquaponic system
     */
-    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
     createResponse() {}
     getTypeName() { return "DeleteSystem"; }
 }
@@ -586,15 +616,15 @@ export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
 /**
 * Update an Aquaponic Systems
 */
-// @Route("/aquaponic/systems/{id}", "PUT")
+// @Route("/systems/aquaponic/{SystemId}", "PUT")
 // @Api(Description="Update an Aquaponic Systems")
 export class UpdateSystem extends Command implements IReturnVoid, IDataCommand
 {
     /**
     * The Id of an aquaponic system
     */
-    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="Id", ParameterType="path")
-    id: string;
+    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
 
     system: AquaponicSystem;
     createResponse() {}
