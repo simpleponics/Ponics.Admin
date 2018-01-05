@@ -7,13 +7,13 @@ import {Router} from '@angular/router';
   selector: 'ngx-ponics-system-analysis-toasts-error',
   templateUrl: './ponics-system-analysis-toasts-error.component.html',
 })
-export class PonicsSystemAnalysisToastsErrorComponent implements OnInit{
+export class PonicsSystemAnalysisToastsErrorComponent implements OnInit {
 
   public toast: Toast;
   system: AquaponicSystem = new AquaponicSystem();
 
   constructor(private router: Router,
-              private toasterService: ToasterService){}
+              private toasterService: ToasterService) {}
 
   ngOnInit(): void {
     this.system = this.toast.data;
@@ -22,7 +22,7 @@ export class PonicsSystemAnalysisToastsErrorComponent implements OnInit{
 
   moreInformation() {
     this.toasterService.clear(this.toast.toastId);
-    this.router.navigate(['/pages/aquaponics/systems/' + this.system.id]);
+    this.router.navigate(['/pages/aquaponics/systems/' + this.system.id + '/analysis']);
   }
 
 }

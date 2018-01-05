@@ -2,7 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import {PonicsService} from '../../@core/data/ponics.service';
 import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
 import {
-  PonicsSystemAnalysisToastsErrorComponent
+  PonicsSystemAnalysisToastsErrorComponent,
 } from '../aquaponics/ponics-system-analysis-toasts/error/ponics-system-analysis-toasts-error.component';
 
 @Component({
@@ -10,7 +10,7 @@ import {
   styleUrls: ['./dashboard.component.scss'],
   templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements AfterViewInit{
+export class DashboardComponent implements AfterViewInit {
   constructor(
     private ponicsService: PonicsService,
     private toasterService: ToasterService) {

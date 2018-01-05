@@ -8,8 +8,9 @@ import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.comp
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
 import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
 import {
-  PonicsSystemAnalysisToastsErrorComponent
+  PonicsSystemAnalysisToastsErrorComponent,
 } from './ponics-system-analysis-toasts/error/ponics-system-analysis-toasts-error.component';
+import {AquaponicSystemAnalysisComponent} from './analysis/aquaponic-system-analysis.component';
 
 
 const routes: Routes = [{
@@ -27,6 +28,10 @@ const routes: Routes = [{
     {
       path: 'systems/:systemId/components/:componentId',
       component: AquaponicSystemComponent,
+    },
+    {
+      path: 'systems/:systemId/analysis',
+      component: AquaponicSystemAnalysisComponent,
     },
   ],
 }];
@@ -46,4 +51,5 @@ export const routedComponents = [
   LevelValueComponent,
   AddComponentModalComponent,
   PonicsSystemAnalysisToastsErrorComponent,
+  AquaponicSystemAnalysisComponent,
 ];

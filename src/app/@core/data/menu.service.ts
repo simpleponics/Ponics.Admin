@@ -57,6 +57,12 @@ export class MenuService {
           this.systems.children.push({
             title: system.name,
             link: '/pages/aquaponics/systems/' + system.id,
+            children: [
+              {
+                title: 'Analysis',
+                link: '/pages/aquaponics/systems/' + system.id + '/analysis',
+              },
+            ],
           });
         }
       },
