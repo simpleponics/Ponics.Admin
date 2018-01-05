@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
   AddComponent, AddLevelReading,
-  AddSystem,
+  AddSystem, AnalysePonicsSystem,
   AquaponicSystem,
   Component,
   GetAllSystems,
@@ -88,6 +88,12 @@ export class PonicsService {
     const query = new GetSystemLevels();
     query.systemId = systemId;
     query.type = levelType;
+    return this.client.get(query);
+  }
+
+  getSystemAnalysis(systemId: string) {
+    const query = new AnalysePonicsSystem();
+    query.systemId = systemId;
     return this.client.get(query);
   }
 

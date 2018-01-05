@@ -44,10 +44,12 @@ export class SimpleponicsLayoutComponent  implements OnDestroy {
     this.toasterConfig = new ToasterConfig({
       positionClass: 'toast-top-right',
       newestOnTop: true,
-      tapToDismiss: true,
+      tapToDismiss: false,
       preventDuplicates: false,
       animation: 'fade',
       limit: 5,
+      timeout: -1,
+      showCloseButton: true,
     });
   }
 

@@ -151,7 +151,7 @@ export class AquaponicWidgetComponent implements OnDestroy {
     addLevelsModalComponent.systemId = this.systemId;
   }
 
-  addComponentModal() {
+  editSystem() {
     this.router.navigate(['/pages/aquaponics/systems/' + this.systemId]);
   }
 

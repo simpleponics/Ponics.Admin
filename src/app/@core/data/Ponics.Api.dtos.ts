@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-05 13:52:42
+Date: 2018-01-05 14:46:29
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -127,7 +127,7 @@ export class PonicsSystem
 
 export type PonicsSystemAnalysisType = "Error" | "Warning" | "Info";
 
-export class PonicsSystemAnalysis
+export class PonicsSystemAnalysisItem
 {
     ponicsSystemAnalysisType: PonicsSystemAnalysisType;
     message: string;
@@ -263,7 +263,7 @@ export class AquaponicSystem extends PonicsSystem
     componentConnections: ComponentConnection[];
 }
 
-export class PonicsSystemAnalysisResult extends Array<PonicsSystemAnalysis>
+export class PonicsSystemAnalysis extends Array<PonicsSystemAnalysisItem>
 {
 }
 
@@ -408,14 +408,14 @@ export class GetSystem implements IReturn<AquaponicSystem>
 */
 // @Route("/systems/{SystemId}/analysis", "GET")
 // @Api(Description="Runs analysis on a system using the latest level readings")
-export class AnalysePonicsSystem implements IReturn<PonicsSystemAnalysisResult>
+export class AnalysePonicsSystem implements IReturn<PonicsSystemAnalysis>
 {
     /**
     * The Id of a system
     */
     // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
     systemId: string;
-    createResponse() { return new PonicsSystemAnalysisResult(); }
+    createResponse() { return new PonicsSystemAnalysis(); }
     getTypeName() { return "AnalysePonicsSystem"; }
 }
 

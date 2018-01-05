@@ -53,8 +53,7 @@ export class MenuService {
     this.systems.children = [];
     this.ponicsService.getAquaponicSystems().then(
       systems => {
-        for (const system of systems)
-        {
+        for (const system of systems) {
           this.systems.children.push({
             title: system.name,
             link: '/pages/aquaponics/systems/' + system.id,

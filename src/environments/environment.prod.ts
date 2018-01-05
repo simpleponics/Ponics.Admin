@@ -21,5 +21,5 @@ export const environment = {
     minDuration: BUSY_CONFIG_DEFAULTS.minDuration,
     backdrop: true,
     wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass,
-  }
+  },
 };
