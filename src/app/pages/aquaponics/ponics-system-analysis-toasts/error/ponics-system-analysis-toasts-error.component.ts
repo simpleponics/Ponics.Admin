@@ -24,5 +24,4 @@ export class PonicsSystemAnalysisToastsErrorComponent implements OnInit {
     this.toasterService.clear(this.toast.toastId);
     this.router.navigate(['/pages/aquaponics/systems/' + this.system.id + '/analysis']);
   }
-
 }
