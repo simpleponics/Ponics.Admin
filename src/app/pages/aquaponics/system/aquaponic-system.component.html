@@ -1,14 +1,16 @@
-﻿<div class="row">
+﻿<div class="row mb-3">
   <div class="col-md-12" [ngBusy]="loadAquaponicSystemBusy">
     <div class="input-group">
-      <div class="dropdown input-group-btn" ngbDropdown>
+      <div class="dropdown input-group-btn" ngbDropdown >
         <button type="button" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
           Action
         </button>
         <ul class="dropdown-menu" ngbDropdownMenu>
-          <li class="dropdown-item" (click)="addLevelsModal()">Add level readings</li>
-          <li class="dropdown-item" (click)="addComponentModal()">Add Component</li>
-          <li class="dropdown-item" (click)="deleteSystem()">Delete System</li>
+          <li class="dropdown-item" (click)="editSystem()" *ngIf="!editing">Edit System</li>
+          <li class="dropdown-item" (click)="addLevelsModal()" *ngIf="!editing">Add level readings</li>
+          <li class="dropdown-item" (click)="addComponentModal()" *ngIf="editing">Add Component</li>
+          <li class="dropdown-item" (click)="saveSystem()" *ngIf="editing">Finish Editing</li>
+          <li class="dropdown-item" (click)="deleteSystem()" *ngIf="editing">Delete System</li>
         </ul>
       </div>
       <input
@@ -16,13 +18,19 @@
         type="text"
         class="form-control"
         [(ngModel)]="aquaponicSystem.name"
-        (change)="onNameChange()" [ngBusy]="loadSystemComponentBusy">
+        (change)="onNameChange()"
+        [ngBusy]="loadSystemComponentBusy" 
+        [disabled]="editing">
     </div>
   </div>
 </div>
+<ngx-aquaponic-system-analysis
+  [systemId]="this.systemId"
+  *ngIf="!editing"
+  ></ngx-aquaponic-system-analysis>
   <div class="row">
     <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
-    <nb-tabset #componentTabs>
+    <nb-tabset #componentTabs *ngIf="editing">
         <nb-tab
           *ngFor="let systemComponent of aquaponicSystem.components"
           tabTitle="{{systemComponent.name}}"

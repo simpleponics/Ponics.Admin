@@ -1,0 +1,14 @@
+﻿<div class="row card-group">
+  <div class="col-12 col-md-4 mb-3" *ngFor="let a of analysis">
+    <nb-card class="h-100">
+      <nb-card-header>
+        <div class="{{cardClass(a)}}">
+          {{a.title}}
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        {{a.message}}
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

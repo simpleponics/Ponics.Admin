@@ -16,7 +16,9 @@ import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.compone
 })
 
 export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestroy {
+  editing: boolean = false;
   paramsSubscription: Subscription;
+  systemId: string;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
@@ -60,9 +62,10 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     this.paramsSubscription = this.route.params
       .subscribe(
         (params) => {
+          this.systemId = params['systemId'];
           this.loadAquaponicSystemBusy =
             this.ponicsService
-              .getAquaponicSystem(params['systemId']).then(s => this.aquaponicSystem = s);
+              .getAquaponicSystem(this.systemId).then(s => this.aquaponicSystem = s);
         },
       );
   }
@@ -81,5 +84,12 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.paramsSubscription.unsubscribe();
+  }
+
+  saveSystem() {
+    this.editing = !this.editing;
+  }
+  editSystem() {
+    this.editing = !this.editing;
   }
 }

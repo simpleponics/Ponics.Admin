@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-05 14:46:29
+Date: 2018-01-07 19:52:59
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -131,8 +131,7 @@ export class PonicsSystemAnalysisItem
 {
     ponicsSystemAnalysisType: PonicsSystemAnalysisType;
     message: string;
-    category: string;
-    identifier: string;
+    title: string;
 }
 
 export class AnalyseToleranceQuery

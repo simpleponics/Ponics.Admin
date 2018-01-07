@@ -10,7 +10,7 @@ import {AddComponentModalComponent} from './system/add-component/add-component-m
 import {
   PonicsSystemAnalysisToastsErrorComponent,
 } from './ponics-system-analysis-toasts/error/ponics-system-analysis-toasts-error.component';
-import {AquaponicSystemAnalysisComponent} from './analysis/aquaponic-system-analysis.component';
+import {AquaponicSystemAnalysisComponent} from './system/system-analysis/aquaponic-system-analysis.component';
 
 
 const routes: Routes = [{
@@ -28,10 +28,6 @@ const routes: Routes = [{
     {
       path: 'systems/:systemId/components/:componentId',
       component: AquaponicSystemComponent,
-    },
-    {
-      path: 'systems/:systemId/analysis',
-      component: AquaponicSystemAnalysisComponent,
     },
   ],
 }];
