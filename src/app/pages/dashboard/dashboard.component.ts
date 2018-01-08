@@ -29,7 +29,7 @@ export class DashboardComponent implements AfterViewInit {
   analysePonicsSystem(ponicsService: PonicsService, system) {
     ponicsService.getSystemAnalysis(system.id).then(
       analysis => {
-        if (analysis.find(a => a.ponicsSystemAnalysisType === 'Error')) {
+        if (analysis.items.find(a => a.ponicsSystemAnalysisType === 'Error')) {
           const toast: Toast = {
             type: 'error',
             title: 'Aquaponic Systems Error',

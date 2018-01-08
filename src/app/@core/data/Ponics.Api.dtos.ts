@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-07 19:52:59
+Date: 2018-01-08 20:48:24
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -262,8 +262,9 @@ export class AquaponicSystem extends PonicsSystem
     componentConnections: ComponentConnection[];
 }
 
-export class PonicsSystemAnalysis extends Array<PonicsSystemAnalysisItem>
+export class PonicsSystemAnalysis
 {
+    items: PonicsSystemAnalysisItem[];
 }
 
 export class SalinityLevelAnalysis extends LevelAnalysis_1<SalinityTolerance>

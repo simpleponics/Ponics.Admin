@@ -29,7 +29,7 @@ export class AquaponicSystemAnalysisComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.ponicsService.getSystemAnalysis(this.systemId).then(analysis => this.analysis = analysis);
+    this.ponicsService.getSystemAnalysis(this.systemId).then(analysis => this.analysis = analysis.items);
   }
 
 
