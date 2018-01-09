@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-08 20:48:24
+Date: 2018-01-09 07:53:06
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -532,24 +532,6 @@ export class UpdateOrganism extends Command implements IReturnVoid, IDataCommand
 }
 
 /**
-* Adds a component to a system
-*/
-// @Route("/systems/{SystemId}/components", "POST")
-// @Api(Description="Adds a component to a system")
-export class AddComponent extends Command implements IReturnVoid, IDataCommand
-{
-    /**
-    * The of a System
-    */
-    // @ApiMember(DataType="string", Description="The of a System", IsRequired=true, Name="SystemId", ParameterType="path")
-    systemId: string;
-
-    component: Component;
-    createResponse() {}
-    getTypeName() { return "AddComponent"; }
-}
-
-/**
 * Connects two a components
 */
 // @Route("/systems/{SystemId}/components/connections", "POST")
@@ -565,6 +547,24 @@ export class ConnectComponents extends Command implements IReturnVoid, IDataComm
     componentConnection: ComponentConnection;
     createResponse() {}
     getTypeName() { return "ConnectComponents"; }
+}
+
+/**
+* Adds a component to a system
+*/
+// @Route("/systems/{SystemId}/components", "POST")
+// @Api(Description="Adds a component to a system")
+export class AddComponent extends Command implements IReturnVoid, IDataCommand
+{
+    /**
+    * The of a System
+    */
+    // @ApiMember(DataType="string", Description="The of a System", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    component: Component;
+    createResponse() {}
+    getTypeName() { return "AddComponent"; }
 }
 
 /**

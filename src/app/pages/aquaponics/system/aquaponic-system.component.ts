@@ -6,7 +6,7 @@ import {AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AddComponentModalComponent} from './add-component/add-component-modal.component';
+import {AddEditComponentModalComponent} from './add-edit-component/add-edit-component-modal.component';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 
 @Component({
@@ -25,7 +25,6 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   loadSystemComponentBusy: Promise<any>;
   @ViewChildren('organism') organismList;
   @ViewChild('componentTabs') componentTabs: NbTabsetComponent;
-
 
   constructor(
     private ponicsService: PonicsService,
@@ -49,9 +48,15 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   addComponentModal()  {
-    const modal = this.modalService.open(AddComponentModalComponent, {size: 'lg', container: 'nb-layout'});
-    const addComponentModal = <AddComponentModalComponent>modal.componentInstance;
-    addComponentModal.system = this.aquaponicSystem;
+    const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
+    const addComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
+    addComponentModal.systemId = this.aquaponicSystem.id;
+  }
+
+  editComponentModal() {
+    const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
+    const addComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
+    addComponentModal.systemId = this.aquaponicSystem.id;
   }
 
   deleteSystem()  {
@@ -91,5 +96,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   }
   editSystem() {
     this.editing = !this.editing;
+  }
+
+  componentChanged(event) {
+    console.log(event);
   }
 }

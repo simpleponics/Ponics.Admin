@@ -6,7 +6,7 @@ import {AquaponicsComponent} from './aquaponics.component';
 import {AquaponicsAddSystemComponent} from './system/add-system/aquaponics-add-system.component';
 import {AddLevelsModalComponent} from './system/add-levels/add-levels-modal.component';
 import {LevelValueComponent} from './system/add-levels/level-value/level-value.component';
-import {AddComponentModalComponent} from './system/add-component/add-component-modal.component';
+import {AddEditComponentModalComponent} from './system/add-edit-component/add-edit-component-modal.component';
 import {
   PonicsSystemAnalysisToastsErrorComponent,
 } from './ponics-system-analysis-toasts/error/ponics-system-analysis-toasts-error.component';
@@ -45,7 +45,7 @@ export const routedComponents = [
   AquaponicsAddSystemComponent,
   AddLevelsModalComponent,
   LevelValueComponent,
-  AddComponentModalComponent,
+  AddEditComponentModalComponent,
   PonicsSystemAnalysisToastsErrorComponent,
   AquaponicSystemAnalysisComponent,
 ];

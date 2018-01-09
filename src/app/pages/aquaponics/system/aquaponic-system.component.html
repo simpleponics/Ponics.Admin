@@ -8,6 +8,7 @@
         <ul class="dropdown-menu" ngbDropdownMenu>
           <li class="dropdown-item" (click)="editSystem()" *ngIf="!editing">Edit System</li>
           <li class="dropdown-item" (click)="addLevelsModal()" *ngIf="!editing">Add level readings</li>
+          <li class="dropdown-item" (click)="editComponentModal()" *ngIf="editing">Edit Component</li>
           <li class="dropdown-item" (click)="addComponentModal()" *ngIf="editing">Add Component</li>
           <li class="dropdown-item" (click)="saveSystem()" *ngIf="editing">Finish Editing</li>
           <li class="dropdown-item" (click)="deleteSystem()" *ngIf="editing">Delete System</li>

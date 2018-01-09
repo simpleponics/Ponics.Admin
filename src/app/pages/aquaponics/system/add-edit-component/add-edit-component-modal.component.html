@@ -21,7 +21,9 @@
       <ng2-smart-table
         [settings]="settings"
         [source]="source"
-        (userRowSelect)="onUserRowSelect($event)">
+        (userRowSelect)="onUserRowSelect($event)"
+        (rowSelect)="select($event)"
+        #organismsTable>
       </ng2-smart-table>
     </div>
   </div>
