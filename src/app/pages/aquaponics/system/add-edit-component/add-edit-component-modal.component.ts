@@ -1,9 +1,16 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-
 import {PonicsService} from '../../../../@core/data/ponics.service';
 import {
-  Component as AquaponicSystemComponent, Organism,
+  Component as AquaponicSystemComponent,
+  Organism,
 } from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 import {ModalComponent} from '../../../../modal/modal.component';
@@ -15,7 +22,7 @@ import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component'
   templateUrl: './add-edit-component-modal.component.html',
   styleUrls: ['./add-edit-component-modal.component.scss'],
 })
-export class AddEditComponentModalComponent extends ModalComponent implements OnInit {
+export class AddEditComponentModalComponent extends ModalComponent implements OnInit, AfterViewChecked {
   @Input() component: AquaponicSystemComponent = new AquaponicSystemComponent();
   @Input() systemId: string;
   @ViewChild('organismsTable') organismsTable: Ng2SmartTableComponent;
@@ -41,9 +48,9 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
   constructor(
     private ponicsService: PonicsService,
     private organismService: OrganismService,
+    private changeDetectorRef: ChangeDetectorRef,
     activeModal: NgbActiveModal) {
-    super(activeModal)
-    this.component.organisms = [];
+    super(activeModal);
   }
 
   ngOnInit(): void {
@@ -53,24 +60,20 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
           this.source.load(allOrganisms);
         },
       );
-
-    this.source.onChanged().subscribe(
-      () => this.test()
-    );
   }
 
-  test(): void {
-    if (this.organismsTable.grid.getRows() == null) {
-      return;
-    }
-    for (const o of this.component.organisms) {
-      const org = this.organismsTable.grid.getRows()
-        .find(r => r.getData().id === o);
-      if (org != null) {
-        org.isSelected = true;
-        console.log(org);
+  ngAfterViewChecked(): void {
+    this.syncTable();
+  }
+
+  syncTable(): void {
+    this.organismsTable.grid.getRows().forEach((row) => {
+      if (this.organisms.find( r => r.id === row.getData().id)) {
+        row.isSelected = true;
       }
-    }
+    });
+
+    this.changeDetectorRef.detectChanges();
   }
 
   addComponent() {
@@ -84,9 +87,5 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
     for (const organism of event.selected) {
       this.component.organisms.push(organism.id);
     }
-  }
-
-  select(event) {
-
   }
 }

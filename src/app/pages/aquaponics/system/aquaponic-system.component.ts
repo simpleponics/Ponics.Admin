@@ -1,8 +1,9 @@
 ﻿import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-
-import {AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
+import {
+  Component as ASComponent,
+  AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +21,7 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   paramsSubscription: Subscription;
   systemId: string;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
+  selectedComponent: ASComponent;
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
   loadSystemComponentBusy: Promise<any>;
@@ -55,8 +57,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
 
   editComponentModal() {
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
-    const addComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
-    addComponentModal.systemId = this.aquaponicSystem.id;
+    const editComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
+    editComponentModal.systemId = this.aquaponicSystem.id;
+    editComponentModal.component = this.selectedComponent;
   }
 
   deleteSystem()  {
@@ -70,17 +73,17 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
           this.systemId = params['systemId'];
           this.loadAquaponicSystemBusy =
             this.ponicsService
-              .getAquaponicSystem(this.systemId).then(s => this.aquaponicSystem = s);
+              .getAquaponicSystem(this.systemId)
+              .then(s => this.aquaponicSystem = s);
         },
       );
   }
 
   ngAfterViewInit(): void {
    this.organismList.changes.subscribe(() => {
-       this.componentTabs.selectTab(this.componentTabs.tabs.first);
-       // https://github.com/angular/angular/issues/17572#issuecomment-353357588
-       this.changeDetector.detectChanges();
-     });
+     // https://github.com/angular/angular/issues/17572#issuecomment-353357588
+     this.changeDetector.detectChanges();
+   });
   }
 
   onNameChange() {
@@ -94,11 +97,12 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   saveSystem() {
     this.editing = !this.editing;
   }
+
   editSystem() {
     this.editing = !this.editing;
   }
 
-  componentChanged(event) {
-    console.log(event);
+  selectComponent(component: ASComponent) {
+    this.selectedComponent = component;
   }
 }

@@ -31,7 +31,8 @@
   ></ngx-aquaponic-system-analysis>
   <div class="row">
     <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
-    <nb-tabset #componentTabs *ngIf="editing">
+    <nb-tabset
+      #componentTabs *ngIf="editing">
         <nb-tab
           *ngFor="let systemComponent of aquaponicSystem.components"
           tabTitle="{{systemComponent.name}}"
