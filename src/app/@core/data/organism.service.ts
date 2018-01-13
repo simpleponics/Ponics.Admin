@@ -5,7 +5,7 @@ import {
   GetOrganism,
   Organism,
   Tolerance,
-  UpdateOrganism,
+  UpdateOrganism, DeleteOrganism,
 } from './Ponics.Api.dtos';
 import {LevelTypes} from './LevelTypes';
 import {toleranceCommands, tolerances} from './PonicsMaps';
@@ -16,6 +16,7 @@ import {environment} from '../../../environments/environment';
 export class OrganismService {
   organismAdded = new EventEmitter<Organism>();
   organismUpdated = new EventEmitter<Organism>();
+  organismDeleted = new EventEmitter<void>();
   toleranceAdded  = new EventEmitter<Tolerance>();
   toleranceUpdated = new EventEmitter<Tolerance>();
   toleranceDeleted = new EventEmitter<Tolerance>();
@@ -42,6 +43,16 @@ export class OrganismService {
     const p = this.client.post(command);
     p.then(() => this.organismAdded.emit(organism));
     return p;
+  }
+
+  deleteOrganism(organism: string) {
+    const command = new DeleteOrganism();
+    command.organismId = organism;
+    const promise = this.client.delete(command);
+    promise.then(() =>
+      this.organismDeleted.emit()
+    );
+    return promise;
   }
 
   addTolerance(organismId: string, tolerance: any, toleranceTypes: LevelTypes): Promise<any>  {

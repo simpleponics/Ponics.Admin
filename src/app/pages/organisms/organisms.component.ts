@@ -1,6 +1,5 @@
 ﻿import {Component, Input, OnInit} from '@angular/core';
 import {LocalDataSource} from 'ng2-smart-table';
-import {PonicsService} from '../../@core/data/ponics.service';
 import {Organism} from '../../@core/data/Ponics.Api.dtos';
 import {OrganismService} from '../../@core/data/organism.service';
 import {ConfirmModalComponent} from '../../modal/confirm-modal/confirm-modal.component';
@@ -36,7 +35,6 @@ export class OrganismsComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private ponicsService: PonicsService,
     private organismService: OrganismService) {
 
 
@@ -75,7 +73,7 @@ export class OrganismsComponent implements OnInit {
 
     deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
     deleteConfirmModalComponent.confirmationSuccessful =
-      () => this.ponicsService.deleteOrganism(this.selectedOrganism.id);
+      () => this.organismService.deleteOrganism(this.selectedOrganism.id);
   }
 
   onNameChange() {

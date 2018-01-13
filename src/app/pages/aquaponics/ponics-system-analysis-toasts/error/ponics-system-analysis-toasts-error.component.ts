@@ -17,7 +17,6 @@ export class PonicsSystemAnalysisToastsErrorComponent implements OnInit {
 
   ngOnInit(): void {
     this.system = this.toast.data;
-    console.log(this.toast);
   }
 
   moreInformation() {

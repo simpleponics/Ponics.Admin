@@ -26,19 +26,20 @@
   </div>
 </div>
 <ngx-aquaponic-system-analysis
-  [systemId]="this.systemId"
-  *ngIf="!editing"
-  ></ngx-aquaponic-system-analysis>
-  <div class="row">
-    <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
+  [systemId]="systemId"
+  *ngIf="!editing">
+</ngx-aquaponic-system-analysis>
+<div class="row" *ngIf="editing">
+  <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
     <nb-tabset
-      #componentTabs *ngIf="editing">
-        <nb-tab
-          *ngFor="let systemComponent of aquaponicSystem.components"
-          tabTitle="{{systemComponent.name}}"
-        >
-          <ngx-organisms #organism [allowEdit]="false" [organismIds]="systemComponent.organisms"></ngx-organisms>
-        </nb-tab>
-      </nb-tabset>
+      #componentTabs
+      (changeTab)="changeTab()">
+      <nb-tab
+        *ngFor="let systemComponent of aquaponicSystem.components"
+        tabTitle="{{systemComponent.name}}"
+        route="{{systemComponent.id}}">
+        <ngx-organisms #organism [allowEdit]="false" [organismIds]="systemComponent.organisms"></ngx-organisms>
+      </nb-tab>
+    </nb-tabset>
   </div>
 </div>

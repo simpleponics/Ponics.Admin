@@ -23,10 +23,11 @@ import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component'
   styleUrls: ['./add-edit-component-modal.component.scss'],
 })
 export class AddEditComponentModalComponent extends ModalComponent implements OnInit, AfterViewChecked {
-  @Input() component: AquaponicSystemComponent = new AquaponicSystemComponent();
+  @Input() component: AquaponicSystemComponent = null;
   @Input() systemId: string;
+  @Input() editing: boolean = false;
   @ViewChild('organismsTable') organismsTable: Ng2SmartTableComponent;
-  organisms: Organism[] = [];
+  organisms: string[] = [];
 
   settings = {
     selectMode: 'multi',
@@ -55,11 +56,14 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
 
   ngOnInit(): void {
     this.organismService.getOrganisms()
-      .then(
-        (allOrganisms) => {
-          this.source.load(allOrganisms);
-        },
-      );
+      .then(organisms => this.source.load(organisms))
+      .then(organisms => {
+        if (this.component != null) {
+          this.organisms = this.component.organisms;
+        } else {
+          this.component = new AquaponicSystemComponent();
+        }
+      });
   }
 
   ngAfterViewChecked(): void {
@@ -68,7 +72,7 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
 
   syncTable(): void {
     this.organismsTable.grid.getRows().forEach((row) => {
-      if (this.organisms.find( r => r.id === row.getData().id)) {
+      if (this.organisms.find( o => o === row.getData().id)) {
         row.isSelected = true;
       }
     });
@@ -80,11 +84,16 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
     this.activeModal.close();
     this.ponicsService.addComponent(this.systemId, this.component);
   }
+  editComponent() {
+    this.activeModal.close();
+    this.ponicsService.addComponent(this.systemId, this.component);
+  }
 
   onUserRowSelect(event) {
     this.component.organisms = [];
-    this.organisms = event.selected;
+    this.organisms = [];
     for (const organism of event.selected) {
+      this.organisms.push(organism.id);
       this.component.organisms.push(organism.id);
     }
   }

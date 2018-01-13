@@ -1,14 +1,21 @@
-﻿import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewChildren} from '@angular/core';
+﻿import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {
-  Component as ASComponent,
-  AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
+import { AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddEditComponentModalComponent} from './add-edit-component/add-edit-component-modal.component';
 import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
+
 
 @Component({
   selector: 'ngx-aquaponic-system',
@@ -17,11 +24,12 @@ import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.compone
 })
 
 export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestroy {
+
   editing: boolean = false;
   paramsSubscription: Subscription;
   systemId: string;
+  componentId: string;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
-  selectedComponent: ASComponent;
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
   loadSystemComponentBusy: Promise<any>;
@@ -36,9 +44,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     ponicsService.componentAdded.subscribe(
       () => {
         const systemId = this.route.snapshot.params['systemId'];
-          this.loadSystemComponentBusy = this.ponicsService.getAquaponicSystem(systemId).then(
-          s => this.aquaponicSystem = s,
-        );
+          this.loadSystemComponentBusy =
+            this.ponicsService.getAquaponicSystem(systemId)
+              .then(system => this.aquaponicSystem = system);
       },
     );
   }
@@ -53,13 +61,15 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
     const addComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
     addComponentModal.systemId = this.aquaponicSystem.id;
+    addComponentModal.editing = false;
   }
 
   editComponentModal() {
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
     const editComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
     editComponentModal.systemId = this.aquaponicSystem.id;
-    editComponentModal.component = this.selectedComponent;
+    editComponentModal.component = this.aquaponicSystem.components.find(s => s.id === this.componentId);
+    editComponentModal.editing = true;
   }
 
   deleteSystem()  {
@@ -74,16 +84,17 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
           this.loadAquaponicSystemBusy =
             this.ponicsService
               .getAquaponicSystem(this.systemId)
-              .then(s => this.aquaponicSystem = s);
+              .then(s => this.aquaponicSystem = s)
+              .then(s => this.componentId = s.components[0].id);
         },
       );
   }
 
   ngAfterViewInit(): void {
-   this.organismList.changes.subscribe(() => {
-     // https://github.com/angular/angular/issues/17572#issuecomment-353357588
-     this.changeDetector.detectChanges();
-   });
+    this.organismList.changes.subscribe(() => {
+      // https://github.com/angular/angular/issues/17572#issuecomment-353357588
+      this.changeDetector.detectChanges();
+    });
   }
 
   onNameChange() {
@@ -102,7 +113,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     this.editing = !this.editing;
   }
 
-  selectComponent(component: ASComponent) {
-    this.selectedComponent = component;
+  changeTab() {
+    if (this.componentTabs != null) {
+      this.componentId = this.componentTabs.tabs.find(t => t.active).route;
+    }
   }
 }

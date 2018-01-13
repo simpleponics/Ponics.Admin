@@ -3,7 +3,7 @@ import {
   AddComponent, AddLevelReading,
   AddSystem, AnalysePonicsSystem,
   AquaponicSystem,
-  Component,
+  Component, DeleteOrganism, DeleteSystem,
   GetAllSystems,
   GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading,
   UpdateSystem,
@@ -16,6 +16,8 @@ export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
   componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
+  systemDeleted = new EventEmitter<void>();
+  componentDeleted = new EventEmitter<void>();
   levelReadingsAdded = new EventEmitter<string>();
   addingLevelReadings = new EventEmitter<Promise<void>>();
 
@@ -58,6 +60,18 @@ export class PonicsService {
     return promise;
   }
 
+  updateComponent(systemId: string, component: Component) {
+    const command = new Update();
+    command.systemId = systemId;
+    command.component = component;
+    const promise = this.client.post(command);
+    promise.then(r =>
+      this.componentAdded.emit(component),
+    );
+    return promise;
+  }
+
+
   updateAquaponicSystem(system: AquaponicSystem) {
     const command = new UpdateSystem();
     command.systemId = system.id;
@@ -98,9 +112,13 @@ export class PonicsService {
   }
 
   deleteSystem(systemId: string) {
-  }
-
-  deleteOrganism(organism: string) {
+    const command = new DeleteSystem();
+    command.systemId = systemId;
+    const promise = this.client.delete(command);
+    promise.then(() =>
+      this.systemDeleted.emit(),
+    );
+    return promise;
   }
 }
 

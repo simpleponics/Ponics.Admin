@@ -29,5 +29,16 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-md btn-primary" (click)="addComponent()">Add Component</button>
+  <button
+    *ngIf="!editing"
+    class="btn btn-md btn-primary"
+    (click)="addComponent()">
+    Add Component
+  </button>
+  <button
+    *ngIf="editing"
+    class="btn btn-md btn-primary"
+    (click)="editComponent()">
+    Edit Component
+  </button>
 </div>
