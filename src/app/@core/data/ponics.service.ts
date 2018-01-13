@@ -5,7 +5,7 @@ import {
   AquaponicSystem,
   Component, DeleteOrganism, DeleteSystem,
   GetAllSystems,
-  GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading,
+  GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading, UpdateComponent,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
@@ -14,10 +14,13 @@ import {environment} from '../../../environments/environment';
 @Injectable()
 export class PonicsService {
   systemAdded = new EventEmitter<AquaponicSystem>();
-  componentAdded = new EventEmitter<Component>();
   systemUpdated = new EventEmitter<AquaponicSystem>();
   systemDeleted = new EventEmitter<void>();
+
+  componentAdded = new EventEmitter<Component>();
+  componentUpdated = new EventEmitter<Component>();
   componentDeleted = new EventEmitter<void>();
+
   levelReadingsAdded = new EventEmitter<string>();
   addingLevelReadings = new EventEmitter<Promise<void>>();
 
@@ -61,12 +64,13 @@ export class PonicsService {
   }
 
   updateComponent(systemId: string, component: Component) {
-    const command = new Update();
+    const command = new UpdateComponent();
     command.systemId = systemId;
+    command.componentId = component.id;
     command.component = component;
     const promise = this.client.post(command);
     promise.then(r =>
-      this.componentAdded.emit(component),
+      this.componentUpdated.emit(component),
     );
     return promise;
   }

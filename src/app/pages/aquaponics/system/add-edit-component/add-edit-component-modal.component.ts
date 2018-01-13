@@ -86,7 +86,7 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
   }
   editComponent() {
     this.activeModal.close();
-    this.ponicsService.addComponent(this.systemId, this.component);
+    this.ponicsService.updateComponent(this.systemId, this.component);
   }
 
   onUserRowSelect(event) {

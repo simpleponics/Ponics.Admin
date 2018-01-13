@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-09 07:53:06
+Date: 2018-01-13 15:31:35
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -377,6 +377,28 @@ export class GetConnections implements IReturn<Array<ComponentConnection>>
 }
 
 /**
+* Get a list of the component organisms
+*/
+// @Route("/systems/{SystemId}/components/{ComponentId}/organisms", "GET")
+// @Api(Description="Get a list of the component organisms")
+export class GetComponentOrganisms implements IReturn<Array<Organism>>
+{
+    /**
+    * The id of a system
+    */
+    // @ApiMember(DataType="string", Description="The id of a system", IsRequired=true, Name="ComponentId", ParameterType="path")
+    componentId: string;
+
+    /**
+    * The Id of a system
+    */
+    // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+    createResponse() { return new Array<Organism>(); }
+    getTypeName() { return "GetComponentOrganisms"; }
+}
+
+/**
 * Returns a list of all Aquaponic Systems
 */
 // @Route("/systems/aquaponic", "GET")
@@ -565,6 +587,30 @@ export class AddComponent extends Command implements IReturnVoid, IDataCommand
     component: Component;
     createResponse() {}
     getTypeName() { return "AddComponent"; }
+}
+
+/**
+* Updates a component in a system
+*/
+// @Route("/systems/{SystemId}/components/{ComponentId}", "PUT")
+// @Api(Description="Updates a component in a system")
+export class UpdateComponent extends Command implements IReturnVoid, IDataCommand
+{
+    /**
+    * The id of a System
+    */
+    // @ApiMember(DataType="string", Description="The id of a System", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    /**
+    * The id of a Component
+    */
+    // @ApiMember(DataType="string", Description="The id of a Component", IsRequired=true, Name="ComponentId", ParameterType="path")
+    componentId: string;
+
+    component: Component;
+    createResponse() {}
+    getTypeName() { return "UpdateComponent"; }
 }
 
 /**
