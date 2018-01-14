@@ -8,8 +8,15 @@
         <ul class="dropdown-menu" ngbDropdownMenu>
           <li class="dropdown-item" (click)="editSystem()" *ngIf="!editing">Edit System</li>
           <li class="dropdown-item" (click)="addLevelsModal()" *ngIf="!editing">Add level readings</li>
-          <li class="dropdown-item" (click)="editComponentModal()" *ngIf="editing">Edit Component</li>
           <li class="dropdown-item" (click)="addComponentModal()" *ngIf="editing">Add Component</li>
+          <li class="dropdown-item" (click)="editComponentModal()"
+              *ngIf="editing && aquaponicSystem.components.length > 0">
+            Edit Component
+          </li>
+          <li class="dropdown-item" (click)="deleteComponentModal()"
+              *ngIf="editing && aquaponicSystem.components.length > 0">
+            Delete Component
+          </li>
           <li class="dropdown-item" (click)="saveSystem()" *ngIf="editing">Finish Editing</li>
           <li class="dropdown-item" (click)="deleteSystem()" *ngIf="editing">Delete System</li>
         </ul>
@@ -21,7 +28,7 @@
         [(ngModel)]="aquaponicSystem.name"
         (change)="onNameChange()"
         [ngBusy]="loadSystemComponentBusy"
-        [disabled]="editing">
+        [disabled]="!editing">
     </div>
   </div>
 </div>
@@ -33,6 +40,7 @@
   <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
     <nb-tabset
       #componentTabs
+      *ngIf="aquaponicSystem.components.length > 0"
       (changeTab)="changeTab()">
       <nb-tab
         *ngFor="let systemComponent of aquaponicSystem.components"
@@ -41,5 +49,16 @@
         <ngx-organisms #organism [allowEdit]="false" [organismIds]="systemComponent.organisms"></ngx-organisms>
       </nb-tab>
     </nb-tabset>
+    <nb-card *ngIf="aquaponicSystem.components.length === 0">
+      <nb-card-header>
+        <div class="text-warning">
+          System has no components
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        You can add a component though the action dropdown.
+      </nb-card-body>
+
+    </nb-card>
   </div>
 </div>

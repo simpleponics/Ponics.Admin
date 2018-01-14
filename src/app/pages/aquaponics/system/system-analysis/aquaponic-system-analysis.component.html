@@ -11,4 +11,15 @@
       </nb-card-body>
     </nb-card>
   </div>
+
+  <nb-card class="h-100" *ngIf="analysis.length === 0">
+    <nb-card-header>
+      <div class="text-success">
+       All is well
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      There were no issues found.
+    </nb-card-body>
+  </nb-card>
 </div>

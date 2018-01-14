@@ -7,14 +7,18 @@
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import { AquaponicSystem} from '../../../@core/data/Ponics.Api.dtos';
+import {
+  AquaponicSystem,
+  Component as SystemComponent,
+} from '../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddEditComponentModalComponent} from './add-edit-component/add-edit-component-modal.component';
-import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
+import {NbTabComponent, NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
+import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.component';
 
 
 @Component({
@@ -39,16 +43,26 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   constructor(
     private ponicsService: PonicsService,
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NgbModal,
     private changeDetector: ChangeDetectorRef) {
-    ponicsService.componentAdded.subscribe(
-      () => {
-        const systemId = this.route.snapshot.params['systemId'];
-          this.loadSystemComponentBusy =
-            this.ponicsService.getAquaponicSystem(systemId)
-              .then(system => this.aquaponicSystem = system);
-      },
-    );
+  }
+
+  private loadSystem(systemId: string) {
+    this.loadSystemComponentBusy =
+      this.ponicsService.getAquaponicSystem(systemId)
+        .then(system => {
+          if (system != null) {
+            this.aquaponicSystem = system;
+            if (system.components.length > 0) {
+              this.componentId = system.components[0].id;
+              if (this.componentTabs != null) {
+                console.log(this.componentTabs.tabs);
+                this.componentTabs.tabs.forEach(tab => tab.active = tab.route === this.componentId);
+              }
+            }
+          }
+        });
   }
 
   addLevelsModal() {
@@ -57,12 +71,13 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     addLevelsModalComponent.systemId = this.aquaponicSystem.id;
   }
 
-  addComponentModal()  {
+  addComponentModal() {
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
     const addComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
     addComponentModal.systemId = this.aquaponicSystem.id;
     addComponentModal.editing = false;
   }
+
 
   editComponentModal() {
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
@@ -73,7 +88,40 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   deleteSystem()  {
-    this.ponicsService.deleteSystem(this.aquaponicSystem.id);
+    const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
+    const deleteConfirmModalComponent = <ConfirmModalComponent>modal.componentInstance;
+
+    deleteConfirmModalComponent.confirmModalTitle = 'Delete ' + this.aquaponicSystem.name;
+    deleteConfirmModalComponent.challengeQuestion =
+      'Are you Sure you wish to delete this system? If so please enter its name.';
+
+    deleteConfirmModalComponent.challengeAnswer = this.aquaponicSystem.name;
+
+    deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
+    deleteConfirmModalComponent.confirmationSuccessful = () => {
+      this.ponicsService.deleteSystem(this.aquaponicSystem.id).then( () =>
+        this.router.navigate(['/']),
+      );
+    };
+  }
+
+  deleteComponentModal() {
+    const modal = this.modalService.open(ConfirmModalComponent, {size: 'lg', container: 'nb-layout'});
+    const deleteConfirmModalComponent = <ConfirmModalComponent>modal.componentInstance;
+
+    const componentName = this.selectedComponent().name;
+    deleteConfirmModalComponent.confirmModalTitle = 'Delete ' + componentName;
+    deleteConfirmModalComponent.challengeQuestion =
+      'Are you Sure you wish to delete this system? If so please enter its name.';
+
+    deleteConfirmModalComponent.challengeAnswer = componentName;
+
+    deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
+    deleteConfirmModalComponent.confirmationSuccessful = () => {
+      this.loadSystemComponentBusy = this.ponicsService
+        .deleteComponent(this.systemId, this.componentId)
+        .then(() => this.loadSystem(this.systemId));
+    };
   }
 
   ngOnInit(): void {
@@ -81,11 +129,9 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(
         (params) => {
           this.systemId = params['systemId'];
-          this.loadAquaponicSystemBusy =
-            this.ponicsService
-              .getAquaponicSystem(this.systemId)
-              .then(s => this.aquaponicSystem = s)
-              .then(s => this.componentId = s.components[0].id);
+          this.loadSystem(this.systemId);
+          this.ponicsService.componentUpdated.subscribe(this.loadSystem(this.systemId));
+          this.ponicsService.componentAdded.subscribe(this.loadSystem(this.systemId));
         },
       );
   }
@@ -115,7 +161,18 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
 
   changeTab() {
     if (this.componentTabs != null) {
-      this.componentId = this.componentTabs.tabs.find(t => t.active).route;
+      const selectTab = this.selectedTab();
+      if (selectTab != null) {
+        this.componentId = selectTab.route;
+      }
     }
+  }
+
+  private selectedTab(): NbTabComponent {
+    return this.componentTabs.tabs.find(t => t.active);
+  }
+
+  private selectedComponent(): SystemComponent {
+    return this.aquaponicSystem.components.find( c => c.id === this.componentId);
   }
 }

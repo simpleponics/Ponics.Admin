@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-13 15:31:35
+Date: 2018-01-14 12:51:21
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -587,6 +587,28 @@ export class AddComponent extends Command implements IReturnVoid, IDataCommand
     component: Component;
     createResponse() {}
     getTypeName() { return "AddComponent"; }
+}
+
+/**
+* Updates a component in a system
+*/
+// @Route("/systems/{SystemId}/components/{ComponentId}", "DELETE")
+// @Api(Description="Updates a component in a system")
+export class DeleteComponent extends Command implements IReturnVoid, IDataCommand
+{
+    /**
+    * The id of a System
+    */
+    // @ApiMember(DataType="string", Description="The id of a System", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    /**
+    * The id of a Component
+    */
+    // @ApiMember(DataType="string", Description="The id of a Component", IsRequired=true, Name="ComponentId", ParameterType="path")
+    componentId: string;
+    createResponse() {}
+    getTypeName() { return "DeleteComponent"; }
 }
 
 /**

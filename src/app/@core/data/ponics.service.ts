@@ -3,7 +3,7 @@ import {
   AddComponent, AddLevelReading,
   AddSystem, AnalysePonicsSystem,
   AquaponicSystem,
-  Component, DeleteOrganism, DeleteSystem,
+  Component, DeleteComponent, DeleteOrganism, DeleteSystem,
   GetAllSystems,
   GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading, UpdateComponent,
   UpdateSystem,
@@ -75,6 +75,16 @@ export class PonicsService {
     return promise;
   }
 
+  deleteComponent(systemId: string, componentId: string) {
+    const command = new DeleteComponent();
+    command.systemId = systemId;
+    command.componentId = componentId;
+    const promise = this.client.delete(command);
+    promise.then(() =>
+      this.componentDeleted.emit(),
+    );
+    return promise;
+  }
 
   updateAquaponicSystem(system: AquaponicSystem) {
     const command = new UpdateSystem();

@@ -8,10 +8,7 @@ import {
 } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {PonicsService} from '../../../../@core/data/ponics.service';
-import {
-  Component as AquaponicSystemComponent,
-  Organism,
-} from '../../../../@core/data/Ponics.Api.dtos';
+import { Component as AquaponicSystemComponent} from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 import {ModalComponent} from '../../../../modal/modal.component';
 import {OrganismService} from '../../../../@core/data/organism.service';
@@ -52,18 +49,17 @@ export class AddEditComponentModalComponent extends ModalComponent implements On
     private changeDetectorRef: ChangeDetectorRef,
     activeModal: NgbActiveModal) {
     super(activeModal);
+
+    if (this.component == null) {
+      this.component = new AquaponicSystemComponent();
+      this.component.organisms = [];
+    }
   }
 
   ngOnInit(): void {
     this.organismService.getOrganisms()
       .then(organisms => this.source.load(organisms))
-      .then(organisms => {
-        if (this.component != null) {
-          this.organisms = this.component.organisms;
-        } else {
-          this.component = new AquaponicSystemComponent();
-        }
-      });
+      .then(() => this.organisms = this.component.organisms);
   }
 
   ngAfterViewChecked(): void {
