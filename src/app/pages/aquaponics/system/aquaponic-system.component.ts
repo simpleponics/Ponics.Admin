@@ -124,8 +124,8 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
           this.loadSystem(this.systemId);
           this.ponicsService.componentUpdated.subscribe(() => this.loadSystem(this.systemId));
           this.ponicsService.componentAdded.subscribe(() => this.loadSystem(this.systemId));
-        },
-      );
+          this.editing = this.router.url.endsWith('/edit');
+        });
   }
 
   ngAfterViewInit(): void {

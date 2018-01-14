@@ -59,7 +59,6 @@
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "nebular-icons": "1.0.6",
-    "ng2-ckeditor": "1.1.9",
     "ng2-smart-table": "^1.2.2",
     "ng2-tree": "2.0.0-alpha.10",
     "normalize.css": "6.0.0",
@@ -74,7 +73,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@angular/cli": "^1.6.4",
+    "@angular/cli": "^1.7.0-beta.0",
     "@angular/compiler-cli": "^5.1.1",
     "@angular/language-service": "4.4.6",
     "@compodoc/compodoc": "1.0.1",

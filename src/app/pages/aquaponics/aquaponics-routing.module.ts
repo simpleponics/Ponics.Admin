@@ -26,6 +26,10 @@ const routes: Routes = [{
       component: AquaponicSystemComponent,
     },
     {
+      path: 'systems/:systemId/edit',
+      component: AquaponicSystemComponent,
+    },
+    {
       path: 'systems/:systemId/components/:componentId',
       component: AquaponicSystemComponent,
     },
