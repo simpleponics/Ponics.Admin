@@ -32,7 +32,7 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   editing: boolean = false;
   paramsSubscription: Subscription;
   systemId: string;
-  aquaponicSystem: AquaponicSystem = new AquaponicSystem();
+  aquaponicSystem: AquaponicSystem;
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
   loadSystemComponentBusy: Promise<any>;
@@ -45,6 +45,8 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     private router: Router,
     private modalService: NgbModal,
     private changeDetector: ChangeDetectorRef) {
+    this.aquaponicSystem = new AquaponicSystem();
+    this.aquaponicSystem.components = [];
   }
 
   private loadSystem(systemId: string) {
