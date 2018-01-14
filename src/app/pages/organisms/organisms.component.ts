@@ -35,10 +35,7 @@ export class OrganismsComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private organismService: OrganismService) {
-
-
-  }
+    private organismService: OrganismService) {}
 
   ngOnInit(): void {
     let promise: Promise<Array<Organism>>;
