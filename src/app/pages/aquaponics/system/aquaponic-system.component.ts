@@ -17,7 +17,7 @@ import {PonicsService} from '../../../@core/data/ponics.service';
 import {AddLevelsModalComponent} from './add-levels/add-levels-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddEditComponentModalComponent} from './add-edit-component/add-edit-component-modal.component';
-import {NbTabComponent, NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
+import {NbTabsetComponent} from '@nebular/theme/components/tabset/tabset.component';
 import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.component';
 
 
@@ -32,7 +32,6 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
   editing: boolean = false;
   paramsSubscription: Subscription;
   systemId: string;
-  componentId: string;
   aquaponicSystem: AquaponicSystem = new AquaponicSystem();
   updateAquaponicSystemBusy: Promise<any>;
   loadAquaponicSystemBusy: Promise<any>;
@@ -54,13 +53,6 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
         .then(system => {
           if (system != null) {
             this.aquaponicSystem = system;
-            if (system.components.length > 0) {
-              this.componentId = system.components[0].id;
-              if (this.componentTabs != null) {
-                console.log(this.componentTabs.tabs);
-                this.componentTabs.tabs.forEach(tab => tab.active = tab.route === this.componentId);
-              }
-            }
           }
         });
   }
@@ -83,7 +75,7 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     const modal = this.modalService.open(AddEditComponentModalComponent, {size: 'lg', container: 'nb-layout'});
     const editComponentModal = <AddEditComponentModalComponent>modal.componentInstance;
     editComponentModal.systemId = this.aquaponicSystem.id;
-    editComponentModal.component = this.aquaponicSystem.components.find(s => s.id === this.componentId);
+    editComponentModal.component = this.selectedComponent();
     editComponentModal.editing = true;
   }
 
@@ -119,7 +111,7 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     deleteConfirmModalComponent.confirmModalButtonText = 'Delete';
     deleteConfirmModalComponent.confirmationSuccessful = () => {
       this.loadSystemComponentBusy = this.ponicsService
-        .deleteComponent(this.systemId, this.componentId)
+        .deleteComponent(this.systemId, this.selectedComponent().id)
         .then(() => this.loadSystem(this.systemId));
     };
   }
@@ -130,8 +122,8 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
         (params) => {
           this.systemId = params['systemId'];
           this.loadSystem(this.systemId);
-          this.ponicsService.componentUpdated.subscribe(this.loadSystem(this.systemId));
-          this.ponicsService.componentAdded.subscribe(this.loadSystem(this.systemId));
+          this.ponicsService.componentUpdated.subscribe(() => this.loadSystem(this.systemId));
+          this.ponicsService.componentAdded.subscribe(() => this.loadSystem(this.systemId));
         },
       );
   }
@@ -159,20 +151,8 @@ export class AquaponicSystemComponent implements OnInit, AfterViewInit, OnDestro
     this.editing = !this.editing;
   }
 
-  changeTab() {
-    if (this.componentTabs != null) {
-      const selectTab = this.selectedTab();
-      if (selectTab != null) {
-        this.componentId = selectTab.route;
-      }
-    }
-  }
-
-  private selectedTab(): NbTabComponent {
-    return this.componentTabs.tabs.find(t => t.active);
-  }
-
   private selectedComponent(): SystemComponent {
-    return this.aquaponicSystem.components.find( c => c.id === this.componentId);
+    const selectedTab = this.componentTabs.tabs.find(t => t.active);
+    return this.aquaponicSystem.components.find( c => c.id === selectedTab.route);
   }
 }

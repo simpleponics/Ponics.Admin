@@ -40,12 +40,13 @@
   <div class="col-md-12" [ngBusy]="loadSystemComponentBusy">
     <nb-tabset
       #componentTabs
-      *ngIf="aquaponicSystem.components.length > 0"
-      (changeTab)="changeTab()">
+      *ngIf="aquaponicSystem.components.length > 0">
       <nb-tab
         *ngFor="let systemComponent of aquaponicSystem.components"
         tabTitle="{{systemComponent.name}}"
-        route="{{systemComponent.id}}">
+        route="{{systemComponent.id}}"
+        [active]="aquaponicSystem.components[0].id == systemComponent.id"
+      >
         <ngx-organisms #organism [allowEdit]="false" [organismIds]="systemComponent.organisms"></ngx-organisms>
       </nb-tab>
     </nb-tabset>
@@ -58,7 +59,6 @@
       <nb-card-body>
         You can add a component though the action dropdown.
       </nb-card-body>
-
     </nb-card>
   </div>
 </div>
