@@ -56,7 +56,7 @@ export class MenuService {
         for (const system of systems) {
           this.systems.children.push({
             title: system.name,
-            link: '/pages/aquaponics/systems/' + system.id
+            link: '/pages/aquaponics/systems/' + system.id,
           });
         }
       },

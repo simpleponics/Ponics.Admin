@@ -36,7 +36,7 @@ import {AddOrganismModalComponent} from './add-organism/add-organism-modal.compo
     ConfirmModalComponent,
     AddToleranceModalComponent,
     CustomEditorComponent,
-    AddOrganismModalComponent
+    AddOrganismModalComponent,
   ],
 })
 export class OrganismsModule {

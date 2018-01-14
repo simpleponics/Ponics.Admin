@@ -25,8 +25,7 @@ export class AddToleranceModalComponent extends ModalComponent implements OnInit
   toleranceForm: FormGroup;
   validationErrorMessage: string;
 
-  constructor(private ponicsService: PonicsService,
-              private organismService: OrganismService,
+  constructor(private organismService: OrganismService,
               activeModal: NgbActiveModal) {
     super(activeModal);
   }

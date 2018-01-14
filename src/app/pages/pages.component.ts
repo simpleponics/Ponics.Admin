@@ -14,8 +14,7 @@ import {NbMenuItem} from '@nebular/theme';
 export class PagesComponent {
   menu: NbMenuItem[] = [];
 
-  constructor(
-    private menuService: MenuService) {
+  constructor(menuService: MenuService) {
     this.menu = menuService.menuItems;
   }
 }

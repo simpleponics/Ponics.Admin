@@ -50,7 +50,7 @@ export class OrganismService {
     command.organismId = organism;
     const promise = this.client.delete(command);
     promise.then(() =>
-      this.organismDeleted.emit()
+      this.organismDeleted.emit(),
     );
     return promise;
   }

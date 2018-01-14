@@ -37,7 +37,6 @@ export class AddLevelsModalComponent extends ModalComponent {
   );
 
   constructor(
-    private organismService: OrganismService,
     private ponicsService: PonicsService,
     private componentFactoryResolver: ComponentFactoryResolver,
     activeModal: NgbActiveModal) {

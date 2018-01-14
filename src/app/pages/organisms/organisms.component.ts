@@ -87,6 +87,6 @@ export class OrganismsComponent implements OnInit {
   }
 
   newOrganism() {
-    const modal = this.modalService.open(AddOrganismModalComponent, {size: 'lg', container: 'nb-layout'});
+    this.modalService.open(AddOrganismModalComponent, {size: 'lg', container: 'nb-layout'});
   }
 }

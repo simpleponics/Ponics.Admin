@@ -36,8 +36,7 @@ export class LevelsChartComponent implements OnDestroy, OnChanges   {
   timeline: boolean = true;
 
   constructor(
-    private ponicsService: PonicsService,
-    private toleranceAnalysisService: ToleranceAnalysisService,
+    ponicsService: PonicsService,
     private theme: NbThemeService) {
     this.configureColorScheme();
     ponicsService.levelReadingsAdded.subscribe(() => this.configureData());

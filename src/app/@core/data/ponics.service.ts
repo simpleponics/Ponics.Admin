@@ -3,9 +3,15 @@ import {
   AddComponent, AddLevelReading,
   AddSystem, AnalysePonicsSystem,
   AquaponicSystem,
-  Component, DeleteComponent, DeleteOrganism, DeleteSystem,
+  Component,
+  DeleteComponent,
+  DeleteSystem,
   GetAllSystems,
-  GetSystem, GetSystemLevels, GetSystemOrganisms, LevelReading, UpdateComponent,
+  GetSystem,
+  GetSystemLevels,
+  GetSystemOrganisms,
+  LevelReading,
+  UpdateComponent,
   UpdateSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';

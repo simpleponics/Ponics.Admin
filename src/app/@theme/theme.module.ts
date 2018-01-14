@@ -43,7 +43,7 @@ const NB_MODULES = [
   NbSidebarModule,
   NbCheckboxModule,
   NgbModule,
-  ToasterModule
+  ToasterModule,
 ];
 
 const COMPONENTS = [

@@ -11,8 +11,6 @@ import {LocalDataSource} from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmModalComponent} from '../../../modal/confirm-modal/confirm-modal.component';
-import {PonicsService} from '../../../@core/data/ponics.service';
-import {AddToleranceModalComponent} from './add-tolerance/add-tolerance-modal.component';
 import {OrganismService} from '../../../@core/data/organism.service';
 import {CustomEditorComponent} from './custom-editor/custom-editor.component';
 
@@ -97,7 +95,6 @@ export class OrganismDetailComponent implements OnInit, OnChanges {
 
 
   constructor(private modalService: NgbModal,
-              private ponicsService: PonicsService,
               private organismService: OrganismService) {
     this.organismService.toleranceAdded.subscribe(
     );
