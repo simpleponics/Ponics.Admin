@@ -13,9 +13,5 @@
         "../node_modules/@nebular/*"
       ]
     }
-  },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ]
+  }
 }
