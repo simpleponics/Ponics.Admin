@@ -5,7 +5,6 @@ import {scale} from '../../../../@core/data/PonicsMaps';
 import {ZonedDateTime} from '../../../../@core/data/ZonedDateTime';
 import {LevelReading, Tolerance} from '../../../../@core/data/Ponics.Api.dtos';
 import {LevelTypes} from '../../../../@core/data/LevelTypes';
-import {ToleranceAnalysisService} from '../../../../@core/data/toleranceAnalysis.service';
 import {NbThemeService} from '@nebular/theme';
 
 @Component({

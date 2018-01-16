@@ -7,7 +7,6 @@ import {LevelValueComponent} from './level-value/level-value.component';
 import {ModalComponent} from '../../../../modal/modal.component';
 import {levelQueries, tolerancesValidators} from '../../../../@core/data/PonicsMaps';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {OrganismService} from '../../../../@core/data/organism.service';
 import {LevelTypes} from '../../../../@core/data/LevelTypes';
 import {LevelReading} from '../../../../@core/data/Ponics.Api.dtos';
 import {PonicsService} from '../../../../@core/data/ponics.service';

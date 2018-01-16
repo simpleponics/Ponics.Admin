@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {PonicsService} from '../../../../@core/data/ponics.service';
 import {
   Organism,
   Tolerance,

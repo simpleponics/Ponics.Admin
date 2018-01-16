@@ -57,9 +57,6 @@
       "exclude": "src/app/@core/data/Ponics.Api.dtos.ts"
     },
     {
-      "project": "src/tsconfig.spec.json"
-    },
-    {
       "project": "e2e/tsconfig.e2e.json"
     }
   ],

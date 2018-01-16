@@ -1,18 +1,12 @@
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {PonicsService} from '../../../../@core/data/ponics.service';
-import { Component as AquaponicSystemComponent} from '../../../../@core/data/Ponics.Api.dtos';
+import {Component as AquaponicSystemComponent} from '../../../../@core/data/Ponics.Api.dtos';
 import {LocalDataSource} from 'ng2-smart-table';
 import {ModalComponent} from '../../../../modal/modal.component';
 import {OrganismService} from '../../../../@core/data/organism.service';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
+import {AfterViewChecked, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'ngx-add-edit-component-modal',
