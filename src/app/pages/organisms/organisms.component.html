@@ -19,7 +19,7 @@
     class="form-control"
     [(ngModel)]="selectedOrganism.name"
     (change)="onNameChange()"
-    [ngBusy]="[onNameChangeBusy]"
+    [ngBusy]="onNameChangeBusy"
     *ngIf="selectedOrganism != null"
   >
 </div>

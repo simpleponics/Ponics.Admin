@@ -6,9 +6,8 @@ import {AddLevelsModalComponent} from '../aquaponics/system/add-levels/add-level
 import {LevelValueComponent} from '../aquaponics/system/add-levels/level-value/level-value.component';
 import {AquaponicsModule} from '../aquaponics/aquaponics.module';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {environment} from '../../../environments/environment';
-import {BusyModule} from 'angular2-busy';
 import {LevelsChartComponent} from './aquaponic-widget/levels-chart/levels-chart.component';
+import {NgBusyModule} from 'ng-busy';
 
 
 @NgModule({
@@ -16,7 +15,7 @@ import {LevelsChartComponent} from './aquaponic-widget/levels-chart/levels-chart
     ThemeModule,
     AquaponicsModule,
     NgxChartsModule,
-    BusyModule.forRoot(environment.busyConfig),
+    NgBusyModule,
   ],
   declarations: [
     DashboardComponent,
