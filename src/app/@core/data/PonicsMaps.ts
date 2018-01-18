@@ -91,12 +91,12 @@ export const toleranceCommands: Map<LevelTypes, {delete: any, update: any, add: 
 
 export const tolerances: Map<LevelTypes, any> =
   new Map([
-  [LevelTypes.Salinity, new SalinityTolerance()],
-  [LevelTypes.Iron, new IronTolerance()],
-  [LevelTypes.Nitrate, new NitrateTolerance()],
-  [LevelTypes.Nitrite, new NitriteTolerance()],
-  [LevelTypes.Ammonia, new AmmoniaTolerance()],
-  [LevelTypes.pH, new PhTolerance()],
+  [LevelTypes.Salinity, {type: new SalinityTolerance(), name: 'SalinityTolerance'}],
+  [LevelTypes.Iron, {type: new IronTolerance(), name: 'IronTolerance'}],
+  [LevelTypes.Nitrate, {type: new NitrateTolerance(), name: 'NitrateTolerance'}],
+  [LevelTypes.Nitrite, {type: new NitriteTolerance(), name: 'NitriteTolerance'}],
+  [LevelTypes.Ammonia, {type: new AmmoniaTolerance(), name: 'AmmoniaTolerance'}],
+  [LevelTypes.pH, {type: new PhTolerance(), name: 'PhTolerance'}],
 ]);
 
 export const tolerancesValidators: Map<LevelTypes, {

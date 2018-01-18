@@ -13,8 +13,16 @@ import {Router} from '@angular/router';
 import {LevelTypes} from '../../../@core/data/LevelTypes';
 import {ToleranceAnalysisService} from '../../../@core/data/toleranceAnalysis.service';
 import {tolerances} from '../../../@core/data/PonicsMaps';
-import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
-import {NbMediaBreakpoint, NbMediaBreakpointsService, NbThemeService} from '@nebular/theme';
+import {
+  BodyOutputType,
+  Toast,
+  ToasterService,
+} from 'angular2-toaster';
+import {
+  NbMediaBreakpoint,
+  NbMediaBreakpointsService,
+  NbThemeService,
+} from '@nebular/theme';
 
 @Component({
   selector: 'ngx-aquaponic-widget',
@@ -64,16 +72,12 @@ export class AquaponicWidgetComponent implements OnDestroy {
 
     ponicsService.levelReadingsAdded.subscribe(systemId => this.getLevelReadings());
 
-    ponicsService.getAquaponicSystem(this.systemId).then(
-    system => {
-      this.system = system;
-      ponicsService.getAquaponicSystemOrganisms(this.systemId).then(
-        organisms => {
-          this.systemOrganisms = organisms;
-          this.organism = organisms.find(o => o.id === this.organismId);
-          this.getLevelReadings();
-        });
-    });
+    ponicsService.getAquaponicSystem(this.systemId)
+      .then(system => this.system = system)
+      .then(system =>  ponicsService.getAquaponicSystemOrganisms(system.id)
+        .then(organisms => this.systemOrganisms = organisms)
+        .then(organisms => this.organism = organisms.find(o => o.id === this.organismId)))
+      .then(() => this.getLevelReadings());
   }
 
   getLevelReadings() {
@@ -81,8 +85,9 @@ export class AquaponicWidgetComponent implements OnDestroy {
       levels => {
         this.levelReadings = [];
         const tolerance = tolerances.get(this.levelType);
-        this.tolerance = this.organism.tolerances.find(t => t.type === tolerance.constructor.name);
-
+        this.tolerance = this.organism.tolerances.find(t => t.type === tolerance.name);
+        console.log(this.organism.tolerances );
+        console.log(this.levelType);
         this.latestReading = levels[levels.length - 1];
         this.levelReadings = levels;
 

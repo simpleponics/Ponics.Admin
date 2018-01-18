@@ -98,14 +98,14 @@ export class OrganismService {
   }
 
   findToleranceTypeKeyFromToleranceObjectType(tolerance: string): LevelTypes {
-    return Array.from(tolerances.keys()).find(k => tolerances.get(k).constructor.name === tolerance);
+    return Array.from(tolerances.keys()).find(k => tolerances.get(k).name === tolerance);
   }
 
   getMissingTolerances(organism: Organism): string[] {
     let missingTolerances: string[] = Array.from(toleranceCommands.keys());
     tolerances.forEach(
       (value: any, key: LevelTypes) => {
-        if (organism.tolerances.some(t => t.type === value.constructor.name)) {
+        if (organism.tolerances.some(t => t.type === value.name)) {
           missingTolerances = missingTolerances.filter( item => item !== key);
         }
       });
