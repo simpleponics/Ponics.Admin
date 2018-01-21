@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-14 12:51:21
+Date: 2018-01-21 14:43:06
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -24,6 +24,15 @@ export interface IReturn<T>
 export interface IReturnVoid
 {
     createResponse() : void;
+}
+
+export interface IPost
+{
+}
+
+export interface IMeta
+{
+    meta?: { [index:string]: string; };
 }
 
 export class LevelReading
@@ -93,6 +102,10 @@ export class ComponentConnection
     */
     // @ApiMember(DataType="string", Description="The id of the destination component", IsRequired=true, Name="DestinationId", ParameterType="body")
     targetId: string;
+}
+
+export class GetAllPonicsSystems<TPonicsSystem>
+{
 }
 
 export class Component
@@ -200,7 +213,7 @@ export class AmmoniaTolerance extends Tolerance
     scale: Scale;
 }
 
-export class Command
+export interface ICommand
 {
 }
 
@@ -208,7 +221,7 @@ export interface IDataCommand
 {
 }
 
-export class ToleranceCommand<TTolerance> extends Command
+export class ToleranceCommand<TTolerance>
 {
     /**
     * The id of an organism
@@ -233,6 +246,46 @@ export class UpdateTolerance<TTolerance> extends ToleranceCommand<TTolerance>
 {
     // @ApiMember(ExcludeInSchema=true)
     tolerance: TTolerance;
+}
+
+// @DataContract
+export class ResponseError
+{
+    // @DataMember(Order=1, EmitDefaultValue=false)
+    errorCode: string;
+
+    // @DataMember(Order=2, EmitDefaultValue=false)
+    fieldName: string;
+
+    // @DataMember(Order=3, EmitDefaultValue=false)
+    message: string;
+
+    // @DataMember(Order=4, EmitDefaultValue=false)
+    meta: { [index:string]: string; };
+}
+
+// @DataContract
+export class ResponseStatus
+{
+    // @DataMember(Order=1)
+    errorCode: string;
+
+    // @DataMember(Order=2)
+    message: string;
+
+    // @DataMember(Order=3)
+    stackTrace: string;
+
+    // @DataMember(Order=4)
+    errors: ResponseError[];
+
+    // @DataMember(Order=5)
+    meta: { [index:string]: string; };
+}
+
+export class NewGuid
+{
+    guid: string;
 }
 
 export class Organism
@@ -292,6 +345,83 @@ export class IronLevelAnalysis extends LevelAnalysis_1<IronTolerance>
 
 export class AmmoniaLevelAnalysis extends LevelAnalysis_1<AmmoniaTolerance>
 {
+}
+
+export class User
+{
+    // @ApiMember(ExcludeInSchema=true)
+    id: string;
+
+    // @ApiMember(ExcludeInSchema=true)
+    ponicsSystemIds: string[];
+}
+
+// @DataContract
+export class AuthenticateResponse
+{
+    // @DataMember(Order=1)
+    userId: string;
+
+    // @DataMember(Order=2)
+    sessionId: string;
+
+    // @DataMember(Order=3)
+    userName: string;
+
+    // @DataMember(Order=4)
+    displayName: string;
+
+    // @DataMember(Order=5)
+    referrerUrl: string;
+
+    // @DataMember(Order=6)
+    bearerToken: string;
+
+    // @DataMember(Order=7)
+    refreshToken: string;
+
+    // @DataMember(Order=8)
+    responseStatus: ResponseStatus;
+
+    // @DataMember(Order=9)
+    meta: { [index:string]: string; };
+}
+
+// @DataContract
+export class AssignRolesResponse
+{
+    // @DataMember(Order=1)
+    allRoles: string[];
+
+    // @DataMember(Order=2)
+    allPermissions: string[];
+
+    // @DataMember(Order=3)
+    responseStatus: ResponseStatus;
+}
+
+// @DataContract
+export class UnAssignRolesResponse
+{
+    // @DataMember(Order=1)
+    allRoles: string[];
+
+    // @DataMember(Order=2)
+    allPermissions: string[];
+
+    // @DataMember(Order=3)
+    responseStatus: ResponseStatus;
+}
+
+/**
+* Gets a new Guid
+*/
+// @Route("/utils/guid", "GET")
+// @Api(Description="Gets a new Guid")
+export class GetNewGuid implements IReturn<NewGuid>
+{
+    createResponse() { return new NewGuid(); }
+    getTypeName() { return "GetNewGuid"; }
 }
 
 /**
@@ -403,10 +533,10 @@ export class GetComponentOrganisms implements IReturn<Array<Organism>>
 */
 // @Route("/systems/aquaponic", "GET")
 // @Api(Description="Returns a list of all Aquaponic Systems")
-export class GetAllSystems implements IReturn<Array<AquaponicSystem>>
+export class GetAllAquaponicSystems extends GetAllPonicsSystems<AquaponicSystem> implements IReturn<Array<AquaponicSystem>>
 {
     createResponse() { return new Array<AquaponicSystem>(); }
-    getTypeName() { return "GetAllSystems"; }
+    getTypeName() { return "GetAllAquaponicSystems"; }
 }
 
 /**
@@ -414,7 +544,7 @@ export class GetAllSystems implements IReturn<Array<AquaponicSystem>>
 */
 // @Route("/systems/aquaponic/{SystemId}", "GET")
 // @Api(Description="Get an Aquaponic Systems by Id")
-export class GetSystem implements IReturn<AquaponicSystem>
+export class GetAquaponicSystem implements IReturn<AquaponicSystem>
 {
     /**
     * The Id of a system
@@ -422,7 +552,7 @@ export class GetSystem implements IReturn<AquaponicSystem>
     // @ApiMember(DataType="string", Description="The Id of a system", IsRequired=true, Name="SystemId", ParameterType="path")
     systemId: string;
     createResponse() { return new AquaponicSystem(); }
-    getTypeName() { return "GetSystem"; }
+    getTypeName() { return "GetAquaponicSystem"; }
 }
 
 /**
@@ -508,11 +638,27 @@ export class AnalyseToleranceAmmonia extends AnalyseToleranceQuery_2<AmmoniaLeve
 }
 
 /**
+* Gets a user
+*/
+// @Route("/user", "GET")
+// @Api(Description="Gets a user")
+export class GetUser implements IReturn<User>
+{
+    /**
+    * The of a user
+    */
+    // @ApiMember(DataType="string", Description="The of a user", IsRequired=true, Name="UserId", ParameterType="path")
+    userId: string;
+    createResponse() { return new User(); }
+    getTypeName() { return "GetUser"; }
+}
+
+/**
 * Adds and organism
 */
 // @Route("/organisms", "POST")
 // @Api(Description="Adds and organism")
-export class AddOrganism extends Command implements IReturnVoid, IDataCommand
+export class AddOrganism implements IReturnVoid, ICommand, IDataCommand
 {
     organism: Organism;
     createResponse() {}
@@ -524,7 +670,7 @@ export class AddOrganism extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/organisms/{OrganismId}", "DELETE")
 // @Api(Description="Deletes an Organism")
-export class DeleteOrganism extends Command implements IReturnVoid, IDataCommand
+export class DeleteOrganism implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The Id of an organism
@@ -540,7 +686,7 @@ export class DeleteOrganism extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/organisms/{OrganismId}", "PUT")
 // @Api(Description="Updates an Organism")
-export class UpdateOrganism extends Command implements IReturnVoid, IDataCommand
+export class UpdateOrganism implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The Id of an organism
@@ -558,7 +704,7 @@ export class UpdateOrganism extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/systems/{SystemId}/components/connections", "POST")
 // @Api(Description="Connects two a components")
-export class ConnectComponents extends Command implements IReturnVoid, IDataCommand
+export class ConnectComponents implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The id of a system
@@ -576,7 +722,7 @@ export class ConnectComponents extends Command implements IReturnVoid, IDataComm
 */
 // @Route("/systems/{SystemId}/components", "POST")
 // @Api(Description="Adds a component to a system")
-export class AddComponent extends Command implements IReturnVoid, IDataCommand
+export class AddComponent implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The of a System
@@ -594,7 +740,7 @@ export class AddComponent extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/systems/{SystemId}/components/{ComponentId}", "DELETE")
 // @Api(Description="Updates a component in a system")
-export class DeleteComponent extends Command implements IReturnVoid, IDataCommand
+export class DeleteComponent implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The id of a System
@@ -616,7 +762,7 @@ export class DeleteComponent extends Command implements IReturnVoid, IDataComman
 */
 // @Route("/systems/{SystemId}/components/{ComponentId}", "PUT")
 // @Api(Description="Updates a component in a system")
-export class UpdateComponent extends Command implements IReturnVoid, IDataCommand
+export class UpdateComponent implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The id of a System
@@ -640,7 +786,7 @@ export class UpdateComponent extends Command implements IReturnVoid, IDataComman
 */
 // @Route("/systems/{SystemId}/reading", "POST")
 // @Api(Description="Adds a level readings for system")
-export class AddLevelReading extends Command implements IReturnVoid, IDataCommand
+export class AddLevelReading implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The id of a System
@@ -658,7 +804,7 @@ export class AddLevelReading extends Command implements IReturnVoid, IDataComman
 */
 // @Route("/systems/aquaponic", "POST")
 // @Api(Description="Add an Aquaponic System")
-export class AddSystem extends Command implements IReturnVoid, IDataCommand
+export class AddSystem implements IReturnVoid, ICommand, IDataCommand
 {
     system: PonicsSystem;
     createResponse() {}
@@ -670,7 +816,7 @@ export class AddSystem extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/systems/aquaponic/{SystemId}", "DELETE")
 // @Api(Description="Add an Aquaponic System")
-export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
+export class DeleteSystem implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The Id of an aquaponic system
@@ -686,7 +832,7 @@ export class DeleteSystem extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/systems/aquaponic/{SystemId}", "PUT")
 // @Api(Description="Update an Aquaponic Systems")
-export class UpdateSystem extends Command implements IReturnVoid, IDataCommand
+export class UpdateSystem implements IReturnVoid, ICommand, IDataCommand
 {
     /**
     * The Id of an aquaponic system
@@ -704,7 +850,7 @@ export class UpdateSystem extends Command implements IReturnVoid, IDataCommand
 */
 // @Route("/organisms/{OrganismId}/tolerances/salinity", "POST")
 // @Api(Description="Adds a salinity tolerance to an organism")
-export class AddSalinityTolerance extends AddTolerance<SalinityTolerance> implements IReturnVoid
+export class AddSalinityTolerance extends AddTolerance<SalinityTolerance> implements IReturnVoid, ICommand
 {
     tolerance: SalinityTolerance;
     createResponse() {}
@@ -716,7 +862,7 @@ export class AddSalinityTolerance extends AddTolerance<SalinityTolerance> implem
 */
 // @Route("/organisms/{OrganismId}/tolerances/salinity", "DELETE")
 // @Api(Description="Deletes the salinity tolerance off an organism")
-export class DeleteSalinityTolerance extends DeleteTolerance<SalinityTolerance> implements IReturnVoid
+export class DeleteSalinityTolerance extends DeleteTolerance<SalinityTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeleteSalinityTolerance"; }
@@ -727,7 +873,7 @@ export class DeleteSalinityTolerance extends DeleteTolerance<SalinityTolerance> 
 */
 // @Route("/organisms/{OrganismId}/tolerances/salinity", "PUT")
 // @Api(Description="Updates the salinity tolerance of an organism")
-export class UpdateSalinityTolerance extends UpdateTolerance<SalinityTolerance> implements IReturnVoid
+export class UpdateSalinityTolerance extends UpdateTolerance<SalinityTolerance> implements IReturnVoid, ICommand
 {
     tolerance: SalinityTolerance;
     createResponse() {}
@@ -739,7 +885,7 @@ export class UpdateSalinityTolerance extends UpdateTolerance<SalinityTolerance> 
 */
 // @Route("/organisms/{OrganismId}/tolerances/ph", "POST")
 // @Api(Description="Add a pH tolerance to an organism")
-export class AddPhTolerance extends AddTolerance<PhTolerance> implements IReturnVoid
+export class AddPhTolerance extends AddTolerance<PhTolerance> implements IReturnVoid, ICommand
 {
     tolerance: PhTolerance;
     createResponse() {}
@@ -751,7 +897,7 @@ export class AddPhTolerance extends AddTolerance<PhTolerance> implements IReturn
 */
 // @Route("/organisms/{OrganismId}/tolerances/ph", "DELETE")
 // @Api(Description="Deletes the pH tolerance from an organism")
-export class DeletePhTolerance extends DeleteTolerance<PhTolerance> implements IReturnVoid
+export class DeletePhTolerance extends DeleteTolerance<PhTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeletePhTolerance"; }
@@ -762,7 +908,7 @@ export class DeletePhTolerance extends DeleteTolerance<PhTolerance> implements I
 */
 // @Route("/organisms/{OrganismId}/tolerances/ph", "PUT")
 // @Api(Description="Updates the pH tolerance of an organism")
-export class UpdatePhTolerance extends UpdateTolerance<PhTolerance> implements IReturnVoid
+export class UpdatePhTolerance extends UpdateTolerance<PhTolerance> implements IReturnVoid, ICommand
 {
     tolerance: PhTolerance;
     createResponse() {}
@@ -774,7 +920,7 @@ export class UpdatePhTolerance extends UpdateTolerance<PhTolerance> implements I
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrite", "POST")
 // @Api(Description="Add a Nitrite tolerance to an organism")
-export class AddNitriteTolerance extends AddTolerance<NitriteTolerance> implements IReturnVoid
+export class AddNitriteTolerance extends AddTolerance<NitriteTolerance> implements IReturnVoid, ICommand
 {
     tolerance: NitriteTolerance;
     createResponse() {}
@@ -786,7 +932,7 @@ export class AddNitriteTolerance extends AddTolerance<NitriteTolerance> implemen
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrite", "POST")
 // @Api(Description="Updates the Nitrite tolerance of an organism")
-export class UpdateNitriteTolerance extends UpdateTolerance<NitriteTolerance> implements IReturnVoid
+export class UpdateNitriteTolerance extends UpdateTolerance<NitriteTolerance> implements IReturnVoid, ICommand
 {
     tolerance: NitriteTolerance;
     createResponse() {}
@@ -798,7 +944,7 @@ export class UpdateNitriteTolerance extends UpdateTolerance<NitriteTolerance> im
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrite", "DELETE")
 // @Api(Description="Deletes the Nitrite tolerance off an organism")
-export class DeleteNitriteTolerance extends DeleteTolerance<NitriteTolerance> implements IReturnVoid
+export class DeleteNitriteTolerance extends DeleteTolerance<NitriteTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeleteNitriteTolerance"; }
@@ -809,7 +955,7 @@ export class DeleteNitriteTolerance extends DeleteTolerance<NitriteTolerance> im
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrate", "POST")
 // @Api(Description="Add a Nitrate tolerance to an organism")
-export class AddNitrateTolerance extends AddTolerance<NitrateTolerance> implements IReturnVoid
+export class AddNitrateTolerance extends AddTolerance<NitrateTolerance> implements IReturnVoid, ICommand
 {
     tolerance: NitrateTolerance;
     createResponse() {}
@@ -821,7 +967,7 @@ export class AddNitrateTolerance extends AddTolerance<NitrateTolerance> implemen
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrate", "DELETE")
 // @Api(Description="Deletes the Nitrate tolerance off an organism")
-export class DeleteNitrateTolerance extends DeleteTolerance<NitrateTolerance> implements IReturnVoid
+export class DeleteNitrateTolerance extends DeleteTolerance<NitrateTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeleteNitrateTolerance"; }
@@ -832,7 +978,7 @@ export class DeleteNitrateTolerance extends DeleteTolerance<NitrateTolerance> im
 */
 // @Route("/organisms/{OrganismId}/tolerances/nitrate", "PUT")
 // @Api(Description="Updates the Nitrate tolerance of an organism")
-export class UpdateNitrateTolerance extends UpdateTolerance<NitrateTolerance> implements IReturnVoid
+export class UpdateNitrateTolerance extends UpdateTolerance<NitrateTolerance> implements IReturnVoid, ICommand
 {
     tolerance: NitrateTolerance;
     createResponse() {}
@@ -844,7 +990,7 @@ export class UpdateNitrateTolerance extends UpdateTolerance<NitrateTolerance> im
 */
 // @Route("/organisms/{OrganismId}/tolerances/iron", "POST")
 // @Api(Description="Add a Iron tolerance to an organism")
-export class AddIronTolerance extends AddTolerance<IronTolerance> implements IReturnVoid
+export class AddIronTolerance extends AddTolerance<IronTolerance> implements IReturnVoid, ICommand
 {
     tolerance: IronTolerance;
     createResponse() {}
@@ -856,7 +1002,7 @@ export class AddIronTolerance extends AddTolerance<IronTolerance> implements IRe
 */
 // @Route("/organisms/{OrganismId}/tolerances/iron", "DELETE")
 // @Api(Description="Deletes the Iron tolerance off an organism")
-export class DeleteIronTolerance extends DeleteTolerance<IronTolerance> implements IReturnVoid
+export class DeleteIronTolerance extends DeleteTolerance<IronTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeleteIronTolerance"; }
@@ -867,7 +1013,7 @@ export class DeleteIronTolerance extends DeleteTolerance<IronTolerance> implemen
 */
 // @Route("/organisms/{OrganismId}/tolerances/iron", "PUT")
 // @Api(Description="Updates the Iron tolerance of an organism")
-export class UpdateIronTolerance extends UpdateTolerance<IronTolerance> implements IReturnVoid
+export class UpdateIronTolerance extends UpdateTolerance<IronTolerance> implements IReturnVoid, ICommand
 {
     tolerance: IronTolerance;
     createResponse() {}
@@ -879,7 +1025,7 @@ export class UpdateIronTolerance extends UpdateTolerance<IronTolerance> implemen
 */
 // @Route("/organisms/{OrganismId}/tolerances/ammonia", "POST")
 // @Api(Description="Add a Ammonia tolerance to an organism")
-export class AddAmmoniaTolerance extends AddTolerance<AmmoniaTolerance> implements IReturnVoid
+export class AddAmmoniaTolerance extends AddTolerance<AmmoniaTolerance> implements IReturnVoid, ICommand
 {
     tolerance: AmmoniaTolerance;
     createResponse() {}
@@ -891,7 +1037,7 @@ export class AddAmmoniaTolerance extends AddTolerance<AmmoniaTolerance> implemen
 */
 // @Route("/organisms/{OrganismId}/tolerances/ammonia", "DELETE")
 // @Api(Description="Deletes the Ammonia tolerance off an organism")
-export class DeleteAmmoniaTolerance extends DeleteTolerance<AmmoniaTolerance> implements IReturnVoid
+export class DeleteAmmoniaTolerance extends DeleteTolerance<AmmoniaTolerance> implements IReturnVoid, ICommand
 {
     createResponse() {}
     getTypeName() { return "DeleteAmmoniaTolerance"; }
@@ -902,9 +1048,123 @@ export class DeleteAmmoniaTolerance extends DeleteTolerance<AmmoniaTolerance> im
 */
 // @Route("/organisms/{OrganismId}/tolerances/ammonia", "PUT")
 // @Api(Description="Updates the Ammonia tolerance of an organism")
-export class UpdateAmmoniaTolerance extends UpdateTolerance<AmmoniaTolerance> implements IReturnVoid
+export class UpdateAmmoniaTolerance extends UpdateTolerance<AmmoniaTolerance> implements IReturnVoid, ICommand
 {
     tolerance: AmmoniaTolerance;
     createResponse() {}
     getTypeName() { return "UpdateAmmoniaTolerance"; }
+}
+
+/**
+* Adds a user
+*/
+// @Route("/user", "POST")
+// @Api(Description="Adds a user")
+export class AddUser implements IReturnVoid, ICommand, IDataCommand
+{
+    /**
+    * The of a user
+    */
+    // @ApiMember(DataType="string", Description="The of a user", IsRequired=true, Name="UserId", ParameterType="path")
+    userId: string;
+
+    user: User;
+    createResponse() {}
+    getTypeName() { return "AddUser"; }
+}
+
+// @Route("/auth")
+// @Route("/auth/{provider}")
+// @Route("/authenticate")
+// @Route("/authenticate/{provider}")
+// @DataContract
+export class Authenticate implements IReturn<AuthenticateResponse>, IPost, IMeta
+{
+    // @DataMember(Order=1)
+    provider: string;
+
+    // @DataMember(Order=2)
+    state: string;
+
+    // @DataMember(Order=3)
+    oauth_token: string;
+
+    // @DataMember(Order=4)
+    oauth_verifier: string;
+
+    // @DataMember(Order=5)
+    userName: string;
+
+    // @DataMember(Order=6)
+    password: string;
+
+    // @DataMember(Order=7)
+    rememberMe: boolean;
+
+    // @DataMember(Order=8)
+    continue: string;
+
+    // @DataMember(Order=9)
+    nonce: string;
+
+    // @DataMember(Order=10)
+    uri: string;
+
+    // @DataMember(Order=11)
+    response: string;
+
+    // @DataMember(Order=12)
+    qop: string;
+
+    // @DataMember(Order=13)
+    nc: string;
+
+    // @DataMember(Order=14)
+    cnonce: string;
+
+    // @DataMember(Order=15)
+    useTokenCookie: boolean;
+
+    // @DataMember(Order=16)
+    accessToken: string;
+
+    // @DataMember(Order=17)
+    accessTokenSecret: string;
+
+    // @DataMember(Order=18)
+    meta: { [index:string]: string; };
+    createResponse() { return new AuthenticateResponse(); }
+    getTypeName() { return "Authenticate"; }
+}
+
+// @Route("/assignroles")
+// @DataContract
+export class AssignRoles implements IReturn<AssignRolesResponse>, IPost
+{
+    // @DataMember(Order=1)
+    userName: string;
+
+    // @DataMember(Order=2)
+    permissions: string[];
+
+    // @DataMember(Order=3)
+    roles: string[];
+    createResponse() { return new AssignRolesResponse(); }
+    getTypeName() { return "AssignRoles"; }
+}
+
+// @Route("/unassignroles")
+// @DataContract
+export class UnAssignRoles implements IReturn<UnAssignRolesResponse>, IPost
+{
+    // @DataMember(Order=1)
+    userName: string;
+
+    // @DataMember(Order=2)
+    permissions: string[];
+
+    // @DataMember(Order=3)
+    roles: string[];
+    createResponse() { return new UnAssignRolesResponse(); }
+    getTypeName() { return "UnAssignRoles"; }
 }

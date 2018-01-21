@@ -3,7 +3,7 @@
     <toaster-container [toasterconfig]="toasterConfig"></toaster-container>
     <ngx-header></ngx-header>
   </nb-layout-header>
-  <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive>
+  <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive *ngIf="auth.isAuthenticated()">
     <nb-sidebar-header>
       <a href="/#/pages/dashboard" class="btn btn-hero-success main-btn">
         <i class="icon-simpleponics"></i> <span>Dashboard</span>

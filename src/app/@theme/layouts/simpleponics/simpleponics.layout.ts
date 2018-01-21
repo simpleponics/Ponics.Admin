@@ -13,6 +13,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/delay';
 import {ToasterConfig} from 'angular2-toaster';
 import 'style-loader!angular2-toaster/toaster.css';
+import {AuthService} from '../../../@core/data/auth/auth.service';
 
 @Component({
   selector: 'ngx-simpleponics-layout',
@@ -28,7 +29,8 @@ export class SimpleponicsLayoutComponent  implements OnDestroy {
   constructor(protected menuService: NbMenuService,
               protected themeService: NbThemeService,
               protected bpService: NbMediaBreakpointsService,
-              protected sidebarService: NbSidebarService) {
+              protected sidebarService: NbSidebarService,
+              public auth: AuthService) {
 
     const isBp = this.bpService.getByName('is');
     this.menuClick$ = this.menuService.onItemSelect()

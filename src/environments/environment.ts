@@ -11,4 +11,9 @@
 export const environment = {
   production: false,
   ponicsApi: 'http://localhost:51272/',
+  auth0: {
+    clientID: 'hsD3ka26YRW7gcY5J6wLXk3PzHxgDd0n',
+    domain: 'simpleponics.au.auth0.com',
+    callbackURL: 'http://localhost:4200/#/pages/callback'
+  },
 };

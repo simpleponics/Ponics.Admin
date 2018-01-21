@@ -4,6 +4,7 @@ import {BodyOutputType, Toast, ToasterService} from 'angular2-toaster';
 import {
   PonicsSystemAnalysisToastsErrorComponent,
 } from '../aquaponics/ponics-system-analysis-toasts/error/ponics-system-analysis-toasts-error.component';
+import {AuthService} from '../../@core/data/auth/auth.service';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -13,7 +14,8 @@ import {
 export class DashboardComponent implements AfterViewInit {
   constructor(
     private ponicsService: PonicsService,
-    private toasterService: ToasterService) {
+    private toasterService: ToasterService,
+    public auth: AuthService) {
   }
 
   ngAfterViewInit(): void {

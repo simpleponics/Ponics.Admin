@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
-import { AnalyticsService } from '../../../@core/utils/analytics.service';
+import {AuthService} from '../../../@core/data/auth/auth.service';
 
 @Component({
   selector: 'ngx-header',
@@ -10,15 +9,32 @@ import { AnalyticsService } from '../../../@core/utils/analytics.service';
 })
 export class HeaderComponent implements OnInit {
 
+  userMenu = [
+    {
+      title: 'Log out',
+      action: 'logout',
+    },
+  ];
 
   @Input() position = 'normal';
 
+  profile: any;
+
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
-              private analyticsService: AnalyticsService) {
+              public auth: AuthService) {
   }
 
   ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      if (this.auth.userProfile) {
+        this.profile = this.auth.userProfile;
+      } else {
+        this.auth.getProfile((err, profile) => {
+          this.profile = profile;
+        });
+      }
+    }
   }
 
   toggleSidebar(): boolean {
@@ -26,16 +42,15 @@ export class HeaderComponent implements OnInit {
     return false;
   }
 
-  toggleSettings(): boolean {
-    this.sidebarService.toggle(false, 'settings-sidebar');
-    return false;
-  }
-
   goToHome() {
     this.menuService.navigateHome();
   }
 
-  startSearch() {
-    this.analyticsService.trackEvent('startSearch');
+
+  menuClick($event) {
+    if ($event.action === 'logout') {
+      this.auth.logout();
+    }
   }
+
 }

@@ -12,6 +12,7 @@ export class AquaponicSystemAnalysisComponent implements AfterViewInit {
 
   @Input() systemId: string = '';
   analysis: PonicsSystemAnalysisItem[] = [];
+  analysisLoading: Promise<any>;
 
   cardClass(a: PonicsSystemAnalysisItem): string {
 
@@ -29,6 +30,7 @@ export class AquaponicSystemAnalysisComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.ponicsService.getSystemAnalysis(this.systemId).then(analysis => this.analysis = analysis.items);
+    this.analysisLoading  = this.ponicsService.getSystemAnalysis(this.systemId)
+      .then(analysis => this.analysis = analysis.items);
   }
 }

@@ -10,9 +10,11 @@ import {OrganismsModule} from './organisms/organisms.module';
 import {OrganismService} from '../@core/data/organism.service';
 import {ToasterModule} from 'angular2-toaster';
 import {ToleranceAnalysisService} from '../@core/data/toleranceAnalysis.service';
+import {CallbackComponent} from './callback/callback.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
+  CallbackComponent,
 ];
 
 @NgModule({

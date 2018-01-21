@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="auth.isAuthenticated()">
   <div class="col-lg-6">
     <ngx-aquaponic-widget></ngx-aquaponic-widget>
   </div>

@@ -86,8 +86,6 @@ export class AquaponicWidgetComponent implements OnDestroy {
         this.levelReadings = [];
         const tolerance = tolerances.get(this.levelType);
         this.tolerance = this.organism.tolerances.find(t => t.type === tolerance.name);
-        console.log(this.organism.tolerances );
-        console.log(this.levelType);
         this.latestReading = levels[levels.length - 1];
         this.levelReadings = levels;
 

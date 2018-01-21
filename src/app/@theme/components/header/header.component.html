@@ -6,3 +6,20 @@
     <div class="logo" (click)="goToHome()">Simpleponics</div>
   </div>
 </div>
+<nb-actions
+  size="medium"
+  class="header-container"
+  [class.right]="position === 'normal'"
+  [class.left]="position === 'inverse'">
+  <nb-action *ngIf="auth.isAuthenticated()">
+    <nb-user [menu]="userMenu" [name]="profile?.name" [picture]="profile?.picture" (menuClick)="menuClick($event)"></nb-user>
+  </nb-action>
+  <nb-action *ngIf="!auth.isAuthenticated()">
+    <button
+      id="qsLoginBtn"
+      class="btn btn-primary btn-margin"
+      (click)="auth.login()">
+      Log In
+    </button>
+  </nb-action>
+</nb-actions>

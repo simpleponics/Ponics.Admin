@@ -6,8 +6,8 @@ import {
   Component,
   DeleteComponent,
   DeleteSystem,
-  GetAllSystems,
-  GetSystem,
+  GetAllAquaponicSystems,
+  GetAquaponicSystem,
   GetSystemLevels,
   GetSystemOrganisms,
   LevelReading,
@@ -16,6 +16,7 @@ import {
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
+import {AuthService} from './auth/auth.service';
 
 @Injectable()
 export class PonicsService {
@@ -30,15 +31,20 @@ export class PonicsService {
   levelReadingsAdded = new EventEmitter<string>();
   addingLevelReadings = new EventEmitter<Promise<void>>();
 
-  client = new JsonServiceClient(environment.ponicsApi);
+  client: JsonServiceClient;
+
+  constructor() {
+    this.client =  new JsonServiceClient(environment.ponicsApi);
+    this.client.bearerToken = localStorage.getItem('access_token');
+  }
 
   getAquaponicSystems() {
-    const query = new GetAllSystems();
+    const query = new GetAllAquaponicSystems();
     return this.client.get(query);
   }
 
   getAquaponicSystem(id: string) {
-    const query = new GetSystem();
+    const query = new GetAquaponicSystem();
     query.systemId = id;
     return this.client.get(query);
   }

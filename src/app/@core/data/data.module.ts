@@ -3,11 +3,8 @@ import { CommonModule } from '@angular/common';
 import {MenuService} from './menu.service';
 import {PonicsService} from './ponics.service';
 
-
-
-
 const SERVICES = [
-MenuService,
+  MenuService,
   PonicsService,
 ];
 
