@@ -35,7 +35,7 @@ export class PonicsService {
 
   constructor() {
     this.client =  new JsonServiceClient(environment.ponicsApi);
-    this.client.bearerToken = localStorage.getItem('access_token');
+    this.client.bearerToken = localStorage.getItem('id_token');
   }
 
   getAquaponicSystems() {

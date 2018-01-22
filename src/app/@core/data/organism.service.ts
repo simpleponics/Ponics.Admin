@@ -25,7 +25,7 @@ export class OrganismService {
 
   constructor() {
     this.client =  new JsonServiceClient(environment.ponicsApi);
-    this.client.bearerToken = localStorage.getItem('access_token');
+    this.client.bearerToken = localStorage.getItem('id_token');
   }
 
   getOrganism(id: string)  {
