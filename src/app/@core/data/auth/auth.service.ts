@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import { Router } from '@angular/router';
 import {WebAuth} from 'auth0-js';
 import {environment} from '../../../../environments/environment';
-
+import {Component} from '../Ponics.Api.dtos';
 
 @Injectable()
 export class AuthService {
-
   auth0 = new WebAuth({
     clientID: environment.auth0.clientID,
     domain: environment.auth0.domain,
@@ -31,7 +30,6 @@ export class AuthService {
         this.router.navigate(['/pages/dashboard']);
       } else if (err) {
         this.router.navigate(['/pages/dashboard']);
-        console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
@@ -42,7 +40,6 @@ export class AuthService {
     if (!accessToken) {
       throw new Error('Access token must exist to fetch profile');
     }
-
     const self = this;
     this.auth0.client.userInfo(accessToken, (err, profile) => {
       if (profile) {
@@ -58,7 +55,7 @@ export class AuthService {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    console.log(authResult);
+    console.log('setSession');
   }
 
   public logout(): void {

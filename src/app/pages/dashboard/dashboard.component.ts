@@ -19,6 +19,10 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (!this.auth.isAuthenticated()) {
+      return;
+    }
+
     this.ponicsService.getAquaponicSystems().then(
       systems => {
         for (const system of systems) {

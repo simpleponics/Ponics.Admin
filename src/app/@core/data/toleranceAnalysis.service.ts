@@ -6,8 +6,11 @@ import {levelQueries} from './PonicsMaps';
 
 @Injectable()
 export class ToleranceAnalysisService {
-  client = new JsonServiceClient(environment.ponicsApi);
-
+  client: JsonServiceClient;
+  constructor() {
+    this.client =  new JsonServiceClient(environment.ponicsApi);
+    this.client.bearerToken = localStorage.getItem('id_token');
+  }
   analyseLevelReading(reading: number, levelType: LevelTypes, organismId: string) {
     const query = levelQueries.get(levelType);
     query.organismId = organismId;

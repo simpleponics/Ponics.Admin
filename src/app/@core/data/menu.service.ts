@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {NbMenuItem} from '@nebular/theme';
 import {PonicsService} from './ponics.service';
+import {AuthService} from './auth/auth.service';
 
 @Injectable()
 export class MenuService {
@@ -35,7 +36,13 @@ export class MenuService {
     this.organisms,
   ];
 
-  constructor(private ponicsService: PonicsService) {
+  constructor(
+    private ponicsService: PonicsService,
+    public auth: AuthService) {
+    if (!this.auth.isAuthenticated()) {
+      return;
+    }
+
     this.generateSystemMenuItems();
     ponicsService.systemAdded.subscribe(
       system => {

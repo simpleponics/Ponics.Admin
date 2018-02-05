@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-21 14:43:06
+Date: 2018-01-31 21:04:00
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -347,15 +347,6 @@ export class AmmoniaLevelAnalysis extends LevelAnalysis_1<AmmoniaTolerance>
 {
 }
 
-export class User
-{
-    // @ApiMember(ExcludeInSchema=true)
-    id: string;
-
-    // @ApiMember(ExcludeInSchema=true)
-    ponicsSystemIds: string[];
-}
-
 // @DataContract
 export class AuthenticateResponse
 {
@@ -411,6 +402,16 @@ export class UnAssignRolesResponse
 
     // @DataMember(Order=3)
     responseStatus: ResponseStatus;
+}
+
+/**
+* Generates a new Guid for use as a UserId
+*/
+// @Route("/user/id/{SharedSecret}", "GET")
+// @Api(Description="Generates a new Guid for use as a UserId")
+export class GetNewUserId
+{
+    sharedSecret: string;
 }
 
 /**
@@ -635,22 +636,6 @@ export class AnalyseToleranceAmmonia extends AnalyseToleranceQuery_2<AmmoniaLeve
 {
     createResponse() { return new AmmoniaLevelAnalysis(); }
     getTypeName() { return "AnalyseToleranceAmmonia"; }
-}
-
-/**
-* Gets a user
-*/
-// @Route("/user", "GET")
-// @Api(Description="Gets a user")
-export class GetUser implements IReturn<User>
-{
-    /**
-    * The of a user
-    */
-    // @ApiMember(DataType="string", Description="The of a user", IsRequired=true, Name="UserId", ParameterType="path")
-    userId: string;
-    createResponse() { return new User(); }
-    getTypeName() { return "GetUser"; }
 }
 
 /**
@@ -1053,24 +1038,6 @@ export class UpdateAmmoniaTolerance extends UpdateTolerance<AmmoniaTolerance> im
     tolerance: AmmoniaTolerance;
     createResponse() {}
     getTypeName() { return "UpdateAmmoniaTolerance"; }
-}
-
-/**
-* Adds a user
-*/
-// @Route("/user", "POST")
-// @Api(Description="Adds a user")
-export class AddUser implements IReturnVoid, ICommand, IDataCommand
-{
-    /**
-    * The of a user
-    */
-    // @ApiMember(DataType="string", Description="The of a user", IsRequired=true, Name="UserId", ParameterType="path")
-    userId: string;
-
-    user: User;
-    createResponse() {}
-    getTypeName() { return "AddUser"; }
 }
 
 // @Route("/auth")

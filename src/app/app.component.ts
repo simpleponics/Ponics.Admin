@@ -14,12 +14,9 @@ import {AuthService} from './@core/data/auth/auth.service';
 export class AppComponent implements OnInit {
 
   constructor(
-    private analytics: AnalyticsService,
     public auth: AuthService) {
     auth.handleAuthentication();
   }
 
-  ngOnInit(): void {
-    this.analytics.trackPageViews();
-  }
+  ngOnInit(): void {}
 }
