@@ -23,8 +23,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
-              public auth: AuthService,
-              private ponicsService: PonicsService,) {
+              public auth: AuthService) {
   }
 
   ngOnInit() {

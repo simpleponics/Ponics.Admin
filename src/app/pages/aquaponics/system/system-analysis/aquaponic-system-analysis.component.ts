@@ -1,4 +1,4 @@
-﻿import {AfterViewInit, Component, Input} from '@angular/core';
+﻿import {OnInit, Component, Input} from '@angular/core';
 import {PonicsService} from '../../../../@core/data/ponics.service';
 import {PonicsSystemAnalysisItem} from '../../../../@core/data/Ponics.Api.dtos';
 
@@ -8,7 +8,7 @@ import {PonicsSystemAnalysisItem} from '../../../../@core/data/Ponics.Api.dtos';
   styleUrls: ['./aquaponic-system-analysis.component.scss'],
 })
 
-export class AquaponicSystemAnalysisComponent implements AfterViewInit {
+export class AquaponicSystemAnalysisComponent implements OnInit {
 
   @Input() systemId: string = '';
   analysis: PonicsSystemAnalysisItem[] = [];
@@ -29,8 +29,8 @@ export class AquaponicSystemAnalysisComponent implements AfterViewInit {
     private ponicsService: PonicsService) {
   }
 
-  ngAfterViewInit(): void {
-    this.analysisLoading  = this.ponicsService.getSystemAnalysis(this.systemId)
+  ngOnInit(): void {
+    this.analysisLoading = this.ponicsService.getSystemAnalysis(this.systemId)
       .then(analysis => this.analysis = analysis.items);
   }
 }
