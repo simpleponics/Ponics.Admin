@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
 import {AuthService} from '../../../@core/data/auth/auth.service';
+import {PonicsService} from '../../../@core/data/ponics.service';
 
 @Component({
   selector: 'ngx-header',
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private ponicsService: PonicsService,) {
   }
 
   ngOnInit() {
@@ -52,5 +54,4 @@ export class HeaderComponent implements OnInit {
       this.auth.logout();
     }
   }
-
 }

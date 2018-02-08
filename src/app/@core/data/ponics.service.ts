@@ -1,7 +1,9 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {
-  AddComponent, AddLevelReading,
-  AddSystem, AnalysePonicsSystem,
+  AddComponent,
+  AddLevelReading,
+  AddAquaponicSystem,
+  AnalysePonicsSystem,
   AquaponicSystem,
   Component,
   DeleteComponent,
@@ -12,11 +14,10 @@ import {
   GetSystemOrganisms,
   LevelReading,
   UpdateComponent,
-  UpdateSystem,
+  UpdateAquaponicSystem,
 } from './Ponics.Api.dtos';
 import {JsonServiceClient} from 'servicestack-client';
 import {environment} from '../../../environments/environment';
-import {AuthService} from './auth/auth.service';
 
 @Injectable()
 export class PonicsService {
@@ -56,7 +57,7 @@ export class PonicsService {
   }
 
   addAquaponicSystem(system: AquaponicSystem) {
-    const command = new AddSystem();
+    const command = new AddAquaponicSystem();
     command.system = system;
     this.client.post(command)
       .then(r =>
@@ -99,7 +100,7 @@ export class PonicsService {
   }
 
   updateAquaponicSystem(system: AquaponicSystem) {
-    const command = new UpdateSystem();
+    const command = new UpdateAquaponicSystem();
     command.systemId = system.id;
     command.system = system;
     const promise = this.client.post(command);

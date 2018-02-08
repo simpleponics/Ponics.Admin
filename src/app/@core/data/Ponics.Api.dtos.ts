@@ -1,5 +1,5 @@
 /* Options:
-Date: 2018-01-31 21:04:00
+Date: 2018-02-08 19:39:48
 Version: 5.02
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:51272
@@ -136,6 +136,8 @@ export class PonicsSystem
 
     // @ApiMember(ExcludeInSchema=true)
     components: Component[];
+
+    systemWideOrganisms: string[];
 }
 
 export type PonicsSystemAnalysisType = "Error" | "Warning" | "Info";
@@ -789,17 +791,35 @@ export class AddLevelReading implements IReturnVoid, ICommand, IDataCommand
 */
 // @Route("/systems/aquaponic", "POST")
 // @Api(Description="Add an Aquaponic System")
-export class AddSystem implements IReturnVoid, ICommand, IDataCommand
+export class AddAquaponicSystem implements IReturnVoid, ICommand, IDataCommand
 {
-    system: PonicsSystem;
+    system: AquaponicSystem;
     createResponse() {}
-    getTypeName() { return "AddSystem"; }
+    getTypeName() { return "AddAquaponicSystem"; }
+}
+
+/**
+* Update an Aquaponic Systems
+*/
+// @Route("/systems/aquaponic/{SystemId}", "PUT")
+// @Api(Description="Update an Aquaponic Systems")
+export class UpdateAquaponicSystem implements IReturnVoid, ICommand, IDataCommand
+{
+    /**
+    * The Id of an aquaponic system
+    */
+    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="SystemId", ParameterType="path")
+    systemId: string;
+
+    system: AquaponicSystem;
+    createResponse() {}
+    getTypeName() { return "UpdateAquaponicSystem"; }
 }
 
 /**
 * Add an Aquaponic System
 */
-// @Route("/systems/aquaponic/{SystemId}", "DELETE")
+// @Route("/systems/{SystemId}", "DELETE")
 // @Api(Description="Add an Aquaponic System")
 export class DeleteSystem implements IReturnVoid, ICommand, IDataCommand
 {
@@ -810,24 +830,6 @@ export class DeleteSystem implements IReturnVoid, ICommand, IDataCommand
     systemId: string;
     createResponse() {}
     getTypeName() { return "DeleteSystem"; }
-}
-
-/**
-* Update an Aquaponic Systems
-*/
-// @Route("/systems/aquaponic/{SystemId}", "PUT")
-// @Api(Description="Update an Aquaponic Systems")
-export class UpdateSystem implements IReturnVoid, ICommand, IDataCommand
-{
-    /**
-    * The Id of an aquaponic system
-    */
-    // @ApiMember(DataType="string", Description="The Id of an aquaponic system", IsRequired=true, Name="SystemId", ParameterType="path")
-    systemId: string;
-
-    system: AquaponicSystem;
-    createResponse() {}
-    getTypeName() { return "UpdateSystem"; }
 }
 
 /**
